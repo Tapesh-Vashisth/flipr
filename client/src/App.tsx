@@ -1,4 +1,5 @@
-import React from 'react';
+import {useEffect} from 'react';
+import axiosInstance from "./api/axios";
 
 function App() {
   return (
