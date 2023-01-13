@@ -1,4 +1,4 @@
-import express from "express"
+import express from 'express'
 import login from "../controllers/auth/login"
 import signup from "../controllers/auth/signup"
 import verifyJWT from "../middleware/verifyJWT"
@@ -11,4 +11,6 @@ router.get('/sendotp', login)
 
 router.use('/jwt', verifyJWT)
 
-export default router
+router.get('/all');
+
+export default router;
