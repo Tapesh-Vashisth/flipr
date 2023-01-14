@@ -13,25 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("refresh");
-    const cookies = req.cookies;
-    if (!(cookies === null || cookies === void 0 ? void 0 : cookies.jwt)) {
-        return res.sendStatus(403);
-    }
-    // accessing the refresh token cookie
-    const refreshtoken = cookies.jwt;
-    const foundUser = yield User_1.default.findOne({ refreshToken: refreshtoken }).exec();
-    if (!foundUser)
-        return res.sendStatus(403);
-    // evaluate jwt 
-    jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-        if (err || foundUser.uuid !== decoded.uuid)
-            return res.sendStatus(403);
-        const accessToken = jwt.sign({ uuid: foundUser.uuid }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10s" });
-        res.json({ accessToken });
-    });
+const check = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("check");
+    const user = yield User_1.default.findOne({ uuid: req.uuid }).exec();
+    if (!user)
+        return res.status(404).send();
+    return res.status(200).json({ name: user.name, email: user.email });
 });
-exports.default = refreshToken;
+exports.default = check;

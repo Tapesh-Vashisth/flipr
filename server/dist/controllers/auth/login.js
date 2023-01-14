@@ -20,29 +20,34 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     let user;
     try {
-        user = yield User_1.default.findOne({ email: email }).select('uuid email password').exec();
+        user = yield User_1.default.findOne({ email: email }).select('uuid name email password').exec();
     }
     catch (err) {
         console.log(err);
     }
     const uuid = user.uuid;
+    // if no user is found with the entered email address
     if (!user) {
         return res
             .status(404)
             .json({ message: "No such user exists!" });
     }
+    // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
         return res
             .status(400)
             .json({ message: "Password is wrong" });
     }
+    // creating access token 
     const accessToken = jsonwebtoken_1.default.sign({ uuid: uuid }, String(process.env.ACCESS_TOKEN_SECRET), {
         expiresIn: "10s"
     });
+    // creating refresh token
     const refreshToken = jsonwebtoken_1.default.sign({ uuid: uuid }, String(process.env.REFRESH_TOKEN_SECRET), {
         expiresIn: "50s"
     });
+    // saving the refresh token in the user's database
     user.refreshToken = refreshToken;
     try {
         yield user.save();
@@ -50,6 +55,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         console.log(err);
     }
+    // creating the refresh token cookie
     res.cookie("jwt", refreshToken, {
         httpOnly: true,
         sameSite: "none",
@@ -57,6 +63,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         maxAge: 24 * 60 * 60 * 1000
     });
     return res
-        .json(accessToken);
+        .status(200)
+        .json({
+        accessToken: accessToken,
+        email: email,
+        name: user.name
+    });
 });
 exports.default = login;

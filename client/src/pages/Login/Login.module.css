@@ -137,6 +137,7 @@
     color: #101074;
     cursor: pointer;
     margin-bottom: 1rem ;
+    margin-top: 0.25rem;
 }
 
 .underLinks button:hover{
@@ -147,6 +148,7 @@
     width: 90%;
     max-width: 250px;
     height: 1px;
+    margin: 0px auto;
     background-color: black;
 }
 

@@ -8,9 +8,10 @@ const refreshToken = async (req: Request, res: Response) => {
     
     const cookies = req.cookies;
     if (!cookies?.jwt) {
-        return res.sendStatus(401);
+        return res.sendStatus(403);
     } 
-
+    
+    // accessing the refresh token cookie
     const refreshtoken = cookies.jwt;
     const foundUser = await User.findOne({refreshToken: refreshtoken}).exec();
     if (!foundUser)

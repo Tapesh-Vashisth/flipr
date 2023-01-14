@@ -25,13 +25,13 @@ const setup = (store: ToolkitStore) => {
     async (err) => {
       const originalConfig = err.config;
 
-      if (originalConfig.url !== "/auth/signin" && err.response) {
+      if (originalConfig.url !== "/users/login" && err.response) {
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
 
           try {
-            const rs = await axiosInstance.get("/auth/refreshtoken");
+            const rs = await axiosInstance.get("/users/refreshtoken");
 
             const { accessToken } = rs.data;
 

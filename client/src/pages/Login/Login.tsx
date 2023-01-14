@@ -1,8 +1,12 @@
 import useInput from "../Hooks/use-input";
 import styles from "./Login.module.css"
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks";
+import { login } from "../../features/user/userSlice";
 
-const Login = (props) => {
-
+const Login = () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate()
     const {
         value: enteredpassword,
         isValid: passwordIsValid,
@@ -10,7 +14,7 @@ const Login = (props) => {
         valueChangeHandler: passwordChangeHandler,
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
-    } = useInput(value => value.trim() !== '');
+    } = useInput((value: String) => value.trim() !== '');
 
     const {
         value: enteredEmail,
@@ -19,22 +23,30 @@ const Login = (props) => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         reset: emailReset
-    } = useInput(value => (value.includes("@") && value.includes(".com")));
+    } = useInput((value: String) => (value.includes("@") && value.includes(".")));
 
-    const formSubmitHandler = (event) => {
+    const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         if (!passwordIsValid)
-            return;
+        return;
         if (!emailIsValid)
-            return;
+        return;
+        console.log(enteredEmail, enteredpassword);
 
-        emailReset();
-        passwordReset();
+        // server request   
+        dispatch(login({email: enteredEmail, password: enteredpassword}))
+        .unwrap()
+        .then((response) => {
+            console.log(response);
+            emailReset();
+            passwordReset();
+            navigate("/");
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 
     }
-
-
 
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
@@ -58,19 +70,20 @@ const Login = (props) => {
                     <div className={passwordClasses}>
                         {passwordHasError && <p className="error-text" >*Required</p>}
                         <label htmlFor='name'>Password</label>
-                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='text' id='name' />
+                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
                     </div>
 
+                    <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? false : true }>Login</button>
 
-                    <button type="submit" className={styles.submitButton} >Login</button>
                     <hr className={styles.ruler} />
 
                     <div className={styles.underLinks} >
                         <button>Forgot Password?</button>
                         <span>||</span>
-                        <button>Sign Up</button>
+                        <NavLink to = "/auth/signup">
+                            <button>Sign Up</button>    
+                        </NavLink>
                     </div>
-
 
                 </form>
             </div>

@@ -13,17 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = require("crypto");
-const Otp_1 = __importDefault(require("../../models/Otp"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
 const uuid = (0, crypto_1.randomUUID)().substring(0, 6);
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
-    <h1>Verify your email</h1>
-    <p>Kindly use this OTP to verify your email : ` + uuid.substring(0, 6) + ` </p>
+    <h1Reset your Password</h1>
+    <p>Your OTP is : ` + uuid + ` </p>
     <p>Kindly ignore this message if this was not you.</p>
 `;
-const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     let user;
     try {
@@ -32,33 +32,15 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     catch (err) {
         console.log(err);
     }
-    if (user) {
+    if (!user) {
         return res
-            .status(409)
-            .json({ message: "There exists another account with this email!" });
-    }
-    // if the user has already requested for an otp earlier, delete it and create a new one
-    let existingOtp;
-    try {
-        existingOtp = yield Otp_1.default.findOne({ email: email }).exec();
-    }
-    catch (err) {
-        console.log(err);
-    }
-    if (existingOtp) {
-        let deleteExistingOtp;
-        try {
-            deleteExistingOtp = yield Otp_1.default.findOneAndDelete({ email: email }).exec();
-        }
-        catch (err) {
-            console.log(err);
-        }
+            .status(404)
+            .json({ message: "No user found with the given email address!" });
     }
     const otp = new Otp_1.default({
-        email: email,
-        otp: uuid
+        otp: uuid.substring(0, 6),
+        email: email
     });
-    // saving the otp in the database
     try {
         yield otp.save();
     }
@@ -76,19 +58,16 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     let mailOptions = {
         from: "blogify253@gmail.com",
         to: email,
-        subject: "Verify your account",
+        subject: "Reset your password",
         html: html
     };
     transporter.sendMail(mailOptions, (err, success) => {
         if (err) {
             console.log("Mail not sent.", err);
         }
-        else {
-            console.log("Success, email has been sent.", success);
-        }
     });
     return res
         .status(200)
-        .json({ message: "Otp sent" });
+        .json({ message: "Otp sent for password reset!" });
 });
-exports.default = sendVerifyEmailOtp;
+exports.default = sendResetPasswordOtp;
