@@ -20,10 +20,11 @@ const uuid = (0, crypto_1.randomUUID)();
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1>Verify your email</h1>
-    <p>Kindly use this OTP to verify your email : ` + uuid + ` </p>
+    <p>Kindly use this OTP to verify your email : ` + uuid.substring(0, 6) + ` </p>
     <p>Kindly ignore this message if this was not you.</p>
 `;
 const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("emailverifyOTP");
     const { email } = req.body;
     let user;
     try {
@@ -56,7 +57,7 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     const otp = new Otp_1.default({
         email: email,
-        otp: uuid
+        otp: uuid.substring(0, 6)
     });
     // saving the otp in the database
     try {

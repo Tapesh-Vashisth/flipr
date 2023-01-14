@@ -5,7 +5,6 @@ import { userActions } from "../features/user/userSlice";
 const setup = (store: ToolkitStore) => {
   axiosInstance.interceptors.request.use(
     (config: any) => {
-      console.log("request intercept");
       const token = store.getState().user.accessToken;
       if (token) {
         config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
@@ -21,20 +20,18 @@ const setup = (store: ToolkitStore) => {
   const { dispatch } = store;
   axiosInstance.interceptors.response.use(
     (res) => {
-      console.log("response intercept");
       return res;
     },
     async (err) => {
-      console.log("response intercept");
       const originalConfig = err.config;
 
-      if (originalConfig.url !== "/auth/signin" && err.response) {
+      if (originalConfig.url !== "/users/login" && err.response) {
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
 
           try {
-            const rs = await axiosInstance.get("/auth/refreshtoken");
+            const rs = await axiosInstance.get("/users/refreshtoken");
 
             const { accessToken } = rs.data;
 

@@ -20,7 +20,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     let user;
     try {
-        user = yield User_1.default.findOne({ email: email }).select('uuid email password').exec();
+        user = yield User_1.default.findOne({ email: email }).select('uuid name email password').exec();
     }
     catch (err) {
         console.log(err);
@@ -61,6 +61,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         sameSite: "none",
         secure: true,
         maxAge: 24 * 60 * 60 * 1000
+    });
+    console.log({
+        accessToken: accessToken,
+        email: email,
+        name: user.name
     });
     return res
         .status(200)

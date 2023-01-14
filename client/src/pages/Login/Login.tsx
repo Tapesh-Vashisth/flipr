@@ -23,7 +23,7 @@ const Login = () => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         reset: emailReset
-    } = useInput((value: String) => (value.includes("@") && value.includes(".com")));
+    } = useInput((value: String) => (value.includes("@") && value.includes(".")));
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -32,6 +32,7 @@ const Login = () => {
         if (!emailIsValid)
         return;
         console.log(enteredEmail, enteredpassword);
+
         // server request   
         dispatch(login({email: enteredEmail, password: enteredpassword}))
         .unwrap()
@@ -74,10 +75,6 @@ const Login = () => {
 
                     <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? false : true }>Login</button>
 
-<<<<<<< HEAD
-=======
-                    <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? true : false } >Login</button>
->>>>>>> 768469bedf9d8e06e95ce4615e5a70ce13d7901e
                     <hr className={styles.ruler} />
 
                     <div className={styles.underLinks} >

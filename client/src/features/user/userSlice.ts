@@ -44,6 +44,7 @@ interface loginCredentialsType {
 export const login = createAsyncThunk("/user/login", async (credentials: loginCredentialsType, {rejectWithValue}) => {
     try {
         const response = await axiosInstance.post("/users/login", credentials);
+        return response.data;
     } catch (err: any) {
         return rejectWithValue(err);
     }
@@ -68,9 +69,11 @@ const userSlice = createSlice({
                 state.email = action.payload.email;
                 state.name = action.payload.name;
                 state.accessToken = action.payload.accessToken;
+                state.loggedIn = true;
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
+                state.loggedIn = false;
             })
             .addCase(signup.pending, (state, action) => {
                 state.loading = true;

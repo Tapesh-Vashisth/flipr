@@ -46,7 +46,7 @@ const SignUp = () => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         reset: emailReset
-    } = useInput((value: String) => (value.includes("@") && value.includes(".com")));
+    } = useInput((value: String) => (value.includes("@") && value.includes(".")));
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
