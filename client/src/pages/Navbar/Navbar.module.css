@@ -13,14 +13,12 @@
     animation: zoom 100ms linear forwards;
 }
 
-.optionsContainer {
-    margin-right: 0.5rem;
-}
 
 .logo {
     text-decoration: none;
     color: inherit;
     color: white;
+    font-size: 1.7rem;
 
 }
 
@@ -30,13 +28,25 @@
 }
 
 @media (max-width:420px) {
-    .logo h4 {
-        margin: 0;
-    }
+
 
     .optionsContainer button {
         font-size: 1rem;
-        padding-bottom: 1rem;
     }
 
+}
+
+@media (max-width:400px) {
+    .optionsContainer{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .optionsContainer button{
+        padding-bottom: 10px ;
+        margin: 0;
+        padding-top: 10px;
+    }
 }

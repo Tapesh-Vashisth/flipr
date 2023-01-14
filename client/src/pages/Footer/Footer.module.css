@@ -16,6 +16,11 @@
     display: flex;
     min-height: 200px;
 }
+.cc{
+    background-color: rgb(32, 32, 32);
+    color: white;
+    text-align: center;
+}
 
 .footer_title{
     margin: 1rem;
