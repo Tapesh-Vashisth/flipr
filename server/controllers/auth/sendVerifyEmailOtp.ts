@@ -12,7 +12,6 @@ const html = `
 `
 
 const sendVerifyEmailOtp = async (req: Request, res: Response) => {
-
     const { email } = req.body
 
     // if the user has already requested for an otp earlier, delete it and create a new one
@@ -34,7 +33,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
 
     const otp = new Otp({
         email: email,
-        uuid: uuid
+        otp: uuid
     })
 
     // saving the otp in the database
@@ -63,9 +62,6 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
     transporter.sendMail(mailOptions, (err: any, success: any) => {
         if (err) {
             console.log("Mail not sent.", err)
-        }
-        else {
-            console.log("Success, email has been sent.", success)
         }
     })
 

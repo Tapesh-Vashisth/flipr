@@ -59,8 +59,11 @@ const login = async (req: Request, res: Response) => {
 
     return res
         .status(200)
-        .json(accessToken)
-
+        .json({
+            accessToken: accessToken,
+            email: email,
+            name: user.name
+        })
 }
 
 export default login

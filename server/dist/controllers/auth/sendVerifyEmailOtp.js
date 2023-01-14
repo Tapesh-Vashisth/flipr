@@ -43,7 +43,7 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     const otp = new Otp_1.default({
         email: email,
-        uuid: uuid
+        otp: uuid
     });
     // saving the otp in the database
     try {
@@ -69,9 +69,6 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     transporter.sendMail(mailOptions, (err, success) => {
         if (err) {
             console.log("Mail not sent.", err);
-        }
-        else {
-            console.log("Success, email has been sent.", success);
         }
     });
     return res

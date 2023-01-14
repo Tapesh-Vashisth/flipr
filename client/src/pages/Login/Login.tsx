@@ -1,9 +1,12 @@
 import useInput from "../Hooks/use-input";
 import styles from "./Login.module.css"
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks";
+import { login } from "../../features/user/userSlice";
 
 const Login = () => {
-
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate()
     const {
         value: enteredpassword,
         isValid: passwordIsValid,
@@ -24,14 +27,24 @@ const Login = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         if (!passwordIsValid)
-            return;
+        return;
         if (!emailIsValid)
-            return;
+        return;
+        console.log(enteredEmail, enteredpassword);
+        // server request   
+        dispatch(login({email: enteredEmail, password: enteredpassword}))
+        .unwrap()
+        .then((response) => {
+            console.log(response);
+            emailReset();
+            passwordReset();
+            navigate("/");
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 
-        emailReset();
-        passwordReset();
     }
 
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
@@ -59,8 +72,8 @@ const Login = () => {
                         <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='text' id='name' />
                     </div>
 
+                    <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? false : true }>Login</button>
 
-                    <button type="submit" className={styles.submitButton} >Login</button>
                     <hr className={styles.ruler} />
 
                     <div className={styles.underLinks} >
@@ -70,7 +83,6 @@ const Login = () => {
                             <button>Sign Up</button>    
                         </NavLink>
                     </div>
-
 
                 </form>
             </div>
