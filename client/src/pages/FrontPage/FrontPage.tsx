@@ -1,5 +1,4 @@
 import styles from "./FrontPage.module.css"
-import React from "react";
 const FrontPage = () => {
 
     return (
@@ -9,10 +8,10 @@ const FrontPage = () => {
                 <section>
                     <div className={styles.introContainer} >
                         <div className={styles.introBox}>
-                            <h1 className="intro">Flipper
+                            <h1 className="intro">Stockhub
                             </h1>
                             <h1 className="intro" >
-                                Information/ Research/ Loda-Lehsun
+                                Information/ Research
                             </h1>
                         </div>
                         <div className={styles.imagecontainer}>

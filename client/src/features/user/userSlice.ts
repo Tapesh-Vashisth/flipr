@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
+import { startTransition } from "react";
 import axiosInstance from "../../api/axios";
 
 interface user {
@@ -52,6 +53,16 @@ export const login = createAsyncThunk("/user/login", async (credentials: loginCr
     }
 })
 
+// logout 
+export const logout = createAsyncThunk("/user/logout", async (_, {rejectWithValue}) => {
+    try {
+        const response = await axiosInstance.get("/users/logout");
+        return response.data;
+    } catch (err: any) {
+        return rejectWithValue(err);
+    }
+})
+
 // fetchUser
 export const fetch = createAsyncThunk("/user/fetch", async (_, {rejectWithValue}) => {
     try {
@@ -67,15 +78,13 @@ const userSlice = createSlice({
     name: "user",
     initialState, 
     reducers: {
+        reset: () => initialState,
         setAccessToken: (state, action: PayloadAction <string | null>) => {
             state.accessToken = action.payload;
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(login.pending, (state, action) => {
-                state.loading = true;
-            })
             .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
                 state.email = action.payload.email;
                 state.name = action.payload.name;
@@ -86,9 +95,6 @@ const userSlice = createSlice({
             .addCase(login.rejected, (state, action) => {
                 state.loggedIn = false;
                 state.error = action.error.message;
-            })
-            .addCase(signup.pending, (state, action) => {
-                state.loading = true;
             })
             .addCase(signup.fulfilled, (state, action) => {
                 state.error = null;
@@ -107,12 +113,35 @@ const userSlice = createSlice({
                 state.error = action.error.message;
                 state.loggedIn = false;
             })
+            .addCase(logout.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.accessToken = "";
+                state.email = "";
+                state.name = "";
+                state.loggedIn = false;
+                state.error = null;
+            })
             .addMatcher(isAnyOf(
                 login.rejected,
                 signup.rejected,
                 login.fulfilled,
-                signup.fulfilled),(state) => {
+                signup.fulfilled,
+                fetch.rejected,
+                fetch.fulfilled,
+                logout.rejected,
+                logout.fulfilled
+                ),(state) => {
                 state.loading = false
+            })
+            .addMatcher(isAnyOf(
+                login.pending,
+                signup.pending,
+                fetch.pending,
+                logout.pending,
+                ), (state) => {
+                state.loading = true;
             })
     }
 })
