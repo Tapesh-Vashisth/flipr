@@ -1,43 +1,40 @@
-import { Request, Response } from "express";
-import { randomUUID } from "crypto";
-import Otp from "../../models/Otp";
+import { randomUUID } from "crypto"
+import { Request, Response } from "express"
 import nodemailer from "nodemailer"
+import Otp from "../../models/Otp"
+import User from "../../models/User"
 
 const uuid: string = randomUUID()
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
-    <h1>Verify your email</h1>
-    <p>Kindly use this OTP to verify your email : ` + uuid + ` </p>
+    <h1Reset your Blogify Password</h1>
+    <p>Your OTP is : ` + uuid + ` </p>
+    <p>Kindly click this link to reset your blogify password : </p>
+    <button> <a href="http://localhost:3000/setnewpassword"> Verify Email </a> </button>
     <p>Kindly ignore this message if this was not you.</p>
 `
 
-const sendVerifyEmailOtp = async (req: Request, res: Response) => {
-
+const sendResetPasswordOtp = async (req: Request, res: Response) => {
+    
     const { email } = req.body
-
-    // if the user has already requested for an otp earlier, delete it and create a new one
-    let existingOtp: any
+    let user: any
     try {
-        existingOtp = await Otp.findOne({ email: email }).exec()
+        user = await User.findOne({ email: email }).exec()
     } catch (err) {
         console.log(err)
     }
 
-    if (existingOtp) {
-        let deleteExistingOtp: any
-        try {
-            deleteExistingOtp = await Otp.findOneAndDelete({ email: email }).exec()
-        } catch (err) {
-            console.log(err)
-        }
+    if (!user) {
+        return res
+            .status(404)
+            .json({ message: "No user found with the given email address!" })
     }
 
     const otp = new Otp({
-        email: email,
-        uuid: uuid
+        otp: uuid,
+        email: email
     })
 
-    // saving the otp in the database
     try {
         await otp.save()
     } catch (err) {
@@ -56,7 +53,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
     let mailOptions = {
         from: "blogify253@gmail.com",
         to: email,
-        subject: "Verify your account",
+        subject: "Reset your password",
         html: html
     }
 
@@ -71,8 +68,8 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
 
     return res
         .status(200)
-        .json({ message: "Otp sent" })
+        .json({ message: "Otp sent for password reset!" })
 
 }
 
-export default sendVerifyEmailOtp
+export default sendResetPasswordOtp
