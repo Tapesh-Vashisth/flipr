@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes";
+import companyRouter from "./routes/companyRoutes";
 import cors from "cors";
 import mongoose from "mongoose";
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 // main
 app.use('/api/users',userRouter);
+app.use('/api/company',companyRouter);
 
 const port = process.env.PORT || 5500;
 

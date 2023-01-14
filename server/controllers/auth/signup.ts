@@ -8,7 +8,7 @@ const signup = async (req: Request, res: Response) => {
     console.log("signup")
 
     const { name, email, password, otp } = req.body
-    const uuid: String = randomUUID()
+    const uuid: String = randomUUID();
 
     let existingUser: any
     try {

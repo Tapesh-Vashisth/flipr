@@ -4,7 +4,7 @@ import Otp from "../../models/Otp";
 import nodemailer from "nodemailer"
 import User from "../../models/User";
 
-const uuid: string = randomUUID()
+const uuid: string = randomUUID().substring(0, 6);
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1>Verify your email</h1>
@@ -48,7 +48,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
 
     const otp = new Otp({
         email: email,
-        uuid: uuid.substring(0, 6)
+        otp: uuid
     })
 
     // saving the otp in the database

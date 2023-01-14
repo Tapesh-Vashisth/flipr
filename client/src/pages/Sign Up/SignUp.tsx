@@ -2,9 +2,15 @@ import useInput from "../Hooks/use-input";
 import { useState } from "react";
 import styles from "./SignUp.module.css";
 import axiosInstance from "../../api/axios";
+import { useAppDispatch } from "../../store/hooks";
+import { signup } from "../../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-    const [getOtpValid, setgetOtpValid] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
+    const [otp, setOTP] = useState<string>("");
     
     const {
         value: enteredfullName,
@@ -40,7 +46,7 @@ const SignUp = () => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         reset: emailReset
-    } = useInput((value: String) => (value.includes("@") && value.includes(".com")));
+    } = useInput((value: String) => (value.includes("@") && value.includes(".")));
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -50,13 +56,20 @@ const SignUp = () => {
             return;
         if (!emailIsValid)
             return;
-        
+        console.log(enteredEmail, enteredfullName, enteredpassword, otp);
         // server request 
-
-        setgetOtpValid(false);
-        emailReset();
-        passwordReset();
-        fullNameReset();
+        dispatch(signup({email: enteredEmail, name: enteredfullName, password: enteredpassword, otp: otp}))
+        .unwrap()
+        .then((response) => {
+            console.log(response);
+            setgetOtpValid(false);
+            fullNameReset();
+            emailReset();
+            passwordReset();
+            navigate("/auth/login");
+        }).catch((err) => {
+            alert(err);
+        })
     }
 
 
@@ -80,22 +93,22 @@ const SignUp = () => {
                         <label htmlFor='name'>Name</label>
                         <input value={enteredfullName} onChange={fullNameChangeHandler} onBlur={fullNameBlurHandler} type='text' id='name' />
                     </div>
-                    <div className={passwordClasses}>
-                        {passwordHasError && <p className="error-text" >*Required</p>}
-                        <label htmlFor='name'>Password</label>
-                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='text' id='name' />
-                    </div>
                     <div className={emailClasses}>
                         {emailHasError && <p className="error-text">Entered a valid e-mail.</p>}
                         <label htmlFor='name'>E-Mail</label>
-                        <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='text' id='email' />
+                        <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='email' id='email' />
                     </div>
                     <div className={styles.otpForm} >
                         {emailIsValid && <button type="button" onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
-                        {getOtpValid && <input className={styles.enterOtp} ></input>}
+                        {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
+                    </div>
+                    <div className={passwordClasses}>
+                        {passwordHasError && <p className="error-text" >*Required</p>}
+                        <label htmlFor='name'>Password</label>
+                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
                     </div>
                     <div className='form-actions'>
-                        <button type="submit" className={styles.submitButton} >Submit</button>
+                        <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0 ? false: true} >Submit</button>
                     </div>
                 </form>
             </div>

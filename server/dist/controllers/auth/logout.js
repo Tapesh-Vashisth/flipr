@@ -13,25 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("refresh");
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const cookies = req.cookies;
-    if (!(cookies === null || cookies === void 0 ? void 0 : cookies.jwt)) {
-        return res.sendStatus(403);
+    if (!(cookies === null || cookies === void 0 ? void 0 : cookies.jwt))
+        return res.sendStatus(204);
+    const refreshToken = cookies === null || cookies === void 0 ? void 0 : cookies.jwt;
+    // is refreshToken in db 
+    const foundUser = yield User_1.default.findOne({ refreshToken });
+    if (!foundUser) {
+        res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+        res.sendStatus(204);
     }
-    // accessing the refresh token cookie
-    const refreshtoken = cookies.jwt;
-    const foundUser = yield User_1.default.findOne({ refreshToken: refreshtoken }).exec();
-    if (!foundUser)
-        return res.sendStatus(403);
-    // evaluate jwt 
-    jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-        if (err || foundUser.uuid !== decoded.uuid)
-            return res.sendStatus(403);
-        const accessToken = jwt.sign({ uuid: foundUser.uuid }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10s" });
-        res.json({ accessToken });
-    });
+    // delete refreshToken in the database 
+    foundUser.refreshToken = "";
+    yield foundUser.save();
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+    res.sendStatus(204);
 });
-exports.default = refreshToken;
+exports.default = logout;
