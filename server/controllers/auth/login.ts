@@ -10,7 +10,7 @@ const login = async (req: Request, res: Response) => {
 
     let user: any
     try {
-        user = await User.findOne({ email: email }).select('uuid email password').exec()
+        user = await User.findOne({ email: email }).select('uuid name email password').exec()
     } catch (err) {
         console.log(err)
     }

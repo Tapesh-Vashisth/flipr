@@ -8,7 +8,7 @@ const uuid: string = randomUUID()
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1>Verify your email</h1>
-    <p>Kindly use this OTP to verify your email : ` + uuid + ` </p>
+    <p>Kindly use this OTP to verify your email : ` + uuid.substring(0, 6) + ` </p>
     <p>Kindly ignore this message if this was not you.</p>
 `
 
@@ -48,7 +48,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
 
     const otp = new Otp({
         email: email,
-        uuid: uuid
+        uuid: uuid.substring(0, 6)
     })
 
     // saving the otp in the database

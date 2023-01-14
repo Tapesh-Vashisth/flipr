@@ -4,7 +4,7 @@ import nodemailer from "nodemailer"
 import Otp from "../../models/Otp"
 import User from "../../models/User"
 
-const uuid: string = randomUUID()
+const uuid: string = randomUUID().substring(0, 6)
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1Reset your Password</h1>
@@ -29,7 +29,7 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
     }
 
     const otp = new Otp({
-        otp: uuid,
+        otp: uuid.substring(0, 6),
         email: email
     })
 
