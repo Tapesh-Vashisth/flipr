@@ -1,5 +1,5 @@
 import express from 'express'
-import { setCompanyDetails,getCompanyDetails } from '../controllers/company/setCompanyDetails';
+import { setCompanyDetails,getCompanyDetails } from '../controllers/company/companyController';
 
 const router = express.Router()
 
