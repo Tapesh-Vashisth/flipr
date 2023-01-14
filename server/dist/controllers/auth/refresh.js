@@ -21,6 +21,7 @@ const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     if (!(cookies === null || cookies === void 0 ? void 0 : cookies.jwt)) {
         return res.sendStatus(401);
     }
+    // accessing the refresh token cookie
     const refreshtoken = cookies.jwt;
     const foundUser = yield User_1.default.findOne({ refreshToken: refreshtoken }).exec();
     if (!foundUser)

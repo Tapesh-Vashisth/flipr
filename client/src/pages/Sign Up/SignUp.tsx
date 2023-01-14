@@ -1,15 +1,11 @@
 import useInput from "../Hooks/use-input";
 import { useState } from "react";
 import styles from "./SignUp.module.css";
-
+import axiosInstance from "../../api/axios";
 
 const SignUp = () => {
     const [getOtpValid, setgetOtpValid] = useState(false);
-
-    const otpInputHandler = () => {
-        setgetOtpValid(true);
-    }
-
+    
     const {
         value: enteredfullName,
         isValid: fullNameIsValid,
@@ -18,7 +14,7 @@ const SignUp = () => {
         inputBlurHandler: fullNameBlurHandler,
         reset: fullNameReset
     } = useInput((value: String) => value.trim() !== '');
-
+    
     const {
         value: enteredpassword,
         isValid: passwordIsValid,
@@ -27,6 +23,15 @@ const SignUp = () => {
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
     } = useInput((value: String) => value.trim() !== '');
+    
+    const otpInputHandler = async () => {
+        try {
+            const response = await axiosInstance.post("/users/sendotp", {email: enteredEmail});
+            setgetOtpValid(true);
+        } catch (err) {
+            alert("something went wrong")
+        }
+    }
 
     const {
         value: enteredEmail,
@@ -45,6 +50,9 @@ const SignUp = () => {
             return;
         if (!emailIsValid)
             return;
+        
+        // server request 
+
         setgetOtpValid(false);
         emailReset();
         passwordReset();

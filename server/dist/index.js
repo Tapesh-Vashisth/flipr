@@ -20,10 +20,7 @@ app.use((0, cors_1.default)({
 }));
 app.use((0, cookie_parser_1.default)());
 // main
-app.use('/users', userRoutes_1.default);
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World From the Typescript Server!</h1>');
-});
+app.use('/api/users', userRoutes_1.default);
 const port = process.env.PORT || 5500;
 mongoose_1.default.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.kfcheeo.mongodb.net/flipr?retryWrites=true&w=majority`).then(() => {
     console.log("database connected");
