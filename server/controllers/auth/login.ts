@@ -10,7 +10,7 @@ const login = async (req: Request, res: Response) => {
 
     let user: any
     try {
-        user = await User.findOne({ email: email }).select('uuid email password').exec()
+        user = await User.findOne({ email: email }).select('uuid name email password').exec()
     } catch (err) {
         console.log(err)
     }
@@ -23,7 +23,7 @@ const login = async (req: Request, res: Response) => {
             .json({ message: "No such user exists!" })
     }
 
-    // using bcrypt's asynchronous comparison method to compare the entered password with the hashed password 
+    // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = await bcrypt.compare(password, user.password)
     if (!passwordCompare) {
         return res
@@ -59,7 +59,11 @@ const login = async (req: Request, res: Response) => {
 
     return res
         .status(200)
-        .json(accessToken)
+        .json({
+            accessToken: accessToken,
+            email: email,
+            name: user.name
+        })
 
 }
 

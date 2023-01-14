@@ -20,7 +20,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     let user;
     try {
-        user = yield User_1.default.findOne({ email: email }).select('uuid email password').exec();
+        user = yield User_1.default.findOne({ email: email }).select('uuid name email password').exec();
     }
     catch (err) {
         console.log(err);
@@ -32,7 +32,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .status(404)
             .json({ message: "No such user exists!" });
     }
-    // using bcrypt's asynchronous comparison method to compare the entered password with the hashed password 
+    // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
         return res
@@ -64,6 +64,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return res
         .status(200)
-        .json(accessToken);
+        .json({
+        accessToken: accessToken,
+        email: email,
+        name: user.name
+    });
 });
 exports.default = login;

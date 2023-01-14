@@ -15,15 +15,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = require("crypto");
 const Otp_1 = __importDefault(require("../../models/Otp"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const uuid = (0, crypto_1.randomUUID)();
+const User_1 = __importDefault(require("../../models/User"));
+const uuid = (0, crypto_1.randomUUID)().substring(0, 6);
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1>Verify your email</h1>
-    <p>Kindly use this OTP to verify your email : ` + uuid + ` </p>
+    <p>Kindly use this OTP to verify your email : ` + uuid.substring(0, 6) + ` </p>
     <p>Kindly ignore this message if this was not you.</p>
 `;
 const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
+    let user;
+    try {
+        user = yield User_1.default.findOne({ email: email }).exec();
+    }
+    catch (err) {
+        console.log(err);
+    }
+    if (user) {
+        return res
+            .status(409)
+            .json({ message: "There exists another account with this email!" });
+    }
     // if the user has already requested for an otp earlier, delete it and create a new one
     let existingOtp;
     try {
@@ -43,7 +56,7 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     const otp = new Otp_1.default({
         email: email,
-        uuid: uuid
+        otp: uuid
     });
     // saving the otp in the database
     try {

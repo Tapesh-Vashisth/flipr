@@ -13,25 +13,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("refresh");
-    const cookies = req.cookies;
-    if (!(cookies === null || cookies === void 0 ? void 0 : cookies.jwt)) {
-        return res.sendStatus(403);
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    let user;
+    try {
+        user = yield User_1.default.findOne({ email: email }).exec();
     }
-    // accessing the refresh token cookie
-    const refreshtoken = cookies.jwt;
-    const foundUser = yield User_1.default.findOne({ refreshToken: refreshtoken }).exec();
-    if (!foundUser)
-        return res.sendStatus(403);
-    // evaluate jwt 
-    jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-        if (err || foundUser.uuid !== decoded.uuid)
-            return res.sendStatus(403);
-        const accessToken = jwt.sign({ uuid: foundUser.uuid }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10s" });
-        res.json({ accessToken });
-    });
+    catch (err) {
+        console.log(err);
+    }
+    const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
+    if (!passwordCompare) {
+        return res
+            .status(400)
+            .json({ message: "Password is wrong!" });
+    }
+    let deletion;
+    try {
+        deletion = yield User_1.default.findOneAndDelete({ email: email }).exec();
+    }
+    catch (err) {
+        console.log(err);
+    }
+    return res
+        .status(200)
+        .json({ message: "Account deleted successfully!" });
 });
-exports.default = refreshToken;
+exports.default = deleteAccount;

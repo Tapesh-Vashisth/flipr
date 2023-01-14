@@ -4,13 +4,11 @@ import nodemailer from "nodemailer"
 import Otp from "../../models/Otp"
 import User from "../../models/User"
 
-const uuid: string = randomUUID()
+const uuid: string = randomUUID().substring(0, 6)
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
-    <h1Reset your Blogify Password</h1>
+    <h1Reset your Password</h1>
     <p>Your OTP is : ` + uuid + ` </p>
-    <p>Kindly click this link to reset your blogify password : </p>
-    <button> <a href="http://localhost:3000/setnewpassword"> Verify Email </a> </button>
     <p>Kindly ignore this message if this was not you.</p>
 `
 
@@ -31,7 +29,7 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
     }
 
     const otp = new Otp({
-        otp: uuid,
+        otp: uuid.substring(0, 6),
         email: email
     })
 
@@ -60,9 +58,6 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
     transporter.sendMail(mailOptions, (err: any, success: any) => {
         if (err) {
             console.log("Mail not sent.", err)
-        }
-        else {
-            console.log("Success, email has been sent.", success)
         }
     })
 
