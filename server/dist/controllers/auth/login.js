@@ -1,0 +1,62 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const User_1 = __importDefault(require("../../models/User"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("login");
+    const { email, password } = req.body;
+    let user;
+    try {
+        user = yield User_1.default.findOne({ email: email }).select('uuid email password').exec();
+    }
+    catch (err) {
+        console.log(err);
+    }
+    const uuid = user.uuid;
+    if (!user) {
+        return res
+            .status(404)
+            .json({ message: "No such user exists!" });
+    }
+    const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
+    if (!passwordCompare) {
+        return res
+            .status(400)
+            .json({ message: "Password is wrong" });
+    }
+    const accessToken = jsonwebtoken_1.default.sign({ uuid: uuid }, String(process.env.ACCESS_TOKEN_SECRET), {
+        expiresIn: "10s"
+    });
+    const refreshToken = jsonwebtoken_1.default.sign({ uuid: uuid }, String(process.env.REFRESH_TOKEN_SECRET), {
+        expiresIn: "50s"
+    });
+    user.refreshToken = refreshToken;
+    try {
+        yield user.save();
+    }
+    catch (err) {
+        console.log(err);
+    }
+    res.cookie("jwt", refreshToken, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+        maxAge: 24 * 60 * 60 * 1000
+    });
+    return res
+        .json(accessToken);
+});
+exports.default = login;
