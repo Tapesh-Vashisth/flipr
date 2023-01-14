@@ -1,8 +1,9 @@
 import useInput from "../Hooks/use-input";
 import { useState } from "react";
-import styles from "./SignUp.module.css"
+import styles from "./SignUp.module.css";
 
-const SignUp = (props) => {
+
+const SignUp = () => {
     const [getOtpValid, setgetOtpValid] = useState(false);
 
     const otpInputHandler = () => {
@@ -16,7 +17,7 @@ const SignUp = (props) => {
         valueChangeHandler: fullNameChangeHandler,
         inputBlurHandler: fullNameBlurHandler,
         reset: fullNameReset
-    } = useInput(value => value.trim() !== '');
+    } = useInput((value: String) => value.trim() !== '');
 
     const {
         value: enteredpassword,
@@ -25,7 +26,7 @@ const SignUp = (props) => {
         valueChangeHandler: passwordChangeHandler,
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
-    } = useInput(value => value.trim() !== '');
+    } = useInput((value: String) => value.trim() !== '');
 
     const {
         value: enteredEmail,
@@ -34,9 +35,9 @@ const SignUp = (props) => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         reset: emailReset
-    } = useInput(value => (value.includes("@") && value.includes(".com")));
+    } = useInput((value: String) => (value.includes("@") && value.includes(".com")));
 
-    const formSubmitHandler = (event) => {
+    const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!fullNameIsValid)
             return;

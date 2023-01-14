@@ -20,11 +20,7 @@ app.use(cookieParser());
 
 
 // main
-app.use('/users',userRouter);
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('<h1>Hello World From the Typescript Server!</h1>')
-});
+app.use('/api/users',userRouter);
 
 const port = process.env.PORT || 5500;
 
