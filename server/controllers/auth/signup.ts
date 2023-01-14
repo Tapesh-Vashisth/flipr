@@ -17,11 +17,14 @@ const signup = async (req: Request, res: Response) => {
         console.log(err)
     }
 
+    // if an account with the provided email address already exists
     if (existingUser) {
         return res
             .status(409)
             .json({ message: "An account with this email already exists!" })
     }
+
+    // hashing the password using bcryptjs (synchronous) 
     const hashedPassword = bcrypt.hashSync(password, 5)
 
     let otpmodel: any
@@ -31,12 +34,14 @@ const signup = async (req: Request, res: Response) => {
         console.log(err)
     }
 
+    // if no otp was found in the otp database 
     if (!otpmodel) {
         return res
             .status(404)
             .json({ message: "Otp not found for this user!" })
     }
 
+    // if the wrong otp was entered while signing up
     const otpDB = otpmodel.otp
     if (otp !== otpDB) {
         return res
@@ -52,6 +57,7 @@ const signup = async (req: Request, res: Response) => {
         emailVerified: true
     })
 
+    // after all validation, creating the user in the database
     try {
         await user.save()
     } catch (err) {

@@ -6,10 +6,8 @@ import nodemailer from "nodemailer"
 const uuid: string = randomUUID()
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
-    <h1Reset your Blogify Password</h1>
-    <p>Your OTP is : ` + uuid + ` </p>
-    <p>Kindly click this link to reset your blogify password : </p>
-    <button> <a href="http://localhost:3000/setnewpassword"> Verify Email </a> </button>
+    <h1>Verify your email</h1>
+    <p>Kindly use this OTP to verify your email : ` + uuid + ` </p>
     <p>Kindly ignore this message if this was not you.</p>
 `
 
@@ -17,13 +15,14 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
 
     const { email } = req.body
 
+    // if the user has already requested for an otp earlier, delete it and create a new one
     let existingOtp: any
     try {
         existingOtp = await Otp.findOne({ email: email }).exec()
     } catch (err) {
         console.log(err)
     }
-    
+
     if (existingOtp) {
         let deleteExistingOtp: any
         try {
@@ -38,12 +37,14 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
         uuid: uuid
     })
 
+    // saving the otp in the database
     try {
         await otp.save()
     } catch (err) {
         console.log(err)
     }
 
+    // sending a mail with nodemailer
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -55,7 +56,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
     let mailOptions = {
         from: "blogify253@gmail.com",
         to: email,
-        subject: "Verify your Blogify Account Email",
+        subject: "",
         html: html
     }
 
