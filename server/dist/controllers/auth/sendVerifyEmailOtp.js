@@ -16,7 +16,7 @@ const crypto_1 = require("crypto");
 const Otp_1 = __importDefault(require("../../models/Otp"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const User_1 = __importDefault(require("../../models/User"));
-const uuid = (0, crypto_1.randomUUID)();
+const uuid = (0, crypto_1.randomUUID)().substring(0, 6);
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1>Verify your email</h1>
@@ -24,7 +24,6 @@ const html = `
     <p>Kindly ignore this message if this was not you.</p>
 `;
 const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("emailverifyOTP");
     const { email } = req.body;
     let user;
     try {
@@ -57,7 +56,7 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     const otp = new Otp_1.default({
         email: email,
-        otp: uuid.substring(0, 6)
+        otp: uuid
     });
     // saving the otp in the database
     try {
@@ -83,6 +82,9 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     transporter.sendMail(mailOptions, (err, success) => {
         if (err) {
             console.log("Mail not sent.", err);
+        }
+        else {
+            console.log("Success, email has been sent.", success);
         }
     });
     return res

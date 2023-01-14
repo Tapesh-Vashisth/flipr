@@ -70,7 +70,7 @@ const Login = () => {
                     <div className={passwordClasses}>
                         {passwordHasError && <p className="error-text" >*Required</p>}
                         <label htmlFor='name'>Password</label>
-                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='text' id='name' />
+                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
                     </div>
 
                     <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? false : true }>Login</button>

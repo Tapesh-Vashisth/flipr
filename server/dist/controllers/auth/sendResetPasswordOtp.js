@@ -16,7 +16,7 @@ const crypto_1 = require("crypto");
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
-const uuid = (0, crypto_1.randomUUID)();
+const uuid = (0, crypto_1.randomUUID)().substring(0, 6);
 const html = `
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}></div>
     <h1Reset your Password</h1>
@@ -38,7 +38,7 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
             .json({ message: "No user found with the given email address!" });
     }
     const otp = new Otp_1.default({
-        otp: uuid,
+        otp: uuid.substring(0, 6),
         email: email
     });
     try {

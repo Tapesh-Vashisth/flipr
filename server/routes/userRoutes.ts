@@ -4,9 +4,7 @@ import refreshToken from '../controllers/auth/refresh'
 import logout from '../controllers/auth/logout'
 import sendVerifyEmailOtp from '../controllers/auth/sendVerifyEmailOtp'
 import signup from "../controllers/auth/signup"
-import logout from "../controllers/auth/logout"
 import verifyJWT from "../middleware/verifyJWT"
-import refreshToken from '../controllers/auth/refresh'
 
 const router = express.Router()
 

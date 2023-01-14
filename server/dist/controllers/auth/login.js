@@ -62,11 +62,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         secure: true,
         maxAge: 24 * 60 * 60 * 1000
     });
-    console.log({
-        accessToken: accessToken,
-        email: email,
-        name: user.name
-    });
     return res
         .status(200)
         .json({
