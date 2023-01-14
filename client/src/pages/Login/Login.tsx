@@ -60,7 +60,7 @@ const Login = () => {
                     </div>
 
 
-                    <button type="submit" className={styles.submitButton} >Login</button>
+                    <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? true : false } >Login</button>
                     <hr className={styles.ruler} />
 
                     <div className={styles.underLinks} >
