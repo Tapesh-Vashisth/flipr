@@ -1,7 +1,8 @@
 import useInput from "../Hooks/use-input";
 import styles from "./Login.module.css"
+import { NavLink } from "react-router-dom";
 
-const Login = (props) => {
+const Login = () => {
 
     const {
         value: enteredpassword,
@@ -10,7 +11,7 @@ const Login = (props) => {
         valueChangeHandler: passwordChangeHandler,
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
-    } = useInput(value => value.trim() !== '');
+    } = useInput((value: String) => value.trim() !== '');
 
     const {
         value: enteredEmail,
@@ -19,9 +20,9 @@ const Login = (props) => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         reset: emailReset
-    } = useInput(value => (value.includes("@") && value.includes(".com")));
+    } = useInput((value: String) => (value.includes("@") && value.includes(".com")));
 
-    const formSubmitHandler = (event) => {
+    const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (!passwordIsValid)
@@ -31,10 +32,7 @@ const Login = (props) => {
 
         emailReset();
         passwordReset();
-
     }
-
-
 
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
@@ -68,7 +66,9 @@ const Login = (props) => {
                     <div className={styles.underLinks} >
                         <button>Forgot Password?</button>
                         <span>||</span>
-                        <button>Sign Up</button>
+                        <NavLink to = "/auth/signup">
+                            <button>Sign Up</button>    
+                        </NavLink>
                     </div>
 
 

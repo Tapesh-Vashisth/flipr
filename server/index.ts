@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
-import path from "path";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes";
 import cors from "cors";
@@ -21,17 +20,16 @@ app.use(cookieParser());
 
 
 // main
-app.use('/users',userRouter);
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('<h1>Hello World From the Typescript Server!</h1>')
-});
+app.use('/api/users',userRouter);
 
 const port = process.env.PORT || 5500;
 
 
-mongoose.connect('mongodb+srv://flipr:flipr123@cluster0.kfcheeo.mongodb.net/flipr?retryWrites=true&w=majority').then(() => {
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.kfcheeo.mongodb.net/flipr?retryWrites=true&w=majority`).then(() => {
+    console.log("database connected");
     app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`)
+        console.log(`server listening on port ${port}`)
     });
+}).catch((err) => {
+    console.log(err);
 })
