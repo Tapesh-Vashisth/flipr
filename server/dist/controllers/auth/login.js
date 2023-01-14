@@ -32,7 +32,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .status(404)
             .json({ message: "No such user exists!" });
     }
-    // using bcrypt's asynchronous comparison method to compare the entered password with the hashed password 
+    // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
         return res

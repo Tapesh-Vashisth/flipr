@@ -23,7 +23,7 @@ const login = async (req: Request, res: Response) => {
             .json({ message: "No such user exists!" })
     }
 
-    // using bcrypt's asynchronous comparison method to compare the entered password with the hashed password 
+    // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = await bcrypt.compare(password, user.password)
     if (!passwordCompare) {
         return res

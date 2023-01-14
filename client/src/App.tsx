@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import LazyLoading from './components/LazyLoading';
 const Login  = React.lazy(() => import('./pages/Login/Login'));
 const SignUp = React.lazy(() => import('./pages/Sign Up/SignUp'));
+// const Error404 = React.lazy(() => import('./'))
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <SignUp />
         </React.Suspense>} />
       </Route>
+      {/* <Route path='*' element={}></Route> */}
     </Routes>
   );
 }

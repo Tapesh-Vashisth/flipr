@@ -12,27 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, otp, password } = req.body;
-    let otpDB;
-    try {
-        otpDB = yield Otp_1.default.findOne({ email: email }).exec();
-    }
-    catch (err) {
-        console.log(err);
-    }
-    if (!otpDB) {
-        return res
-            .status(404)
-            .json({ message: "No otp found in database" });
-    }
-    if (otp !== otpDB.otp) {
-        return res
-            .status(400)
-            .json({ message: "Wrong otp entered!" });
-    }
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, email, password, newPassword } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
@@ -40,20 +23,26 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         console.log(err);
     }
-    if (!user) {
-        return res
-            .status(404)
-            .json({ message: "No user with this email found in the database!" });
+    if (name !== user.name) {
+        user.name = name;
     }
-    user.password = password;
+    const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
+    if (!passwordCompare && password.length > 0 && newPassword.length > 0) {
+        return res
+            .status(400)
+            .json({ message: "Incorrect password entered!" });
+    }
+    const hashedPassword = bcryptjs_1.default.hashSync(newPassword, 5);
+    if (newPassword) {
+        user.password = hashedPassword;
+    }
     try {
-        yield user.save();
+        user.save();
     }
     catch (err) {
         console.log(err);
     }
     return res
         .status(200)
-        .json({ message: "Password changed successfully!" });
+        .json({ message: "Account details changed successfully!" });
 });
-exports.default = resetPassword;

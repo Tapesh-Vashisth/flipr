@@ -12,27 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, otp, password } = req.body;
-    let otpDB;
-    try {
-        otpDB = yield Otp_1.default.findOne({ email: email }).exec();
-    }
-    catch (err) {
-        console.log(err);
-    }
-    if (!otpDB) {
-        return res
-            .status(404)
-            .json({ message: "No otp found in database" });
-    }
-    if (otp !== otpDB.otp) {
-        return res
-            .status(400)
-            .json({ message: "Wrong otp entered!" });
-    }
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
@@ -40,20 +23,21 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         console.log(err);
     }
-    if (!user) {
+    const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
+    if (!passwordCompare) {
         return res
-            .status(404)
-            .json({ message: "No user with this email found in the database!" });
+            .status(400)
+            .json({ message: "Password is wrong!" });
     }
-    user.password = password;
+    let deletion;
     try {
-        yield user.save();
+        deletion = yield User_1.default.findOneAndDelete({ email: email }).exec();
     }
     catch (err) {
         console.log(err);
     }
     return res
         .status(200)
-        .json({ message: "Password changed successfully!" });
+        .json({ message: "Account deleted successfully!" });
 });
-exports.default = resetPassword;
+exports.default = deleteAccount;
