@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import LazyLoading from './components/LazyLoading';
 import Protected from './components/Protected';
 import { fetch } from './features/user/userSlice';
+import LineGraph from './components/LineGraph';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import NavFootLayout from './components/NavFootLayout';
 import ForgotPassword from './pages/ForgotPassword';
@@ -46,6 +47,12 @@ function App() {
           <ForgotPassword />
         </React.Suspense>} />
       </Route>
+      
+{/* data={[1,5,4,2,3,1,2,3,4,3,2,1,4,5,6,7]} labels={['mon','tue','wed','thurs','fri','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf']} */}
+      <Route path = "/chart" element={<LineGraph />}>
+      </Route>
+
+
 
       <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
         <ErrorPage />
