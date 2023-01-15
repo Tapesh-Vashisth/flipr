@@ -1,8 +1,9 @@
 import useInput from "../helper/Hooks/use-input";
 import styles from "../styles/Login.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { login } from "../features/user/userSlice";
+import LazyLoading from "../components/LazyLoading";
 import { useState } from "react";
 // import styles from "./Login.module.css"
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -11,6 +12,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const Login = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const user = useAppSelector((state) => state.user)
     const [visible, setVisible] = useState<boolean>(false);
     const {
         value: enteredpassword,
@@ -56,7 +58,7 @@ const Login = () => {
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-
+        user.loading ? <LazyLoading /> :
         <div className={styles.signupContainer}>
             <div className={styles.test}>
                 <div className={styles.welcomeTag} >
@@ -79,9 +81,9 @@ const Login = () => {
                             <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
                             {
                                 visible ? 
-                                <VisibilityOffIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(false)}} /> 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
                                 :
-                                <VisibilityIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(true)}} />   
+                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
                             }
                         </div>
                     </div>
@@ -103,7 +105,7 @@ const Login = () => {
                 </form>
             </div>
         </div>
-
+        
     );
 };
 
