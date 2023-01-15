@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs"
 
 const editAccountDetails = async (req: Request, res: Response) => {
 
-    const { name, email, password, newPassword } = req.body
+    const { name, email, image, password, newPassword } = req.body
 
     let user: any
     try {
@@ -17,16 +17,18 @@ const editAccountDetails = async (req: Request, res: Response) => {
         user.name = name
     }
 
+    user.image = image
+
     const passwordCompare = await bcrypt.compare(password, user.password)
 
-    if (!passwordCompare && password.length > 0 && newPassword.length > 0) {
+    if (!passwordCompare) {
         return res
-            .status(400)
-            .json({ message: "Incorrect password entered!" })
+            .status(409)
+            .json({ message: "Wrong password entered : Cannot edit account details!" })
     }
 
-    const hashedPassword = bcrypt.hashSync(newPassword, 5)
-    if (newPassword) {
+    if (newPassword.length > 0) {
+        const hashedPassword = bcrypt.hashSync(newPassword, 5)
         user.password = hashedPassword
     }
 
