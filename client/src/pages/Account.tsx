@@ -52,7 +52,7 @@ const Account = () => {
         (user.loading && !show) ? <LazyLoading /> :
         <>
         <div>
-            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            {show ? <AlertDismissable message={message} /> : null}
             <div className={styles.accBackdrop} style={{padding: "120px 0px 90px 0px"}}>
                 <div className={styles.accContainer} >
                     <button className={styles.cancel} onClick = {cancelHandler} >< HighlightOffTwoToneIcon fontSize="large" sx={{ color: "#000;", borderRadius: "50%", backgroundColor: "white" }} /></button>

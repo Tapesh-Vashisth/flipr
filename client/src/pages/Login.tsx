@@ -84,7 +84,7 @@ const Login = () => {
     return (
         (user.loading && !show) ? <LazyLoading /> :
         <>
-            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            {show ? <AlertDismissable message={message} /> : null}
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >

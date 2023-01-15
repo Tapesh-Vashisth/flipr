@@ -42,17 +42,15 @@ const SignUp = () => {
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
     } = useInput((value: String) => value.trim() !== '');
-
-    
     
     const otpInputHandler = async () => {
-        setEnableOTPButton(false)
         try {
             const response = await axiosInstance.post("/users/sendotp", {email: enteredEmail});
             setgetOtpValid(true);
         } catch (err) {
             setError(true)
-            setMessage("There already exists an account with this email address!")
+            setMessage("An account with this email already exists!!")
+            setShow(true)
         }
     }
 
@@ -131,7 +129,7 @@ const SignUp = () => {
     return (
         (user.loading && !error) ? <LazyLoading /> :
         <>
-            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            {error ? <AlertDismissable message={message} showState={show} /> : null}
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >
