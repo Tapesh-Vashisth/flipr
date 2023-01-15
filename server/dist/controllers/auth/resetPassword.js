@@ -16,6 +16,7 @@ const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("resetPassword");
     const { email, otp, password } = req.body;
     let otpDB;
     try {

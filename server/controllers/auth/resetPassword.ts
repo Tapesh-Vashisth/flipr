@@ -4,7 +4,7 @@ import User from "../../models/User";
 import bcrypt from "bcryptjs"
 
 const resetPassword = async (req: Request, res: Response) => {
-
+    console.log("resetPassword");
     const { email, otp, password } = req.body
 
     let otpDB: any
