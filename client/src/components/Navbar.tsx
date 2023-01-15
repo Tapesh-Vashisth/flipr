@@ -1,15 +1,14 @@
 // import styles from "./Navbar.module.css"
 import styles from "../styles/Navbar.module.css"
 import React, { useState } from "react";
-import "../styles/Navbarstyle.css"
+import "../../styles/Navbarstyle.css"
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../features/user/userSlice";
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PersonIcon from '@mui/icons-material/Person';
 
 const Navbar = () => {
-    const user = useAppSelector((state) => state.user);
+    const user = useAppSelector((state: any) => state.user);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [navbar, setnavbar] = useState(false);
@@ -35,17 +34,24 @@ const Navbar = () => {
     
     return (
         <div className={classesNav} id="Navbar" >
-            <div className={styles.logoCon} >
-                <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
+            <div>
                 <a href="/" className={styles.logo} >
                     <h4 >
-                        StockHub
+                        Stockhub
                     </h4>
                 </a>
             </div>
             <div className={styles.optionsContainer}>
                 <button>Stocks</button>
                 <button>Companies</button>
+                {/* {
+                    user.loggedIn ? 
+                        <button onClick={handleLogout}>Logout</button>
+                    :
+                        <NavLink to="/auth/login">
+                            <button>Login</button>
+                        </NavLink>
+                } */}
                 <img src={(user.image != "" && user.image != null) ? user.image : "https://toppng.com/uploads/preview/file-svg-profile-icon-vector-11562942678pprjdh47a8.png"} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%" }} />
             </div>
         </div>
