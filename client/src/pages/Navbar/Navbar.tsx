@@ -32,7 +32,7 @@ const Navbar = () => {
     
     return (
         <div className={classesNav} id="Navbar" >
-            <div style={{marginLeft:'1rem'}} >
+            <div>
                 <a href="/" className={styles.logo} >
                     <h4 >
                         Stockhub
