@@ -45,7 +45,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
     // creating refresh token
     const refreshToken = jsonwebtoken_1.default.sign({ uuid: uuid }, String(process.env.REFRESH_TOKEN_SECRET), {
-        expiresIn: "50s"
+        expiresIn: "60m"
     });
     // saving the refresh token in the user's database
     user.refreshToken = refreshToken;
