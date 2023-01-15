@@ -149,18 +149,22 @@
     
   }
 
-  .inputClass {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 1rem;
-  }
+  
 
   .inputLabel {
     font-weight: bold;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
+  }
+
+  .inputClass{
+    text-align: center;
+    margin: 1rem;
+
+  }
+
+  .inputClass input{
+    text-align: center;
   }
 
   @media (max-width:800px) and (min-width:650px){
