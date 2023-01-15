@@ -51,7 +51,7 @@ const Navbar = () => {
                             <button>Login</button>
                         </NavLink>
                 } */}
-                <img src={user.image != null ? user.image : undefined} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%" }} />
+                <img src={(user.image != "" && user.image != null) ? user.image : "https://toppng.com/uploads/preview/file-svg-profile-icon-vector-11562942678pprjdh47a8.png"} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%" }} />
             </div>
         </div>
     )
