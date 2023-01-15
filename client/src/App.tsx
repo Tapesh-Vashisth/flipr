@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
-import axiosInstance from "./api/axios";
 import { Routes, Route } from 'react-router-dom';
 import LazyLoading from './components/LazyLoading';
-import Home from './pages/Home';
 import Protected from './components/Protected';
 import { fetch } from './features/user/userSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
+import NavFootLayout from './components/NavFootLayout';
 const Login  = React.lazy(() => import('./pages/Login/Login'));
 const SignUp = React.lazy(() => import('./pages/Sign Up/SignUp'));
-// const Error404 = React.lazy(() => import('./'));
+const ErrorPage = React.lazy(() => import('./pages/ErrorPage/Error404'));
+const FrontPage = React.lazy(() => import('./pages/FrontPage/FrontPage'));
 
 function App() {
   const dispatch = useAppDispatch();
@@ -23,9 +23,10 @@ function App() {
   return (
     <Routes>
       <Route path = "/" element = {<Protected />} >
-        <Route path = '' element = {<React.Suspense fallback = {<LazyLoading />}>
-          <Home />
-        </React.Suspense>}>
+        <Route path = '' element = {<NavFootLayout />}>
+          <Route path = '' element = {<React.Suspense fallback = {<LazyLoading />}>
+            <FrontPage />
+          </React.Suspense>} />
         </Route>
       </Route>
       
@@ -38,7 +39,9 @@ function App() {
         </React.Suspense>} />
       </Route>
 
-      {/* <Route path='*' element={}></Route> */}
+      <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
+        <ErrorPage />
+      </React.Suspense>} />
     </Routes>
   );
 }
