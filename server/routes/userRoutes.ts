@@ -10,6 +10,7 @@ import sendResetPasswordOtp from '../controllers/auth/sendResetPasswordOtp'
 import resetPassword from '../controllers/auth/resetPassword'
 import editAccountDetails from '../controllers/auth/editAccountDetails'
 import deleteAccount from '../controllers/auth/deleteAccount'
+import updateImage from '../controllers/auth/updateImage'
 
 const router = express.Router()
 
@@ -23,6 +24,7 @@ router.get('/refreshToken', refreshToken);
 
 router.use(verifyJWT)
 
+router.post('/updateimage', updateImage)
 router.get('/check', check);
 router.post("/updateDetails", editAccountDetails);
 router.put('/editaccount', editAccountDetails)

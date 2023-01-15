@@ -15,6 +15,7 @@ const sendResetPasswordOtp_1 = __importDefault(require("../controllers/auth/send
 const resetPassword_1 = __importDefault(require("../controllers/auth/resetPassword"));
 const editAccountDetails_1 = __importDefault(require("../controllers/auth/editAccountDetails"));
 const deleteAccount_1 = __importDefault(require("../controllers/auth/deleteAccount"));
+const updateImage_1 = __importDefault(require("../controllers/auth/updateImage"));
 const router = express_1.default.Router();
 router.post('/signup', signup_1.default);
 router.post('/login', login_1.default);
@@ -24,6 +25,7 @@ router.post('/sendotp', sendVerifyEmailOtp_1.default);
 router.post('/resetpassword', resetPassword_1.default);
 router.get('/refreshToken', refresh_1.default);
 router.use(verifyJWT_1.default);
+router.post('/updateimage', updateImage_1.default);
 router.get('/check', check_1.default);
 router.post("/updateDetails", editAccountDetails_1.default);
 router.put('/editaccount', editAccountDetails_1.default);
