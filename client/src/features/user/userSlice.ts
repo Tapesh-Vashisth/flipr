@@ -111,6 +111,7 @@ const userSlice = createSlice({
                 state.loggedIn = true;
                 state.name = action.payload.name;
                 state.email = action.payload.email;
+                state.image = action.payload.image;
                 state.error = null;
             })
             .addCase(fetch.rejected, (state, action) => {
