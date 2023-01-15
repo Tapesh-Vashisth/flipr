@@ -1,0 +1,144 @@
+.accBackdrop {
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #5cde50;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='1' y2='0' gradientTransform='rotate(144,0.5,0.5)'%3E%3Cstop offset='0' stop-color='%230FF'/%3E%3Cstop offset='1' stop-color='%23CF6'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' x2='0' y1='0' y2='1' gradientTransform='rotate(227,0.5,0.5)'%3E%3Cstop offset='0' stop-color='%23F00'/%3E%3Cstop offset='1' stop-color='%23FC0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%23FFF' fill-opacity='0' stroke-miterlimit='10'%3E%3Cg stroke='url(%23a)' stroke-width='13.86'%3E%3Cpath transform='translate(-31.5 -1.2000000000000002) rotate(-3 1409 581) scale(0.96646)' d='M1409 581 1450.35 511 1490 581z'/%3E%3Ccircle stroke-width='4.620000000000001' transform='translate(-49.5 27) rotate(0.6000000000000001 800 450) scale(0.998958)' cx='500' cy='100' r='40'/%3E%3Cpath transform='translate(0.3000000000000007 -13.5) rotate(-1.5 401 736) scale(0.998958)' d='M400.86 735.5h-83.73c0-23.12 18.74-41.87 41.87-41.87S400.86 712.38 400.86 735.5z'/%3E%3C/g%3E%3Cg stroke='url(%23b)' stroke-width='4.2'%3E%3Cpath transform='translate(162 4.2) rotate(-1.05 150 345) scale(1.0028199999999998)' d='M149.8 345.2 118.4 389.8 149.8 434.4 181.2 389.8z'/%3E%3Crect stroke-width='9.240000000000002' transform='translate(-25.5 -75) rotate(-10.799999999999997 1089 759)' x='1039' y='709' width='100' height='100'/%3E%3Cpath transform='translate(-78 18) rotate(-1.7999999999999998 1400 132) scale(0.925)' d='M1426.8 132.4 1405.7 168.8 1363.7 168.8 1342.7 132.4 1363.7 96 1405.7 96z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.accBackdrop input {
+    border: 1px solid black;
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.accContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    background-color: #F9F9F9;
+    align-items: center;
+    box-shadow: 0px 5px 4px -1px rgb(0 0 0 / 20%), 0px 4px 4px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    margin: 1rem;
+}
+
+.accountdetails {
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem 0;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+}
+
+.accountdetails input {
+    padding: 0.5rem;
+    margin: 1rem 1rem 1rem 0;
+    width: 100%;
+    display: block;
+}
+
+.accordianBox {
+    width: 100%;
+    max-width: 400px;
+
+}
+
+.buttonHolder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem 0;
+}
+
+.buttonHolder button {
+    padding: 0.5rem;
+    margin-top: 1rem;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    width: 80%;
+    border-radius: 25px;
+    color: #F9FCFB;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+
+.cancel {
+    align-self: flex-end;
+    background-color: transparent;
+    border-radius: 50%;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    top: -8px;
+    left: 8px;
+}
+
+.delete:hover {
+    background-color: #ff4437;
+}
+
+.update:hover {
+    background-color: #28cb7c;
+
+}
+
+.update {
+    background-color: #21BF73;
+    border: 1px solid #1aa75c;
+}
+
+.updatedisabled {
+    padding: 0.5rem;
+    margin-top: 1rem;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    width: 80%;
+    border-radius: 25px;
+    color: #F9FCFB;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background-color: #21BF73;
+    border: 1px solid #1aa75c;
+    opacity: 0.5;
+}
+
+.delete {
+    background-color: #FD5E53;
+    border: 1px solid #d3362b;
+}
+
+.deletedisabled {
+    background-color: #FD5E53;
+    border: 1px solid #d3362b;
+    opacity: 0.5;
+}
+
+.cancel:hover {
+    animation: zoom2 150ms linear forwards;
+}
+
+@keyframes zoom2 {
+    0% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}

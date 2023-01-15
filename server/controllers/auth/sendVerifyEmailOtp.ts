@@ -40,7 +40,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
     if (existingOtp) {
         let deleteExistingOtp: any
         try {
-            deleteExistingOtp = await Otp.findOneAndDelete({ email: email }).exec()
+            deleteExistingOtp = await Otp.deleteMany({ email: email }).exec()
         } catch (err) {
             console.log(err)
         }
@@ -62,13 +62,13 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "blogify253@gmail.com",
-            pass: "oshjipijfcacciyx"
+            user: "stockhub.pvt.ltd@gmail.com",
+            pass: String(process.env.NODEMAILER)
         }
     })
 
     let mailOptions = {
-        from: "blogify253@gmail.com",
+        from: "stockhub.pvt.ltd@gmail.com",
         to: email,
         subject: "Verify your account",
         html: html

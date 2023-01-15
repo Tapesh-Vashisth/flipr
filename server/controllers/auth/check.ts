@@ -7,7 +7,7 @@ const check = async (req: any, res: Response) => {
     
     if (!user) return res.status(404).send();
 
-    return res.status(200).json({name: user.name, email: user.email});
+    return res.status(200).json({name: user.name, email: user.email, image: user.image});
 }
 
 export default check;

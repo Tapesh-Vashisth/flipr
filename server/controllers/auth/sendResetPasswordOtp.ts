@@ -13,7 +13,7 @@ const html = `
 `
 
 const sendResetPasswordOtp = async (req: Request, res: Response) => {
-    
+    console.log("passwordOtp");
     const { email } = req.body
     let user: any
     try {
@@ -26,6 +26,22 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
         return res
             .status(404)
             .json({ message: "No user found with the given email address!" })
+    }
+
+    let existingOtp: any
+    try {
+        existingOtp = await Otp.findOne({ email: email }).exec()
+    } catch (err) {
+        console.log(err)
+    }
+
+    if (existingOtp) {
+        let deleteExistingOtp: any
+        try {
+            deleteExistingOtp = await Otp.deleteMany({ email: email }).exec()
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     const otp = new Otp({
@@ -43,13 +59,13 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "blogify253@gmail.com",
-            pass: "oshjipijfcacciyx"
+            user: "stockhub.pvt.ltd@gmail.com",
+            pass: String(process.env.NODEMAILER)
         }
     })
 
     let mailOptions = {
-        from: "blogify253@gmail.com",
+        from: "stockhub.pvt.ltd@gmail.com",
         to: email,
         subject: "Reset your password",
         html: html

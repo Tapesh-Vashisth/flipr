@@ -10,19 +10,19 @@ const login = async (req: Request, res: Response) => {
 
     let user: any
     try {
-        user = await User.findOne({ email: email }).select('uuid name email password').exec()
+        user = await User.findOne({ email: email }).select('uuid name email password image').exec()
     } catch (err) {
         console.log(err)
     }
-    const uuid = user.uuid
-
+    
     // if no user is found with the entered email address
     if (!user) {
         return res
-            .status(404)
-            .json({ message: "No such user exists!" })
+        .status(404)
+        .json({ message: "No such user exists!" })
     }
-
+    
+    const uuid = user.uuid
     // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = await bcrypt.compare(password, user.password)
     if (!passwordCompare) {
@@ -38,7 +38,7 @@ const login = async (req: Request, res: Response) => {
 
     // creating refresh token
     const refreshToken = jwt.sign({ uuid: uuid }, String(process.env.REFRESH_TOKEN_SECRET), {
-        expiresIn: "50s"
+        expiresIn: "60m"
     })
 
     // saving the refresh token in the user's database
@@ -62,9 +62,9 @@ const login = async (req: Request, res: Response) => {
         .json({
             accessToken: accessToken,
             email: email,
-            name: user.name
+            name: user.name,
+            image: user.image
         })
-
 }
 
 export default login

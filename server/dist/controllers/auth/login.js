@@ -20,18 +20,18 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     let user;
     try {
-        user = yield User_1.default.findOne({ email: email }).select('uuid name email password').exec();
+        user = yield User_1.default.findOne({ email: email }).select('uuid name email password image').exec();
     }
     catch (err) {
         console.log(err);
     }
-    const uuid = user.uuid;
     // if no user is found with the entered email address
     if (!user) {
         return res
             .status(404)
             .json({ message: "No such user exists!" });
     }
+    const uuid = user.uuid;
     // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
@@ -45,7 +45,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
     // creating refresh token
     const refreshToken = jsonwebtoken_1.default.sign({ uuid: uuid }, String(process.env.REFRESH_TOKEN_SECRET), {
-        expiresIn: "50s"
+        expiresIn: "60m"
     });
     // saving the refresh token in the user's database
     user.refreshToken = refreshToken;
@@ -67,7 +67,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         .json({
         accessToken: accessToken,
         email: email,
-        name: user.name
+        name: user.name,
+        image: user.image
     });
 });
 exports.default = login;

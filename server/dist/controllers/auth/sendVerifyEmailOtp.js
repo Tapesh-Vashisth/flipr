@@ -48,7 +48,7 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     if (existingOtp) {
         let deleteExistingOtp;
         try {
-            deleteExistingOtp = yield Otp_1.default.findOneAndDelete({ email: email }).exec();
+            deleteExistingOtp = yield Otp_1.default.deleteMany({ email: email }).exec();
         }
         catch (err) {
             console.log(err);
@@ -69,12 +69,12 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     let transporter = nodemailer_1.default.createTransport({
         service: "gmail",
         auth: {
-            user: "blogify253@gmail.com",
-            pass: "oshjipijfcacciyx"
+            user: "stockhub.pvt.ltd@gmail.com",
+            pass: String(process.env.NODEMAILER)
         }
     });
     let mailOptions = {
-        from: "blogify253@gmail.com",
+        from: "stockhub.pvt.ltd@gmail.com",
         to: email,
         subject: "Verify your account",
         html: html

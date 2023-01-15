@@ -1,0 +1,72 @@
+.optionsContainer button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+    color: rgb(220, 220, 220);
+    font-weight: 600;
+    letter-spacing: 0.8px;
+}
+
+
+.optionsContainer button:hover {
+    color:  rgb(220, 220, 220);
+    animation: zoom 100ms linear forwards;
+}
+
+.optionsContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.logo {
+    text-decoration: none;
+    color: inherit;
+    color:  rgb(255, 255, 255);
+}
+.logo h4{
+    margin-bottom: 0;
+    font-size: 1.7rem;
+    margin-top: 4px;
+}
+
+.logoCon{
+    display: flex;
+    align-items: center;
+}
+
+@keyframes zoom {
+    from{transform: scale(1);}
+    to{transform: scale(1.05);}
+}
+
+@media (max-width:400px) {
+
+
+    .optionsContainer button {
+        font-size: 1rem;
+    }
+
+}
+
+@media (max-width:520px) {
+    .logo{
+        padding: 8px 0;
+    }
+    .optionsContainer{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+        padding-bottom: 0.75rem;
+    }
+
+    .optionsContainer button{
+        padding-bottom: 10px ;
+        margin: 0;
+        padding-top: 10px;
+    }
+}

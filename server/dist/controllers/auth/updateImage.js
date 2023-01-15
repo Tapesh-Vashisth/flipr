@@ -12,29 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("resetPassword");
-    const { email, otp, password } = req.body;
-    let otpDB;
-    try {
-        otpDB = yield Otp_1.default.findOne({ email: email }).exec();
-    }
-    catch (err) {
-        console.log(err);
-    }
-    if (!otpDB) {
-        return res
-            .status(404)
-            .json({ message: "No otp found in database" });
-    }
-    if (otp !== otpDB.otp) {
-        return res
-            .status(400)
-            .json({ message: "Wrong otp entered!" });
-    }
+const updateImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { image, email } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
@@ -42,21 +22,15 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         console.log(err);
     }
-    if (!user) {
-        return res
-            .status(404)
-            .json({ message: "No user with this email found in the database!" });
-    }
-    const hashedPassword = bcryptjs_1.default.hashSync(password, 5);
-    user.password = hashedPassword;
+    user.image = image;
     try {
-        yield user.save();
+        user.save();
     }
     catch (err) {
         console.log(err);
     }
     return res
         .status(200)
-        .json({ message: "Password changed successfully!" });
+        .json({ message: "Image updated successfully!" });
 });
-exports.default = resetPassword;
+exports.default = updateImage;
