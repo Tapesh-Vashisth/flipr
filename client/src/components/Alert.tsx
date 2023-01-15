@@ -1,25 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
 type propType = {
     message: string
+    showState: boolean
 }
 
 function AlertDismissable(props: propType) {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(true)
 
-  if (show) {
-    return (
-      <Alert variant="danger" onClose={() => setShow(false)} dismissible>
-        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-        <p>
-          {props.message}
-        </p>
-      </Alert>
-    );
-  }
-  return <Button onClick={() => setShow(true)}>Show Alert</Button>;
+  const [state, setState] = useState(props.showState)
+
+  useEffect(() => {
+    console.log(state)
+    
+  }, [state])
+
+        if (show) {
+            return (
+                <Alert variant="danger" onClose={() => setShow(false)} style={{ height: "50px", marginBottom: "0px" }} dismissible>
+                <p>
+                    {props.message}
+                </p>
+                </Alert>
+            )
+        }
+        return <></>
 }
 
 export default AlertDismissable

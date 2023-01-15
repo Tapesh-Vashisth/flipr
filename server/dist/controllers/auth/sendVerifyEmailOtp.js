@@ -48,7 +48,7 @@ const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, funct
     if (existingOtp) {
         let deleteExistingOtp;
         try {
-            deleteExistingOtp = yield Otp_1.default.findOneAndDelete({ email: email }).exec();
+            deleteExistingOtp = yield Otp_1.default.deleteMany({ email: email }).exec();
         }
         catch (err) {
             console.log(err);
