@@ -1,9 +1,9 @@
-import useInput from "../Hooks/use-input";
+import useInput from "../helper/Hooks/use-input";
 import { useState } from "react";
-import styles from "./SignUp.module.css";
-import axiosInstance from "../../api/axios";
-import { useAppDispatch } from "../../store/hooks";
-import { signup } from "../../features/user/userSlice";
+import styles from "../styles/SignUp.module.css"
+import axiosInstance from "../api/axios"
+import { useAppDispatch } from "../store/hooks";
+import { signup } from "../features/user/userSlice";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";

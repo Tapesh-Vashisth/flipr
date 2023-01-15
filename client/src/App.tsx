@@ -5,11 +5,11 @@ import Protected from './components/Protected';
 import { fetch } from './features/user/userSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import NavFootLayout from './components/NavFootLayout';
-import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
-const Login  = React.lazy(() => import('./pages/Login/Login'));
-const SignUp = React.lazy(() => import('./pages/Sign Up/SignUp'));
-const ErrorPage = React.lazy(() => import('./pages/ErrorPage/Error404'));
-const FrontPage = React.lazy(() => import('./pages/FrontPage/FrontPage'));
+import ForgotPassword from './pages/ForgotPassword';
+const Login  = React.lazy(() => import('./pages/Login'));
+const SignUp = React.lazy(() => import('./pages/SignUp'));
+const ErrorPage = React.lazy(() => import('./pages/Error404'));
+const FrontPage = React.lazy(() => import('./pages/FrontPage'));
 
 function App() {
   const dispatch = useAppDispatch();
