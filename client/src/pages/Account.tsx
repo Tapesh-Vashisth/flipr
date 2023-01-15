@@ -4,6 +4,7 @@ import styles from "../styles/Account.module.css"
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileImageUpdate from "../components/ProfileImageUpdate";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { deleteUser, updateUser } from "../features/user/userSlice";
 
@@ -25,7 +26,7 @@ const Account = () => {
     const updateHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         console.log(name, currentPassword, newPassword, confirmPassword);
         setUpdate(true);
-        
+
     }
 
     const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,7 +47,9 @@ const Account = () => {
             <div className={styles.accBackdrop} style={{padding: "120px 0px 90px 0px"}}>
                 <div className={styles.accContainer} >
                     <button className={styles.cancel} onClick = {cancelHandler} >< HighlightOffTwoToneIcon fontSize="large" sx={{ color: "#000;", borderRadius: "50%", backgroundColor: "white" }} /></button>
-
+                    <div className={styles.accountdetails}>
+                        <ProfileImageUpdate />
+                    </div>
                     <div className={styles.accountdetails} >
                         <h3>Account Details</h3>
                         <input type="text" value={name} onChange = {(e) => {setName(e.target.value)}} />
