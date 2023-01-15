@@ -13,7 +13,7 @@ const html = `
 `
 
 const sendResetPasswordOtp = async (req: Request, res: Response) => {
-    
+    console.log("passwordOtp");
     const { email } = req.body
     let user: any
     try {
@@ -26,6 +26,22 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
         return res
             .status(404)
             .json({ message: "No user found with the given email address!" })
+    }
+
+    let existingOtp: any
+    try {
+        existingOtp = await Otp.findOne({ email: email }).exec()
+    } catch (err) {
+        console.log(err)
+    }
+
+    if (existingOtp) {
+        let deleteExistingOtp: any
+        try {
+            deleteExistingOtp = await Otp.findOneAndDelete({ email: email }).exec()
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     const otp = new Otp({

@@ -24,6 +24,7 @@ const html = `
     <p>Kindly ignore this message if this was not you.</p>
 `;
 const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("passwordOtp");
     const { email } = req.body;
     let user;
     try {
@@ -36,6 +37,22 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
         return res
             .status(404)
             .json({ message: "No user found with the given email address!" });
+    }
+    let existingOtp;
+    try {
+        existingOtp = yield Otp_1.default.findOne({ email: email }).exec();
+    }
+    catch (err) {
+        console.log(err);
+    }
+    if (existingOtp) {
+        let deleteExistingOtp;
+        try {
+            deleteExistingOtp = yield Otp_1.default.findOneAndDelete({ email: email }).exec();
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
     const otp = new Otp_1.default({
         otp: uuid.substring(0, 6),
