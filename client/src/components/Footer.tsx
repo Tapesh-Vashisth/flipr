@@ -14,8 +14,8 @@ const Footer = () => {
             
                 <div className={styles.footer}>
                     <div className={styles.footer_title}>
-                        <h2>Flipper</h2>
-                        <p>Flippr provides data, information & content for stocks.</p>
+                        <h2>Stockhub</h2>
+                        <p>Stockhub provides data, information & content for stocks.</p>
                     </div>
                     <div className={styles.footer_mine} >
                         <a href="mailto:shashankraj3636@gmail.com" rel="noopener noreferrer" target="_blank" ><MailOutlineIcon fontSize="large" /></a>

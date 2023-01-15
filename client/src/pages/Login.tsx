@@ -92,7 +92,7 @@ const Login = () => {
 
                     <hr className={styles.ruler} />
 
-                    <div className={styles.underLinks} >
+                    <div className={styles.underLinks} style={{fontSize:"14px"}} >
                         <NavLink to="/auth/forgotpassword">
                             <button>Forgot Password?</button>
                         </NavLink>

@@ -15,7 +15,6 @@ const SignUp = () => {
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
     const [visible, setVisible] = useState<boolean>(false);
-    const [image, setImage] = useState<any>("")
     
     const {
         value: enteredfullName,
@@ -57,11 +56,7 @@ const SignUp = () => {
         })
     }
 
-    const handleFileUpload = async (e: any) => {
-        const file = e.target.files[0]
-        const base64 = await convertToBase64(file)
-        setImage(base64)
-    }
+    
 
     const {
         value: enteredEmail,
@@ -82,7 +77,7 @@ const SignUp = () => {
             return;
         console.log(enteredEmail, enteredfullName, enteredpassword, otp);
         // server request 
-        dispatch(signup({email: enteredEmail, name: enteredfullName, password: enteredpassword, otp: otp, image: image}))
+        dispatch(signup({email: enteredEmail, name: enteredfullName, password: enteredpassword, otp: otp}))
         .unwrap()
         .then((response) => {
             console.log(response);
@@ -139,18 +134,14 @@ const SignUp = () => {
                             }
                         </div>
                     </div>
-                    <div className={styles.formControl}>
-                        <label htmlFor="input" className={styles.inputLabel}>Profile Photo</label>
-                        <input type="file" name="image" onChange={(e) => handleFileUpload(e)} />
-                    </div>
                     <div className='form-actions'>
-                        <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0 && image.length > 0 ? false: true} >Submit</button>
+                        <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0  ? false: true} >Submit</button>
                     </div>
                     <hr className={styles.ruler} />
 
                     <div className={styles.underLinks} >
                         <NavLink to = "/auth/login">
-                            <button>Already have an account? Login</button>    
+                            <button style={{fontSize:"14px"}}>Already have an account? Login</button>    
                         </NavLink>
                     </div>
                 </form>

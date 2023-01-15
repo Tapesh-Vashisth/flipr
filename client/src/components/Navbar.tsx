@@ -1,4 +1,3 @@
-// import styles from "./Navbar.module.css"
 import styles from "../styles/Navbar.module.css"
 import React, { useState } from "react";
 import "../styles/Navbarstyle.css"
@@ -37,7 +36,7 @@ const Navbar = () => {
         <div className={classesNav} id="Navbar" >
             <div>
                 <a href="/" className={styles.logo} >
-                    <h4 >
+                    <h4>
                         Stockhub
                     </h4>
                 </a>
@@ -45,14 +44,6 @@ const Navbar = () => {
             <div className={styles.optionsContainer}>
                 <button>Stocks</button>
                 <button>Companies</button>
-                {/* {
-                    user.loggedIn ? 
-                        <button onClick={handleLogout}>Logout</button>
-                    :
-                        <NavLink to="/auth/login">
-                            <button>Login</button>
-                        </NavLink>
-                } */}
                 <ProfileDropdown />
             </div>
         </div>
