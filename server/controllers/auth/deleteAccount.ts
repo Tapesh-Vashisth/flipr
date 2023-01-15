@@ -4,8 +4,7 @@ import bcrypt from "bcryptjs"
 
 const deleteAccount = async (req: Request, res: Response) => {
 
-    // const { email, password } = req.body
-    const { email } = req.body
+    const { email, password } = req.body
 
     let user: any
     try {
@@ -14,13 +13,13 @@ const deleteAccount = async (req: Request, res: Response) => {
         console.log(err)
     }
 
-    // const passwordCompare = await bcrypt.compare(password, user.password)
+    const passwordCompare = await bcrypt.compare(password, user.password)
 
-    // if (!passwordCompare) {
-    //     return res
-    //         .status(400)
-    //         .json({ message: "Password is wrong!" })
-    // }
+    if (!passwordCompare) {
+        return res
+            .status(400)
+            .json({ message: "Password is wrong!" })
+    }
 
     let deletion: any
     try {

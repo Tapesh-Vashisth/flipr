@@ -4,22 +4,25 @@ import styles from "../styles/ForgotPassword.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import axiosInstance from "../api/axios";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { appActions } from '../features/appSlice';
 import { login } from "../features/user/userSlice";
 import LazyLoading from '../components/LazyLoading';
 import AlertDismissable from '../components/Alert';
 
 const ForgotPassword = () => {
     const dispatch = useAppDispatch();
+    const app = useAppSelector((state) => state.app);
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.user)
     const otpRef = useRef<HTMLButtonElement>(null);
+    const [visible, setVisible] = useState<boolean>(false);
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
-
+    const {setShow} = appActions;
     const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
-
     const [error, setError] = useState<boolean>(false)
-    const [show, setShow] = useState<boolean>(false)
     const [message, setMessage] = useState<string>("")
 
     const {
@@ -72,17 +75,17 @@ const ForgotPassword = () => {
             if (status == 500) {
                 setError(true)
                 setMessage("Server is down temporarily, please wait for some time")
-                setShow(true)
+                dispatch(setShow(true))
             }
             if (status == 400) {
                 setError(true)
                 setMessage("Incorrect OTP! Please try again!")
-                setShow(true)
+                dispatch(setShow(true))
             }
             else {
                 setError(true)
                 setMessage("Network Error")
-                setShow(true)
+                dispatch(setShow(true))
             }
         }
     }
@@ -107,7 +110,8 @@ const ForgotPassword = () => {
             
             if (status == 404) {
                 setError(true)
-                setMessage("No such user exists!")
+                setMessage("No such user exists!");
+                dispatch(setShow(true));
             }
         }
     }
@@ -125,7 +129,7 @@ const ForgotPassword = () => {
     return (
         (user.loading && !error) ? <LazyLoading /> :
         <>
-            {show ? <AlertDismissable message={message} /> : null}
+            {app.show ? <AlertDismissable message={message} /> : null}
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >
@@ -136,44 +140,60 @@ const ForgotPassword = () => {
                     <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
                 </div>
                 <div className={styles.test2} >
-                    <form className={styles.formCenter} onSubmit={formSubmitHandler} >
-                        <div className={emailClasses}>
-                            {emailHasError && <p className={styles['error-text']}>Enter a valid e-mail.</p>}
-                            <label htmlFor='name'>E-Mail</label>
-                            <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='text' id='email' />
+                <form className={styles.formCenter} onSubmit={formSubmitHandler} >
+                    <div className={emailClasses}>
+                        {emailHasError && <p className={styles['error-text']}>Enter a valid e-mail.</p>}
+                        <label htmlFor='name'>E-Mail</label>
+                        <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='text' id='email' />
+                    </div>
+
+                    <div className={styles.otpForm} >
+                        {emailIsValid && <button type="button" ref = {otpRef} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
+                        {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}}></input>}
+                    </div>
+
+                    <div className={passwordClasses}>
+                        {passwordHasError1 && <p className={styles['error-text']} >*Required</p>}
+                        <label htmlFor='name'>New Password</label>
+                        <div>
+                            <input value={enteredpassword1} onChange={passwordChangeHandler1} onBlur={passwordBlurHandler1} type={visible ? "text" : 'password'} id='pass1' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+                            }
                         </div>
+                    </div>
 
-                        <div className={styles.otpForm} >
-                            {emailIsValid && <button type="button" disabled={!enableOTPButton} ref = {otpRef} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
-                            {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}}></input>}
+                    <div className={passwordClasses}>
+                        {((enteredpassword2.length > 0 && enteredpassword1.length > 0) && (enteredpassword1 !== enteredpassword2)) && <p className={styles.errorText} style={{color:"#e71e1e"}} >Passwords must match</p>}
+                        <label htmlFor='name'>Enter Password Again</label>
+                        <div>
+                            <input value={enteredpassword2} onChange={passwordChangeHandler2} onBlur={passwordBlurHandler2} type={visible ? "text" : 'password'} id='pass2' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+                            }
                         </div>
+                    </div>
 
-                        <div className={passwordClasses}>
-                            {passwordHasError1 && <p className={styles['error-text']} >*Required</p>}
-                            <label htmlFor='name'>New Password</label>
-                            <input value={enteredpassword1} onChange={passwordChangeHandler1} onBlur={passwordBlurHandler1} type='password' id='pass1' />
-                        </div>
+                    <button type="submit" className={styles.submitButton} disabled={ (emailIsValid && passwordIsValid1 && passwordIsValid2 && (enteredpassword1 === enteredpassword2)) ? false : true }>Change Password</button>
+                    
 
-                        <div className={passwordClasses}>
-                            {((enteredpassword2.length > 0 && enteredpassword1.length > 0) && (enteredpassword1 !== enteredpassword2)) && <p className={styles.errorText} style={{color:"#e71e1e"}} >Passwords must match</p>}
-                            <label htmlFor='name'>Confirm New Password</label>
-                            <input value={enteredpassword2} onChange={passwordChangeHandler2} onBlur={passwordBlurHandler2} type='password' id='pass2' />
-                        </div>
+                    <hr className={styles.ruler} />
 
-                        <button type="submit" className={styles.submitButton} disabled={ (emailIsValid && passwordIsValid1 && passwordIsValid2 && (enteredpassword1 === enteredpassword2)) ? false : true }>Change Password</button>
-                        
+                    <div className={styles.underLinks} >
+                        <NavLink to = "/auth/signup">
+                            <button>Sign Up</button>    
+                        </NavLink>
+                    </div>
 
-                        <hr className={styles.ruler} />
-
-                        <div className={styles.underLinks} >
-                            <NavLink to = "/auth/signup">
-                                <button>Sign Up</button>    
-                            </NavLink>
-                        </div>
-
-                    </form>
-                </div>
+                </form>
             </div>
+        </div>
         </>
     );
 };

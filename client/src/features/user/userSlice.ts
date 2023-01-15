@@ -94,12 +94,13 @@ export const updateUser = createAsyncThunk("/user/update", async (userData: user
 
 interface deleteType {
     email: string
+    password: string
 }
 
 // deleteUser 
 export const deleteUser = createAsyncThunk("/user/delete", async (data: deleteType, {rejectWithValue}) => {
     try {
-        const response = await axiosInstance.post("/user/deleteUser", data);
+        const response = await axiosInstance.post("/users/deleteUser", data);
         return response.data;
     } catch (err) {
         return rejectWithValue(err);
@@ -114,7 +115,10 @@ const userSlice = createSlice({
         reset: () => initialState,
         setAccessToken: (state, action: PayloadAction <string | null>) => {
             state.accessToken = action.payload;
-        }
+        },
+        setImage: (state, action: PayloadAction<string | null>) => {
+            state.image = action.payload;
+        } 
     },
     extraReducers: (builder) => {
         builder

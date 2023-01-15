@@ -26,8 +26,7 @@ router.use(verifyJWT)
 
 router.post('/updateimage', updateImage)
 router.get('/check', check);
-router.post("/updateDetails", editAccountDetails);
 router.put('/editaccount', editAccountDetails)
-router.delete('/deleteaccount', deleteAccount)
+router.post('/deleteUser', deleteAccount)
 
 export default router;

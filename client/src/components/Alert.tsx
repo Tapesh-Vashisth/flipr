@@ -1,25 +1,21 @@
-import { useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import { appActions } from '../features/appSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 type propType = {
     message: string
-    setShow: () => void
 }
 
-function AlertDismissable(props: propType) {
-  const [show, setShow] = useState(true);
-
-        if (show) {
-            return (
-                <Alert variant="danger" onClose={() => setShow(false)} style={{ height: "50px", marginBottom: "0px" }} dismissible>
-                <p>
-                    {props.message}
-                </p>
-                </Alert>
-            )
-        }
-        return <></>
+export default function AlertDismissable(props: propType) {
+    const app = useAppSelector((state) => state.app);
+    const dispatch = useAppDispatch();
+    
+    return (
+        <Stack sx={{ width: '100%' }} spacing={2}>
+            <Alert severity="error" onClose={() => dispatch(appActions.setShow(false))}>
+                {props.message}
+            </Alert>
+        </Stack>
+    );
 }
-
-export default AlertDismissable
