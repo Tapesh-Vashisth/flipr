@@ -39,7 +39,7 @@ const Navbar = () => {
                 <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
                 <a href="/" className={styles.logo} >
                     <h4 >
-                        Stockhub
+                        StockHub
                     </h4>
                 </a>
             </div>

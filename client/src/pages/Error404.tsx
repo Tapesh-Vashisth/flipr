@@ -3,7 +3,7 @@ import styles from "../styles/Error404.module.css"
 const ErrorPage = () => {
     return (
         <div className={styles.errorContainer} >
-            <a id="anchorError" style={{ textDecoration: "none" }} href="https://mui.com/material-ui/react-app-bar/" rel="noopener noreferrer" target="_blank">
+            <a id="anchorError" style={{ textDecoration: "none" }} rel="noopener noreferrer" target="_blank">
                 <header className={styles["top-header"]}>
                 </header>
 
@@ -36,7 +36,7 @@ const ErrorPage = () => {
                             <p className={styles.message__text}>We're sorry, the page you were looking for isn't found here. The link you followed may either be broken or no longer exists. Please try again, or take a look at our.</p>
                         </div>
                         <div className={styles.error__nav}>
-                            <a id="anchorTagError" href="https://mui.com/material-ui/react-app-bar/" target="_blanck" rel="noopener noreferrer" className={styles["e-nav__link"]}>.</a>
+                            <a id="anchorTagError" href="http://localhost:3000" target="_blanck" rel="noopener noreferrer" className={styles["e-nav__link"]}>.</a>
                         </div>
                     </div>
                 </section>

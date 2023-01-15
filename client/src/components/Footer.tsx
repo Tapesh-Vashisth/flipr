@@ -25,7 +25,7 @@ const Footer = () => {
                         <a target="_blank" rel="noopener noreferrer" href='https://www.instagram.com/sosenkkk/' ><InstagramIcon fontSize="large" /></a>
                     </div>
                 </div>
-                <p className={styles.cc} >© Flippr 2023</p>
+                <p className={styles.cc} >© StockHub 2023</p>
 
             
         </React.Fragment>
