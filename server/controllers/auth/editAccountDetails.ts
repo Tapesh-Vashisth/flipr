@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import User from "../../models/User";
 import bcrypt from "bcryptjs"
 
-const editAccountDetails = async (req: Request, res: Response) => {
+const editAccountDetails: any = async (req: Request, res: Response) => {
+    console.log("update account")
 
-    const { name, email, image, password, newPassword } = req.body
+    const { name, email, password, newPassword } = req.body
 
     let user: any
     try {
@@ -16,8 +17,6 @@ const editAccountDetails = async (req: Request, res: Response) => {
     if (name !== user.name) {
         user.name = name
     }
-
-    user.image = image
 
     const passwordCompare = await bcrypt.compare(password, user.password)
 

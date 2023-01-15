@@ -8,21 +8,22 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { appActions } from "../features/appSlice";
 import LazyLoading from "../components/LazyLoading";
 import AlertDismissable from "../components/Alert";
 
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user)
+    const user = useAppSelector((state) => state.user);
+    const {setShow} = appActions;
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
     const [visible, setVisible] = useState<boolean>(false);
 
     const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
-
+    const app = useAppSelector((state) => state.app);
     const [error, setError] = useState<boolean>(false)
-    const [show, setShow] = useState<boolean>(false)
     const [message, setMessage] = useState<string>("")
     
     const {
@@ -53,6 +54,8 @@ const SignUp = () => {
         } catch (err) {
             setError(true)
             setMessage("There already exists an account with this email address!")
+            setgetOtpValid(false);
+            dispatch(setShow(true));
         }
     }
 
@@ -91,27 +94,27 @@ const SignUp = () => {
             if (status == 409) {
                 setError(true)
                 setMessage("An account with this email already exists!!")
-                setShow(true)
+                dispatch(setShow(true));
             }
             if (status == 404) {
                 setError(true)
                 setMessage("Please resend the OTP.")
-                setShow(true)
+                dispatch(setShow(true));;
             }
             if (status == 400) {
                 setError(true)
                 setMessage("Incorrect OTP! Please try again!")
-                setShow(true)
+                dispatch(setShow(true));
             }
             if (status == 500) {
                 setError(true)
                 setMessage("Server is down temporarily, please wait for some time")
-                setShow(true)
+                dispatch(setShow(true));
             }
             else {
                 setError(true)
                 setMessage("Network Error")
-                setShow(true)
+                dispatch(setShow(true));
             }
         })
     }
@@ -131,7 +134,7 @@ const SignUp = () => {
     return (
         (user.loading && !error) ? <LazyLoading /> :
         <>
-            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            {app.show ? <AlertDismissable message={message}/> : null}
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >
@@ -154,13 +157,13 @@ const SignUp = () => {
                         </div>
                         <div className={styles.otpForm} >
                             {emailIsValid && <button type="button" disabled={!enableOTPButton} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
-                            {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
+                            {(getOtpValid && enteredEmail.length > 0) && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
                         </div>
                         <div className={passwordClasses}>
                             {passwordHasError && <p className="error-text" >*Required</p>}
-                            <label htmlFor='name'>Password</label>
+                            <label htmlFor='pass1'>Password</label>
                             <div>
-                                <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
+                                <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='pass1' />
                                 {
                                     visible ? 
                                     <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 

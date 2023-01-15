@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, image, password, newPassword } = req.body;
+    console.log("update account");
+    const { name, email, password, newPassword } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
@@ -26,7 +27,6 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
     if (name !== user.name) {
         user.name = name;
     }
-    user.image = image;
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
         return res

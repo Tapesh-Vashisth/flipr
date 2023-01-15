@@ -27,7 +27,6 @@ router.get('/refreshToken', refresh_1.default);
 router.use(verifyJWT_1.default);
 router.post('/updateimage', updateImage_1.default);
 router.get('/check', check_1.default);
-router.post("/updateDetails", editAccountDetails_1.default);
 router.put('/editaccount', editAccountDetails_1.default);
 router.post('/deleteUser', deleteAccount_1.default);
 exports.default = router;
