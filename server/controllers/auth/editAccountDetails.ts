@@ -41,3 +41,5 @@ const editAccountDetails = async (req: Request, res: Response) => {
         .json({ message: "Account details changed successfully!" })
 
 }
+
+export default editAccountDetails

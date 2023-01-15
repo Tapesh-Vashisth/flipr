@@ -46,3 +46,4 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
         .status(200)
         .json({ message: "Account details changed successfully!" });
 });
+exports.default = editAccountDetails;

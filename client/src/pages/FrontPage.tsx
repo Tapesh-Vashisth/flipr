@@ -10,9 +10,10 @@ const FrontPage = () => {
                         <div className={styles.introBox}>
                             <h1 className="intro">Stockhub
                             </h1>
-                            <h1 className="intro" >
-                                Information/ Research
-                            </h1>
+                            <h2 className="intro" >
+                                {/* Information/ Research */}
+                                Find and analyze your favourite stocks
+                            </h2>
                         </div>
                         <div className={styles.imagecontainer}>
                             <img className={styles.graphimg} src="./Images/PngItem_1608372.png" alt="stocks" />
