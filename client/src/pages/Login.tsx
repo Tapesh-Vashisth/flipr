@@ -3,10 +3,15 @@ import styles from "../styles/Login.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { login } from "../features/user/userSlice";
+import { useState } from "react";
+// import styles from "./Login.module.css"
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [visible, setVisible] = useState<boolean>(false);
     const {
         value: enteredpassword,
         isValid: passwordIsValid,
@@ -70,7 +75,15 @@ const Login = () => {
                     <div className={passwordClasses}>
                         {passwordHasError && <p className="error-text" >*Required</p>}
                         <label htmlFor='name'>Password</label>
-                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
+                        <div>
+                            <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(true)}} />   
+                            }
+                        </div>
                     </div>
 
                     <button type="submit" className={styles.submitButton} disabled={ (passwordIsValid && emailIsValid) ? false : true }>Login</button>
