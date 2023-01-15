@@ -22,10 +22,10 @@ const setCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
     // console.log(b);
     let companyName = '';
     if (b.name) {
-        if (fs_1.default.existsSync(`./Data/companies/${b.name.toString().toUpperCase()}.csv`)) {
+        if (fs_1.default.existsSync(`./Data/${b.name.toString().toUpperCase()}.csv`)) {
             companyName = b.name.toString().toUpperCase();
             // console.log(companyName)
-            fs_1.default.createReadStream(`./Data/companies/${companyName}.csv`)
+            fs_1.default.createReadStream(`./Data/${companyName}.csv`)
                 .pipe((0, csv_parse_1.parse)({ delimiter: ",", from_line: 2 }))
                 .on("data", function (row) {
                 const obj = { date: '', data: [] };
@@ -65,46 +65,58 @@ const setCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.setCompanyDetails = setCompanyDetails;
 const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     const b = req.query;
     const name = (_a = b.name) === null || _a === void 0 ? void 0 : _a.toString().toUpperCase();
     // console.log(b);
     const limit = Number(b.limit);
     let date = '';
     if (b.date) {
-        const company = yield Company_1.default.findOne({ companyName: name });
-        let parts = (_b = b.date) === null || _b === void 0 ? void 0 : _b.toString().split('-');
-        date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
-        const prev = new Date(date);
-        const prev_date = new Date(prev - 86400000).toDateString();
-        // console.log(pre.toDateString());
-        const arr = company === null || company === void 0 ? void 0 : company.data;
-        let obj = {};
-        arr.forEach((ele) => {
-            if (ele.date == prev_date) {
-                obj.prev = ele;
-            }
-            else if (ele.date == date) {
-                obj.curr = ele;
-            }
-        });
-        let maxi = Number.MIN_VALUE;
-        let mini = Number.MAX_VALUE;
-        const year = new Date(date);
-        year.setFullYear(year.getFullYear() - 1);
-        const prev_year = year;
-        // console.log(prev_year);
-        arr.forEach((ele) => {
-            if (new Date(ele.date) >= prev_year && new Date(ele.date) <= new Date(date)) {
-                // console.log('in')
-                maxi = Math.max(maxi, ele.data[3]);
-                mini = Math.min(mini, ele.data[3]);
-            }
-        });
-        obj.max = maxi;
-        obj.min = mini;
-        // console.log(obj);
-        return res.status(200).json(obj);
+        const range = 1;
+        if (b.range) {
+            const company = yield Company_1.default.findOne({ companyName: name }, { data: { _id: 0 } });
+            let parts = (_b = b.date) === null || _b === void 0 ? void 0 : _b.toString().split('-');
+            date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
+            const prev = new Date(date);
+            const prev_date = new Date(prev - (Number(b.range)) * 86400000);
+            console.log(prev_date);
+            let maxi = Number.MIN_VALUE;
+            let mini = Number.MAX_VALUE;
+            const arr = company === null || company === void 0 ? void 0 : company.data;
+            let info = [];
+            arr.forEach((elem) => {
+                if (new Date(elem.date) >= prev_date && new Date(elem.date) <= new Date(date)) {
+                    info.push(elem);
+                    maxi = Math.max(maxi, elem.data[3]);
+                    mini = Math.min(mini, elem.data[3]);
+                }
+            });
+            console.log(maxi, mini);
+            info.push({ max: maxi, min: mini });
+            return res.status(200).json(info);
+        }
+        else {
+            const company = yield Company_1.default.findOne({ companyName: name }, { data: { _id: 0 } });
+            let parts = (_c = b.date) === null || _c === void 0 ? void 0 : _c.toString().split('-');
+            date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
+            const prev = new Date(date);
+            const prev_date = new Date(prev - (Number(range)) * 86400000);
+            console.log(prev_date);
+            let maxi = Number.MIN_VALUE;
+            let mini = Number.MAX_VALUE;
+            const arr = company === null || company === void 0 ? void 0 : company.data;
+            let info = [];
+            arr.forEach((elem) => {
+                if (new Date(elem.date) >= prev_date && new Date(elem.date) <= new Date(date)) {
+                    info.push(elem);
+                    maxi = Math.max(maxi, elem.data[3]);
+                    mini = Math.min(mini, elem.data[3]);
+                }
+            });
+            console.log(maxi, mini);
+            info.push({ max: maxi, min: mini });
+            return res.status(200).json(info);
+        }
     }
     else {
         const company = yield Company_1.default.findOne({ companyName: name }).slice('data', limit);

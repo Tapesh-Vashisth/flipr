@@ -1,0 +1,48 @@
+.navbarContainer{
+    display: flex;
+    justify-content: space-between ;
+    height: 10vh;
+    z-index: 1;
+    align-items: center;
+    font-size: 1.4rem;
+    padding: 0 10%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+}
+.transparencyCheck{
+    animation: backgroundTrans 350ms  linear forwards;
+
+}
+
+.blockColorCheck{
+    
+    animation: backgroundColor 350ms  linear forwards;
+}
+
+@keyframes backgroundColor {
+    0%{background-color: transparent;}
+    
+    
+     100%{background: rgba(113, 19, 255, 0.919);}
+}
+
+
+
+@keyframes backgroundTrans {
+    0%{background: rgba(113, 19, 255, 0.895);}
+    100%{background-color:transparent;
+       }
+
+
+}
+
+@media (max-width:400px) {
+    .navbarContainer{
+        flex-direction: column;
+        height: 10vh;  
+    }
+    
+
+    
+}
