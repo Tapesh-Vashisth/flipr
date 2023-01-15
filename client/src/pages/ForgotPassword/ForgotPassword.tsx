@@ -4,6 +4,8 @@ import styles from "./ForgotPassword.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hooks";
 import axiosInstance from "../../api/axios";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { login } from "../../features/user/userSlice";
 
 const ForgotPassword = () => {
@@ -11,6 +13,7 @@ const ForgotPassword = () => {
     const navigate = useNavigate();
     const otpRef = useRef<HTMLButtonElement>(null);
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
+    const [visible, setVisible] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
 
     const {
@@ -110,13 +113,29 @@ const ForgotPassword = () => {
                     <div className={passwordClasses}>
                         {passwordHasError1 && <p className={styles['error-text']} >*Required</p>}
                         <label htmlFor='name'>New Password</label>
-                        <input value={enteredpassword1} onChange={passwordChangeHandler1} onBlur={passwordBlurHandler1} type='password' id='pass1' />
+                        <div>
+                            <input value={enteredpassword1} onChange={passwordChangeHandler1} onBlur={passwordBlurHandler1} type={visible ? "text" : 'password'} id='pass1' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(true)}} />   
+                            }   
+                        </div>
                     </div>
 
                     <div className={passwordClasses}>
                         {((enteredpassword2.length > 0 && enteredpassword1.length > 0) && (enteredpassword1 !== enteredpassword2)) && <p className={styles.errorText} style={{color:"#e71e1e"}} >Passwords must match</p>}
                         <label htmlFor='name'>Enter Password Again</label>
-                        <input value={enteredpassword2} onChange={passwordChangeHandler2} onBlur={passwordBlurHandler2} type='password' id='pass2' />
+                        <div>
+                            <input value={enteredpassword2} onChange={passwordChangeHandler2} onBlur={passwordBlurHandler2} type={visible ? "text" : 'password'} id='pass2' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(true)}} />   
+                            }
+                        </div>
                     </div>
 
                     <button type="submit" className={styles.submitButton} disabled={ (emailIsValid && passwordIsValid1 && passwordIsValid2 && (enteredpassword1 === enteredpassword2)) ? false : true }>Change Password</button>

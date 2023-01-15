@@ -4,6 +4,8 @@ import styles from "./SignUp.module.css";
 import axiosInstance from "../../api/axios";
 import { useAppDispatch } from "../../store/hooks";
 import { signup } from "../../features/user/userSlice";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
@@ -12,6 +14,7 @@ const SignUp = () => {
     const dispatch = useAppDispatch();
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
+    const [visible, setVisible] = useState<boolean>(false);
     const [image, setImage] = useState<any>("")
     
     const {
@@ -126,7 +129,15 @@ const SignUp = () => {
                     <div className={passwordClasses}>
                         {passwordHasError && <p className="error-text" >*Required</p>}
                         <label htmlFor='name'>Password</label>
-                        <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
+                        <div>
+                            <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(true)}} />   
+                            }
+                        </div>
                     </div>
                     <div className={styles.formControl}>
                         <label htmlFor="input" className={styles.inputLabel}>Profile Photo</label>
