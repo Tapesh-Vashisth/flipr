@@ -26,6 +26,7 @@ interface signupCredentialsType {
     email: string
     password: string
     otp: string
+    image: string
 }
 
 // signup 

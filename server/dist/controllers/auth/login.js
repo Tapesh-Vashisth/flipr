@@ -25,13 +25,13 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         console.log(err);
     }
-    const uuid = user.uuid;
     // if no user is found with the entered email address
     if (!user) {
         return res
             .status(404)
             .json({ message: "No such user exists!" });
     }
+    const uuid = user.uuid;
     // using bcryptjs's asynchronous comparison method to compare the entered password with the hashed password 
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {

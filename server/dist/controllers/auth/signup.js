@@ -18,7 +18,7 @@ const Otp_1 = __importDefault(require("../../models/Otp"));
 const crypto_1 = require("crypto");
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("signup");
-    const { name, email, password, otp } = req.body;
+    const { name, email, password, otp, image } = req.body;
     const uuid = (0, crypto_1.randomUUID)();
     let existingUser;
     try {
@@ -60,7 +60,8 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         name,
         email,
         password: hashedPassword,
-        emailVerified: true
+        emailVerified: true,
+        image: image
     });
     // after all validation, creating the user in the database
     try {

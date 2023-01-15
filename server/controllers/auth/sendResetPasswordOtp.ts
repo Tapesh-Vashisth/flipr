@@ -43,13 +43,13 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "blogify253@gmail.com",
-            pass: "oshjipijfcacciyx"
+            user: "stockhub.pvt.ltd@gmail.com",
+            pass: String(process.env.NODEMAILER)
         }
     })
 
     let mailOptions = {
-        from: "blogify253@gmail.com",
+        from: "stockhub.pvt.ltd@gmail.com",
         to: email,
         subject: "Reset your password",
         html: html
