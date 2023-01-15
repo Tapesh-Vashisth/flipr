@@ -10,7 +10,7 @@ const login = async (req: Request, res: Response) => {
 
     let user: any
     try {
-        user = await User.findOne({ email: email }).select('uuid name email password').exec()
+        user = await User.findOne({ email: email }).select('uuid name email password image').exec()
     } catch (err) {
         console.log(err)
     }
@@ -62,9 +62,9 @@ const login = async (req: Request, res: Response) => {
         .json({
             accessToken: accessToken,
             email: email,
-            name: user.name
+            name: user.name,
+            image: user.image
         })
-
 }
 
 export default login

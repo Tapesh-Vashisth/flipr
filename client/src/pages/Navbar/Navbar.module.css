@@ -13,6 +13,12 @@
     animation: zoom 100ms linear forwards;
 }
 
+.optionsContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
 
 .logo {
     text-decoration: none;
@@ -37,7 +43,6 @@
 
 @media (max-width:400px) {
     .optionsContainer{
-        display: flex;
         width: 100%;
         justify-content: space-around;
         align-items: center;

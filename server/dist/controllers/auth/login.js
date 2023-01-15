@@ -20,7 +20,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     let user;
     try {
-        user = yield User_1.default.findOne({ email: email }).select('uuid name email password').exec();
+        user = yield User_1.default.findOne({ email: email }).select('uuid name email password image').exec();
     }
     catch (err) {
         console.log(err);
@@ -67,7 +67,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         .json({
         accessToken: accessToken,
         email: email,
-        name: user.name
+        name: user.name,
+        image: user.image
     });
 });
 exports.default = login;

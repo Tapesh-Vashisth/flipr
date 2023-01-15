@@ -5,6 +5,7 @@ import axiosInstance from "../../api/axios";
 import { useAppDispatch } from "../../store/hooks";
 import { signup } from "../../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -127,17 +128,23 @@ const SignUp = () => {
                         <label htmlFor='name'>Password</label>
                         <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
                     </div>
-                    <div className={styles.inputClass}>
+                    <div className={styles.formControl}>
                         <label htmlFor="input" className={styles.inputLabel}>Profile Photo</label>
                         <input type="file" name="image" onChange={(e) => handleFileUpload(e)} />
                     </div>
                     <div className='form-actions'>
                         <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0 && image.length > 0 ? false: true} >Submit</button>
                     </div>
+                    <hr className={styles.ruler} />
+
+                    <div className={styles.underLinks} >
+                        <NavLink to = "/auth/login">
+                            <button>Already have an account? Login</button>    
+                        </NavLink>
+                    </div>
                 </form>
             </div>
         </div>
-
     );
 };
 

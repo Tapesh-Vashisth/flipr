@@ -9,6 +9,7 @@ interface user {
     loggedIn: boolean
     loading: boolean
     error: any
+    image: string | null
 }
 
 const initialState: user = {
@@ -17,7 +18,8 @@ const initialState: user = {
     accessToken: null,
     loggedIn: false,
     loading: false,
-    error: null
+    error: null,
+    image: ""
 }
 
 
@@ -89,6 +91,7 @@ const userSlice = createSlice({
             .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
                 state.email = action.payload.email;
                 state.name = action.payload.name;
+                state.image = action.payload.image;
                 state.accessToken = action.payload.accessToken;
                 state.loggedIn = true;
                 state.error = null;

@@ -4,6 +4,7 @@ import "./Navbarstyle.css"
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../features/user/userSlice";
+import PersonIcon from '@mui/icons-material/Person';
 
 const Navbar = () => {
     const user = useAppSelector((state) => state.user);
@@ -42,14 +43,15 @@ const Navbar = () => {
             <div className={styles.optionsContainer}>
                 <button>Stocks</button>
                 <button>Companies</button>
-                {
+                {/* {
                     user.loggedIn ? 
                         <button onClick={handleLogout}>Logout</button>
                     :
                         <NavLink to="/auth/login">
                             <button>Login</button>
                         </NavLink>
-                }
+                } */}
+                <img src={user.image != null ? user.image : undefined} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%" }} />
             </div>
         </div>
     )

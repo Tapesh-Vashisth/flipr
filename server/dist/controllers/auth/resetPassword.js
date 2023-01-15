@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Otp_1 = __importDefault(require("../../models/Otp"));
 const User_1 = __importDefault(require("../../models/User"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, otp, password } = req.body;
     let otpDB;
@@ -45,7 +46,8 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             .status(404)
             .json({ message: "No user with this email found in the database!" });
     }
-    user.password = password;
+    const hashedPassword = bcryptjs_1.default.hashSync(password, 5);
+    user.password = hashedPassword;
     try {
         yield user.save();
     }

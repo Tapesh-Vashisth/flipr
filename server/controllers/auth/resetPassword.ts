@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Otp from "../../models/Otp";
 import User from "../../models/User";
+import bcrypt from "bcryptjs"
 
 const resetPassword = async (req: Request, res: Response) => {
 
@@ -38,7 +39,8 @@ const resetPassword = async (req: Request, res: Response) => {
             .json({ message: "No user with this email found in the database!" })
     }
 
-    user.password = password
+    const hashedPassword = bcrypt.hashSync(password, 5)
+    user.password = hashedPassword
 
     try {
         await user.save()
