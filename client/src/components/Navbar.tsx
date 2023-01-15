@@ -6,7 +6,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../features/user/userSlice";
 import PersonIcon from '@mui/icons-material/Person';
 import ProfileDropdown from "../components/ProfileDropdown";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+
+
 const Navbar = () => {
     const user = useAppSelector((state: any) => state.user);
     const dispatch = useAppDispatch();
@@ -34,7 +36,11 @@ const Navbar = () => {
     
     return (
         <div className={classesNav} id="Navbar" >
+<<<<<<< HEAD
             <div className={styles.logoCon}>
+=======
+             <div className={styles.logoCon} >
+>>>>>>> 14d6a6c5000676a483093938d451ad5645e12124
                 <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
                 <a href="/" className={styles.logo} >
                     <h4>

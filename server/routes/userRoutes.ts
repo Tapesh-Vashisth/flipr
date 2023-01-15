@@ -6,10 +6,11 @@ import sendVerifyEmailOtp from '../controllers/auth/sendVerifyEmailOtp'
 import signup from "../controllers/auth/signup"
 import verifyJWT from "../middleware/verifyJWT"
 import check from "../controllers/auth/check";
-import editAccountDetails from "../controllers/auth/editAccountDetails";
 import sendResetPasswordOtp from '../controllers/auth/sendResetPasswordOtp'
 import resetPassword from '../controllers/auth/resetPassword'
+import editAccountDetails from '../controllers/auth/editAccountDetails'
 import deleteAccount from '../controllers/auth/deleteAccount'
+import updateImage from '../controllers/auth/updateImage'
 
 const router = express.Router()
 
@@ -20,10 +21,13 @@ router.post('/passwordotp', sendResetPasswordOtp)
 router.post('/sendotp', sendVerifyEmailOtp)
 router.post('/resetpassword', resetPassword)
 router.get('/refreshToken', refreshToken);
+
 router.use(verifyJWT)
-router.post("/updateDetails", editAccountDetails);
+
+router.post('/updateimage', updateImage)
 router.get('/check', check);
-router.post('/deleteUser', deleteAccount);
-router.get('/all');
+router.post("/updateDetails", editAccountDetails);
+router.put('/editaccount', editAccountDetails)
+router.delete('/deleteaccount', deleteAccount)
 
 export default router;

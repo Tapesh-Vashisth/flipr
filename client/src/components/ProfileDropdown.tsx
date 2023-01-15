@@ -32,7 +32,7 @@ const ProfileDropdown = () => {
                 <div className="dropdown-item">
                     <NavLink style = {{background: "transparent", textDecoration: "none", color: "white"}} to="/account">Account</NavLink>
                 </div>
-                <div className="dropdown-item" onClick={handleLogout}>Logout</div>
+                <div style={{ cursor: "pointer" }} className="dropdown-item" onClick={handleLogout}>Logout</div>
             </ul>
         </div>
     )

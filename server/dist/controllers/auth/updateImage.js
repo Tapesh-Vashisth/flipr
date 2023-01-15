@@ -13,9 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, image, password, newPassword } = req.body;
+const updateImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { image, email } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
@@ -23,20 +22,7 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
     catch (err) {
         console.log(err);
     }
-    if (name !== user.name) {
-        user.name = name;
-    }
     user.image = image;
-    const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
-    if (!passwordCompare) {
-        return res
-            .status(409)
-            .json({ message: "Wrong password entered : Cannot edit account details!" });
-    }
-    if (newPassword.length > 0) {
-        const hashedPassword = bcryptjs_1.default.hashSync(newPassword, 5);
-        user.password = hashedPassword;
-    }
     try {
         user.save();
     }
@@ -45,6 +31,6 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     return res
         .status(200)
-        .json({ message: "Account details changed successfully!" });
+        .json({ message: "Image updated successfully!" });
 });
-exports.default = editAccountDetails;
+exports.default = updateImage;
