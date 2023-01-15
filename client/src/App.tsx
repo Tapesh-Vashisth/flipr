@@ -5,6 +5,7 @@ import LazyLoading from './components/LazyLoading';
 import Home from './pages/Home';
 import Protected from './components/Protected';
 import { fetch } from './features/user/userSlice';
+import LineGraph from './components/LineGraph';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 const Login  = React.lazy(() => import('./pages/Login/Login'));
 const SignUp = React.lazy(() => import('./pages/Sign Up/SignUp'));
@@ -37,6 +38,12 @@ function App() {
           <SignUp />
         </React.Suspense>} />
       </Route>
+      
+{/* data={[1,5,4,2,3,1,2,3,4,3,2,1,4,5,6,7]} labels={['mon','tue','wed','thurs','fri','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf']} */}
+      <Route path = "/chart" element={<LineGraph />}>
+      </Route>
+
+
 
       {/* <Route path='*' element={}></Route> */}
     </Routes>
