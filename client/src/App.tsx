@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import NavFootLayout from './components/NavFootLayout';
 import ForgotPassword from './pages/ForgotPassword';
 import Account from './pages/Account';
+import AlertDismissable from './components/Alert';
 const Login  = React.lazy(() => import('./pages/Login'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const ErrorPage = React.lazy(() => import('./pages/Error404'));
@@ -24,40 +25,40 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route path = "/" element = {<Protected />} >
-        <Route path = '' element = {<NavFootLayout />}>
-          <Route path = '' element = {<React.Suspense fallback = {<LazyLoading />}>
-            <FrontPage />
+    <>
+      <Routes>
+        <Route path = "/" element = {<Protected />} >
+          <Route path = '' element = {<NavFootLayout />}>
+            <Route path = '' element = {<React.Suspense fallback = {<LazyLoading />}>
+              <FrontPage />
+            </React.Suspense>} />
+            <Route path = '/account' element = {<React.Suspense fallback = {<LazyLoading />}>
+              <Account />
+            </React.Suspense>} />
+          </Route>
+        </Route>
+        
+        <Route path = "/auth">
+          <Route path = "login" element = {<React.Suspense fallback = {<LazyLoading />}>
+            <Login />
           </React.Suspense>} />
-          <Route path = '/account' element = {<React.Suspense fallback = {<LazyLoading />}>
-            <Account />
+          <Route path = "signup" element = {<React.Suspense fallback = {<LazyLoading />}>
+            <SignUp />
+          </React.Suspense>} />
+          <Route path = "forgotpassword" element = {<React.Suspense fallback = {<LazyLoading />}>
+            <ForgotPassword />
           </React.Suspense>} />
         </Route>
-      </Route>
-      
-      <Route path = "/auth">
-        <Route path = "login" element = {<React.Suspense fallback = {<LazyLoading />}>
-          <Login />
-        </React.Suspense>} />
-        <Route path = "signup" element = {<React.Suspense fallback = {<LazyLoading />}>
-          <SignUp />
-        </React.Suspense>} />
-        <Route path = "forgotpassword" element = {<React.Suspense fallback = {<LazyLoading />}>
-          <ForgotPassword />
-        </React.Suspense>} />
-      </Route>
-      
-{/* data={[1,5,4,2,3,1,2,3,4,3,2,1,4,5,6,7]} labels={['mon','tue','wed','thurs','fri','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf']} */}
-      <Route path = "/chart" element={<LineGraph />}>
-      </Route>
+        
+  {/* data={[1,5,4,2,3,1,2,3,4,3,2,1,4,5,6,7]} labels={['mon','tue','wed','thurs','fri','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf']} */}
+        <Route path = "/chart" element={<LineGraph />}>
+        </Route>
 
-
-
-      <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
-        <ErrorPage />
-      </React.Suspense>} />
-    </Routes>
+        <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
+          <ErrorPage />
+        </React.Suspense>} />
+      </Routes>
+    </>
   );
 }
 

@@ -7,7 +7,6 @@ import axiosInstance from "../api/axios";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { appActions } from '../features/appSlice';
-import { login } from "../features/user/userSlice";
 import LazyLoading from '../components/LazyLoading';
 import AlertDismissable from '../components/Alert';
 
@@ -20,10 +19,8 @@ const ForgotPassword = () => {
     const [visible, setVisible] = useState<boolean>(false);
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
-    const {setShow} = appActions;
+    const {setShow, setAlert} = appActions;
     const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
-    const [error, setError] = useState<boolean>(false)
-    const [message, setMessage] = useState<string>("")
 
     const {
         value: enteredpassword1,
@@ -73,19 +70,13 @@ const ForgotPassword = () => {
             console.log(err);
             const status = err.response.status
             if (status == 500) {
-                setError(true)
-                setMessage("Server is down temporarily, please wait for some time")
-                dispatch(setShow(true))
+                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}));
             }
             if (status == 400) {
-                setError(true)
-                setMessage("Incorrect OTP! Please try again!")
-                dispatch(setShow(true))
+                dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}));
             }
             else {
-                setError(true)
-                setMessage("Network Error")
-                dispatch(setShow(true))
+                dispatch(setAlert({show: true, message: "Network Error"}));
             }
         }
     }
@@ -109,9 +100,7 @@ const ForgotPassword = () => {
             const status = err.response.status
             
             if (status == 404) {
-                setError(true)
-                setMessage("No such user exists!");
-                dispatch(setShow(true));
+                dispatch(setAlert({show: true, message: "No such user exists!"}));
             }
         }
     }
@@ -127,9 +116,9 @@ const ForgotPassword = () => {
     const passwordClasses = passwordHasError1 ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-        (user.loading && !error) ? <LazyLoading /> :
+        (user.loading) ? <LazyLoading /> :
         <>
-            {app.show ? <AlertDismissable message={message} /> : null}
+            <AlertDismissable />
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >

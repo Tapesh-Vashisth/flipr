@@ -7,6 +7,7 @@ import { logout } from "../features/user/userSlice";
 import PersonIcon from '@mui/icons-material/Person';
 import ProfileDropdown from "../components/ProfileDropdown";
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AlertDismissable from "./Alert";
 
 
 const Navbar = () => {
@@ -35,21 +36,26 @@ const Navbar = () => {
     }
     
     return (
-        <div className={classesNav} id="Navbar" >
-             <div className={styles.logoCon} >
-                <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
-                <a href="/" className={styles.logo} >
-                    <h4>
-                        Stockhub
-                    </h4>
-                </a>
+        <>
+            <div style={{position: 'fixed', width: "100%", zIndex: 2}}>
+                <AlertDismissable />
+                <div className={classesNav} id="Navbar" >
+                    <div className={styles.logoCon} >
+                        <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
+                        <NavLink to="/" className={styles.logo} >
+                            <h4>
+                                Stockhub
+                            </h4>
+                        </NavLink>
+                    </div>
+                    <div className={styles.optionsContainer}>
+                        <button>Stocks</button>
+                        <button>Companies</button>
+                        <ProfileDropdown />
+                    </div>
+                </div>
             </div>
-            <div className={styles.optionsContainer}>
-                <button>Stocks</button>
-                <button>Companies</button>
-                <ProfileDropdown />
-            </div>
-        </div>
+        </>
     )
 }
 

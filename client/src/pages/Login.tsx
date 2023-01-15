@@ -16,10 +16,8 @@ const Login = () => {
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.user)
     const [visible, setVisible] = useState<boolean>(false);
-    const {setShow} = appActions;
-    const [error, setError] = useState<boolean>(false)
+    const {setShow, setAlert} = appActions;
     // const [show, setShow] = useState<boolean>(false)
-    const [message, setMessage] = useState<string>("")
 
     const {
         value: enteredpassword,
@@ -63,19 +61,13 @@ const Login = () => {
             console.log(err.response.status)
             const status = err.response.status
             if (status == 400) {
-                setMessage("The password you have entered is wrong!")
-                setError(true)
-                dispatch(setShow(true))
+                dispatch(setAlert({show: true, message: "The password you have entered is wrong!"}))
             }
             if (status == 404) {
-                setMessage("No such user exists!")
-                setError(true)
-                dispatch(setShow(true))
+                dispatch(setAlert({show: true, message: "No such user exists!"}))
             }
             if (status == 500) {
-                setError(true)
-                setMessage("Server is down temporarily, please wait for some time")
-                dispatch(setShow(true))
+                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
             }
         })
     }
@@ -83,9 +75,9 @@ const Login = () => {
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-        (user.loading && !app.show) ? <LazyLoading /> :
+        (user.loading) ? <LazyLoading /> :
         <>
-            {app.show ? <AlertDismissable message={message} /> : null}
+            <AlertDismissable />
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >

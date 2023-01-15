@@ -118,7 +118,10 @@ const userSlice = createSlice({
         },
         setImage: (state, action: PayloadAction<string | null>) => {
             state.image = action.payload;
-        } 
+        },
+        setName: (state, action: PayloadAction<string>) => {
+            state.name = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
