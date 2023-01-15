@@ -8,6 +8,8 @@ import ProfileImageUpdate from "../components/ProfileImageUpdate";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { deleteUser, updateUser } from "../features/user/userSlice";
 import DeleteModal from "../components/DeleteModal";
+import AlertDismissable from "../components/Alert";
+import LazyLoading from "../components/LazyLoading";
 
 
 const Account = () => {
@@ -19,6 +21,11 @@ const Account = () => {
     const [currentPassword, setCurrentPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+    const [error, setError] = useState<boolean>(false)
+    const [show, setShow] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
+
     const navigate = useNavigate();
     const cancelHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/");
@@ -33,7 +40,10 @@ const Account = () => {
     const deciderDisable = (name === "" || currentPassword === "" || newPassword === "" || confirmPassword === "") || (newPassword !== confirmPassword) 
 
     return (
+        (user.loading && !show) ? <LazyLoading /> :
+        <>
         <div>
+            {show ? <AlertDismissable message={message} showState={show} /> : null}
             <div className={styles.accBackdrop} style={{padding: "120px 0px 90px 0px"}}>
                 <div className={styles.accContainer} >
                     <button className={styles.cancel} onClick = {cancelHandler} >< HighlightOffTwoToneIcon fontSize="large" sx={{ color: "#000;", borderRadius: "50%", backgroundColor: "white" }} /></button>
@@ -55,6 +65,7 @@ const Account = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 
 };

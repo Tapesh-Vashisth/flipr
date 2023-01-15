@@ -1,20 +1,29 @@
 import useInput from "../helper/Hooks/use-input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/SignUp.module.css"
 import axiosInstance from "../api/axios"
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { signup } from "../features/user/userSlice";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import LazyLoading from "../components/LazyLoading";
+import AlertDismissable from "../components/Alert";
 
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.user)
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
     const [visible, setVisible] = useState<boolean>(false);
+
+    const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
+
+    const [error, setError] = useState<boolean>(false)
+    const [show, setShow] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
     
     const {
         value: enteredfullName,
@@ -33,19 +42,19 @@ const SignUp = () => {
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
     } = useInput((value: String) => value.trim() !== '');
+
+    
     
     const otpInputHandler = async () => {
+        setEnableOTPButton(false)
         try {
             const response = await axiosInstance.post("/users/sendotp", {email: enteredEmail});
             setgetOtpValid(true);
         } catch (err) {
-            alert("something went wrong")
+            setError(true)
+            setMessage("There already exists an account with this email address!")
         }
     }
-
-    
-
-    
 
     const {
         value: enteredEmail,
@@ -74,68 +83,106 @@ const SignUp = () => {
             fullNameReset();
             emailReset();
             passwordReset();
-            navigate("/auth/login");
+            if (response.message === "User signed up successfully!") {
+                navigate("/auth/login");
+            } 
         }).catch((err) => {
-            alert(err);
+            const status = err.response.status
+            if (status == 409) {
+                setError(true)
+                setMessage("An account with this email already exists!!")
+                setShow(true)
+            }
+            if (status == 404) {
+                setError(true)
+                setMessage("Please resend the OTP.")
+                setShow(true)
+            }
+            if (status == 400) {
+                setError(true)
+                setMessage("Incorrect OTP! Please try again!")
+                setShow(true)
+            }
+            if (status == 500) {
+                setError(true)
+                setMessage("Server is down temporarily, please wait for some time")
+                setShow(true)
+            }
+            else {
+                setError(true)
+                setMessage("Network Error")
+                setShow(true)
+            }
         })
     }
+
+    useEffect(() => {
+        if (emailIsValid && !enableOTPButton) {
+            setTimeout(() => {
+                setEnableOTPButton(true)
+            }, 60000)
+        }
+    }, [enableOTPButton, emailIsValid])
 
 
     const fullNameClasses = fullNameHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-
-        <div className={styles.signupContainer}>
-            <div className={styles.test}>
-                <div className={styles.welcomeTag} >
-                    <h1>Welcome User</h1>
-                    <h3>Sign up for free!</h3>
+        (user.loading && !error) ? <LazyLoading /> :
+        <>
+            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            <div className={styles.signupContainer}>
+                <div className={styles.test}>
+                    <div className={styles.welcomeTag} >
+                        <h1>Welcome User</h1>
+                        <h3>Sign up for free!</h3>
+                    </div>
+                    <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
                 </div>
-                <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
-            </div>
-            <div className={styles.test2} >
-                <form className={styles.formCenter} onSubmit={formSubmitHandler} >
-                    <div className={fullNameClasses} >
-                        {fullNameHasError && <p className="error-text" >*Required</p>}
-                        <label htmlFor='name'>Name</label>
-                        <input value={enteredfullName} onChange={fullNameChangeHandler} onBlur={fullNameBlurHandler} type='text' id='name' />
-                    </div>
-                    <div className={emailClasses}>
-                        {emailHasError && <p className="error-text">Enter a valid e-mail.</p>}
-                        <label htmlFor='name'>E-Mail</label>
-                        <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='email' id='email' />
-                    </div>
-                    <div className={styles.otpForm} >
-                        {emailIsValid && <button type="button" onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
-                        {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
-                    </div>
-                    <div className={passwordClasses}>
-                        {passwordHasError && <p className="error-text" >*Required</p>}
-                        <label htmlFor='name'>Password</label>
-                        <div>
-                            <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
-                            {
-                                visible ? 
-                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
-                                :
-                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
-                            }
+                <div className={styles.test2} >
+                    <form className={styles.formCenter} onSubmit={formSubmitHandler} >
+                        <div className={fullNameClasses} >
+                            {fullNameHasError && <p className="error-text" >*Required</p>}
+                            <label htmlFor='name'>Name</label>
+                            <input value={enteredfullName} onChange={fullNameChangeHandler} onBlur={fullNameBlurHandler} type='text' id='name' />
                         </div>
-                    </div>
-                    <div className='form-actions'>
-                        <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0  ? false: true} >Submit</button>
-                    </div>
-                    <hr className={styles.ruler} />
+                        <div className={emailClasses}>
+                            {emailHasError && <p className="error-text">Enter a valid e-mail.</p>}
+                            <label htmlFor='name'>E-Mail</label>
+                            <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='email' id='email' />
+                        </div>
+                        <div className={styles.otpForm} >
+                            {emailIsValid && <button type="button" disabled={!enableOTPButton} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
+                            {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
+                        </div>
+                        <div className={passwordClasses}>
+                            {passwordHasError && <p className="error-text" >*Required</p>}
+                            <label htmlFor='name'>Password</label>
+                            <div>
+                                <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
+                                {
+                                    visible ? 
+                                    <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                                    :
+                                    <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+                                }
+                            </div>
+                        </div>
+                        <div className='form-actions'>
+                            <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0  ? false: true} >Submit</button>
+                        </div>
+                        <hr className={styles.ruler} />
 
-                    <div className={styles.underLinks} >
-                        <NavLink to = "/auth/login">
-                            <button style={{fontSize:"14px"}}>Already have an account? Login</button>    
-                        </NavLink>
-                    </div>
-                </form>
+                        <div className={styles.underLinks} >
+                            <NavLink to = "/auth/login">
+                                <button style={{fontSize:"14px"}}>Already have an account? Login</button>    
+                            </NavLink>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

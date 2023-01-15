@@ -1,19 +1,29 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import useInput from "../helper/Hooks/use-input";
 import styles from "../styles/ForgotPassword.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import axiosInstance from "../api/axios";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { login } from "../features/user/userSlice";
+import LazyLoading from '../components/LazyLoading';
+import AlertDismissable from '../components/Alert';
 
 const ForgotPassword = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const user = useAppSelector((state) => state.user)
     const otpRef = useRef<HTMLButtonElement>(null);
     const [visible, setVisible] = useState<boolean>(false);
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
+
+    const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
+
+    const [error, setError] = useState<boolean>(false)
+    const [show, setShow] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
 
     const {
         value: enteredpassword1,
@@ -54,13 +64,30 @@ const ForgotPassword = () => {
         // server request   
         console.log(enteredEmail, otp, enteredpassword1);
         try {
-            await axiosInstance.post("/users/resetpassword", {email: enteredEmail, otp: otp, password: enteredpassword1});
-            navigate("/auth/login", {replace: true});
-        } catch (err) {
+            const res = await axiosInstance.post("/users/resetpassword", {email: enteredEmail, otp: otp, password: enteredpassword1});
+            console.log(res)
+            if (res.status == 200) {
+                navigate('/auth/login')
+            }
+        } catch (err: any) {
             console.log(err);
-            alert("something went wrong");
+            const status = err.response.status
+            if (status == 500) {
+                setError(true)
+                setMessage("Server is down temporarily, please wait for some time")
+                setShow(true)
+            }
+            if (status == 400) {
+                setError(true)
+                setMessage("Incorrect OTP! Please try again!")
+                setShow(true)
+            }
+            else {
+                setError(true)
+                setMessage("Network Error")
+                setShow(true)
+            }
         }
-
     }
 
     const otpToggler = (value: boolean) => {
@@ -73,30 +100,45 @@ const ForgotPassword = () => {
         console.log("hello")
         otpToggler(true)
         try {
-            await axiosInstance.post("/users/passwordotp", {email: enteredEmail});
+            const res = await axiosInstance.post("/users/passwordotp", {email: enteredEmail});
             setgetOtpValid(true);
             otpToggler(false)
-        } catch (err) {
+        } catch (err: any) {
             otpToggler(false)
-            alert("something went wrong");
+            console.log(err)
+            const status = err.response.status
+            
+            if (status == 404) {
+                setError(true)
+                setMessage("No such user exists!")
+            }
         }
     }
 
-    
+    useEffect(() => {
+        if (emailIsValid && !enableOTPButton) {
+            setTimeout(() => {
+                setEnableOTPButton(true)
+            }, 60000)
+        }
+    }, [enableOTPButton, emailIsValid])
 
     const passwordClasses = passwordHasError1 ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
+        (user.loading && !error) ? <LazyLoading /> :
+        <>
+            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            <div className={styles.signupContainer}>
+                <div className={styles.test}>
+                    <div className={styles.welcomeTag} >
+                        <h1>Don't remember your password?</h1>
+                        <h5>Don't worry, we got you. Just fill up these details</h5>
 
-        <div className={styles.signupContainer}>
-            <div className={styles.test}>
-                <div className={styles.welcomeTag} >
-                    <h1>Create new password</h1>
-
+                    </div>
+                    <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
                 </div>
-                <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
-            </div>
-            <div className={styles.test2} >
+                <div className={styles.test2} >
                 <form className={styles.formCenter} onSubmit={formSubmitHandler} >
                     <div className={emailClasses}>
                         {emailHasError && <p className={styles['error-text']}>Enter a valid e-mail.</p>}
@@ -151,7 +193,7 @@ const ForgotPassword = () => {
                 </form>
             </div>
         </div>
-
+        </>
     );
 };
 
