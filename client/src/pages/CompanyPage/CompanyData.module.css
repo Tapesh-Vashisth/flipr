@@ -1,0 +1,42 @@
+.companyPage h2{
+    font-size: 1.7rem;
+    font-weight: 700;
+    /* padding: 1rem 1rem 0 1rem; */
+}
+
+.companyPage h1{
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+
+}
+
+.companyPage .header{
+    font-size: 1.2rem;
+    margin-left: 0;
+    position: relative;
+    left:-6px;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.ruler{
+    height: 0.5rem;
+    background-color: rgba(110, 112, 213, 0.816);
+}
+
+.datacontainer{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.companyPage{
+    padding: 1rem 3rem;
+}
+
+.date{
+    font-size: 1rem;
+    color: rgb(161, 161, 161);
+}

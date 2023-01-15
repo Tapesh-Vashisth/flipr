@@ -1,17 +1,26 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import useInput from "../helper/Hooks/use-input";
 import styles from "../styles/ForgotPassword.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import axiosInstance from "../api/axios";
-import { login } from "../features/user/userSlice";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { appActions } from '../features/appSlice';
+import LazyLoading from '../components/LazyLoading';
+import AlertDismissable from '../components/Alert';
 
 const ForgotPassword = () => {
     const dispatch = useAppDispatch();
+    const app = useAppSelector((state) => state.app);
     const navigate = useNavigate();
+    const user = useAppSelector((state) => state.user)
     const otpRef = useRef<HTMLButtonElement>(null);
+    const [visible, setVisible] = useState<boolean>(false);
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
+    const {setShow, setAlert} = appActions;
+    const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
 
     const {
         value: enteredpassword1,
@@ -52,13 +61,24 @@ const ForgotPassword = () => {
         // server request   
         console.log(enteredEmail, otp, enteredpassword1);
         try {
-            await axiosInstance.post("/users/resetpassword", {email: enteredEmail, otp: otp, password: enteredpassword1});
-            navigate("/auth/login", {replace: true});
-        } catch (err) {
+            const res = await axiosInstance.post("/users/resetpassword", {email: enteredEmail, otp: otp, password: enteredpassword1});
+            console.log(res)
+            if (res.status == 200) {
+                navigate('/auth/login')
+            }
+        } catch (err: any) {
             console.log(err);
-            alert("something went wrong");
+            const status = err.response.status
+            if (status == 500) {
+                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}));
+            }
+            if (status == 400) {
+                dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}));
+            }
+            else {
+                dispatch(setAlert({show: true, message: "Network Error"}));
+            }
         }
-
     }
 
     const otpToggler = (value: boolean) => {
@@ -71,31 +91,43 @@ const ForgotPassword = () => {
         console.log("hello")
         otpToggler(true)
         try {
-            await axiosInstance.post("/users/passwordotp", {email: enteredEmail});
+            const res = await axiosInstance.post("/users/passwordotp", {email: enteredEmail});
             setgetOtpValid(true);
             otpToggler(false)
-        } catch (err) {
+        } catch (err: any) {
             otpToggler(false)
-            alert("something went wrong");
+            console.log(err)
+            const status = err.response.status
+            
+            if (status == 404) {
+                dispatch(setAlert({show: true, message: "No such user exists!"}));
+            }
         }
     }
 
-    
+    useEffect(() => {
+        if (emailIsValid && !enableOTPButton) {
+            setTimeout(() => {
+                setEnableOTPButton(true)
+            }, 60000)
+        }
+    }, [enableOTPButton, emailIsValid])
 
     const passwordClasses = passwordHasError1 ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-
-        <div className={styles.signupContainer}>
-            <div className={styles.test}>
-                <div className={styles.welcomeTag} >
-                    <h1>Forgot Password??</h1>
-                    <h2>Don't worry we got you!</h2>
-
+        (user.loading) ? <LazyLoading /> :
+        <>
+            <AlertDismissable />
+            <div className={styles.signupContainer}>
+                <div className={styles.test}>
+                    <div className={styles.welcomeTag} >
+                        <h1>Forgot Password??</h1>
+                        <h2>Don't worry we got you!</h2>
+                    </div>
+                    <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
                 </div>
-                <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
-            </div>
-            <div className={styles.test2} >
+                <div className={styles.test2} >
                 <form className={styles.formCenter} onSubmit={formSubmitHandler} >
                     <div className={emailClasses}>
                         {emailHasError && <p className={styles['error-text']}>Enter a valid e-mail.</p>}
@@ -109,13 +141,29 @@ const ForgotPassword = () => {
                     <div className={passwordClasses}>
                         {passwordHasError1 && <p className={styles['error-text']} >*Required</p>}
                         <label htmlFor='name'>New Password</label>
-                        <input value={enteredpassword1} onChange={passwordChangeHandler1} onBlur={passwordBlurHandler1} type='password' id='pass1' />
+                        <div>
+                            <input value={enteredpassword1} onChange={passwordChangeHandler1} onBlur={passwordBlurHandler1} type={visible ? "text" : 'password'} id='pass1' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+                            }
+                        </div>
                     </div>
 
                     <div className={passwordClasses}>
                         {((enteredpassword2.length > 0 && enteredpassword1.length > 0) && (enteredpassword1 !== enteredpassword2)) && <p className={styles.errorText} style={{color:"#e71e1e"}} >Passwords must match</p>}
                         <label htmlFor='name'>Enter Password Again</label>
-                        <input value={enteredpassword2} onChange={passwordChangeHandler2} onBlur={passwordBlurHandler2} type='password' id='pass2' />
+                        <div>
+                            <input value={enteredpassword2} onChange={passwordChangeHandler2} onBlur={passwordBlurHandler2} type={visible ? "text" : 'password'} id='pass2' />
+                            {
+                                visible ? 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                                :
+                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+                            }
+                        </div>
                     </div>
 
                     <button type="submit" className={styles.submitButton} disabled={ (emailIsValid && passwordIsValid1 && passwordIsValid2 && (enteredpassword1 === enteredpassword2)) ? false : true }>Change Password</button>
@@ -136,7 +184,7 @@ const ForgotPassword = () => {
                 </form>
             </div>
         </div>
-
+        </>
     );
 };
 

@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import User from "../../models/User";
 import bcrypt from "bcryptjs"
 
-const editAccountDetails = async (req: Request, res: Response) => {
+const editAccountDetails: any = async (req: Request, res: Response) => {
+    console.log("update account")
 
     const { name, email, password, newPassword } = req.body
 
@@ -19,14 +20,14 @@ const editAccountDetails = async (req: Request, res: Response) => {
 
     const passwordCompare = await bcrypt.compare(password, user.password)
 
-    if (!passwordCompare && password.length > 0 && newPassword.length > 0) {
+    if (!passwordCompare) {
         return res
-            .status(400)
-            .json({ message: "Incorrect password entered!" })
+            .status(409)
+            .json({ message: "Wrong password entered : Cannot edit account details!" })
     }
 
-    const hashedPassword = bcrypt.hashSync(newPassword, 5)
-    if (newPassword) {
+    if (newPassword.length > 0) {
+        const hashedPassword = bcrypt.hashSync(newPassword, 5)
         user.password = hashedPassword
     }
 
@@ -41,4 +42,4 @@ const editAccountDetails = async (req: Request, res: Response) => {
         .json({ message: "Account details changed successfully!" })
 }
 
-export default editAccountDetails;
+export default editAccountDetails

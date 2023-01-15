@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const { email, password } = req.body
-    const { email } = req.body;
+    const { email, password } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
@@ -23,12 +23,12 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         console.log(err);
     }
-    // const passwordCompare = await bcrypt.compare(password, user.password)
-    // if (!passwordCompare) {
-    //     return res
-    //         .status(400)
-    //         .json({ message: "Password is wrong!" })
-    // }
+    const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
+    if (!passwordCompare) {
+        return res
+            .status(400)
+            .json({ message: "Password is wrong!" });
+    }
     let deletion;
     try {
         deletion = yield User_1.default.findOneAndDelete({ email: email }).exec();

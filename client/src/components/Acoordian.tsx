@@ -4,7 +4,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import styles from "../styles/Accordian.module.css"
+import styles from "../styles/Accordian.module.css";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 interface props {
   currentPassword: string
@@ -16,6 +18,8 @@ interface props {
 }
 
 export default function SimpleAccordion({currentPassword, newPassword, confirmPassword, setCurrentPassword, setNewPassword, setConfirmPassword}: props) {
+  const [visible, setVisible] = useState<boolean>(false);
+
   return (
     <div>
       <Accordion>
@@ -27,15 +31,30 @@ export default function SimpleAccordion({currentPassword, newPassword, confirmPa
           <Typography variant="h6" sx={{marginBottom:"0"}}>Password Settings</Typography>
         </AccordionSummary>
         <AccordionDetails style={{padding: "32px"}}>
-          <input className={styles.inputAcc} placeholder = "Current Password" value={currentPassword} onChange={(e) => {console.log(currentPassword);setCurrentPassword(e.target.value)}}/> 
-          <input className={styles.inputAcc} placeholder = "New Password" value={newPassword} onChange={(e) => {setNewPassword(e.target.value)}}/>
+          <div style = {{position: "relative"}}>
+            <input className={styles.inputAcc} type={visible ? "text" : 'password'} placeholder = "New Password" value={newPassword} onChange={(e) => {setNewPassword(e.target.value)}}/>
+            {
+                visible ? 
+                <VisibilityOffIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                :
+                <VisibilityIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+            }
+          </div>
           {
             newPassword.length > 0 && confirmPassword.length > 0 && (newPassword !== confirmPassword) ? 
             <div style = {{textAlign: "center", color: "red"}}>Passwords must match</div>
             : 
             null
           }
-          <input className={styles.inputAcc} placeholder = "Confirm Password" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value)}}/>
+          <div style = {{position: "relative"}}>
+            <input className={styles.inputAcc} type={visible ? "text" : 'password'} placeholder = "Confirm Password" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value)}}/>
+            {
+                visible ? 
+                <VisibilityOffIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
+                :
+                <VisibilityIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
+            }
+          </div>
         </AccordionDetails>
       </Accordion>
     </div>

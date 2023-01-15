@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { logout } from '../features/user/userSlice';
+import PersonIcon from '@mui/icons-material/Person';
 
 const ProfileDropdown = () => {
     const user = useAppSelector((state) => state.user);
@@ -18,7 +19,12 @@ const ProfileDropdown = () => {
 
     return (
         <div className="dropdown">
-            <img className="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src={(user.image != "" && user.image != null) ? user.image : "https://toppng.com/uploads/preview/file-svg-profile-icon-vector-11562942678pprjdh47a8.png"} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%", cursor: "pointer"}} />
+            {
+                user.image ?
+                <img className="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src={user.image} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%", cursor: "pointer"}} />
+                :
+                <PersonIcon className="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style = {{fontSize: "30px"}} />
+            }
             <ul className="dropdown-menu dropdown-menu-dark">
                 <div className="dropdown-item">
                     <h5>Hello {user.name.split(" ")[0]}</h5>
@@ -26,7 +32,7 @@ const ProfileDropdown = () => {
                 <div className="dropdown-item">
                     <NavLink style = {{background: "transparent", textDecoration: "none", color: "white"}} to="/account">Account</NavLink>
                 </div>
-                <div className="dropdown-item" onClick={handleLogout}>Logout</div>
+                <div style={{ cursor: "pointer" }} className="dropdown-item" onClick={handleLogout}>Logout</div>
             </ul>
         </div>
     )

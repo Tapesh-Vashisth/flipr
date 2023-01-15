@@ -40,7 +40,7 @@ const sendVerifyEmailOtp = async (req: Request, res: Response) => {
     if (existingOtp) {
         let deleteExistingOtp: any
         try {
-            deleteExistingOtp = await Otp.findOneAndDelete({ email: email }).exec()
+            deleteExistingOtp = await Otp.deleteMany({ email: email }).exec()
         } catch (err) {
             console.log(err)
         }
