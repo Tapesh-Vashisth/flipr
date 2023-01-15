@@ -53,6 +53,15 @@
     
 }
 
+@media (max-width:520px) {
+    .introContainer{
+        padding-top: 150px;
+    }
+    .introBox h1{
+        margin-bottom: 2rem;
+    }
+}
+
 @media (max-width:400px) {
     .introBox h1{
         font-size: 1.3rem

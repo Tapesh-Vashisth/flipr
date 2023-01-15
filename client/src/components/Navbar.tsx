@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../features/user/userSlice";
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PersonIcon from '@mui/icons-material/Person';
-import ProfileDropdown from "../../components/ProfileDropdown";
+import ProfileDropdown from "../components/ProfileDropdown";
 
 const Navbar = () => {
     const user = useAppSelector((state) => state.user);

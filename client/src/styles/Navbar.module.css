@@ -24,8 +24,11 @@
     text-decoration: none;
     color: inherit;
     color: white;
+}
+.logo h4{
+    margin-bottom: 0;
     font-size: 1.7rem;
-
+    margin-top: 4px;
 }
 
 .logoCon{
