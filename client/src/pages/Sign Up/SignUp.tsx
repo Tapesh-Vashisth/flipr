@@ -11,6 +11,7 @@ const SignUp = () => {
     const dispatch = useAppDispatch();
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
+    const [image, setImage] = useState<any>("")
     
     const {
         value: enteredfullName,
@@ -39,6 +40,25 @@ const SignUp = () => {
         }
     }
 
+    const convertToBase64 = (file: any) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader()
+          fileReader.readAsDataURL(file)
+          fileReader.onload = () => {
+            resolve(fileReader.result)
+          }
+          fileReader.onerror = (error) => {
+            reject(error)
+          }
+        })
+    }
+
+    const handleFileUpload = async (e: any) => {
+        const file = e.target.files[0]
+        const base64 = await convertToBase64(file)
+        setImage(base64)
+    }
+
     const {
         value: enteredEmail,
         isValid: emailIsValid,
@@ -58,7 +78,7 @@ const SignUp = () => {
             return;
         console.log(enteredEmail, enteredfullName, enteredpassword, otp);
         // server request 
-        dispatch(signup({email: enteredEmail, name: enteredfullName, password: enteredpassword, otp: otp}))
+        dispatch(signup({email: enteredEmail, name: enteredfullName, password: enteredpassword, otp: otp, image: image}))
         .unwrap()
         .then((response) => {
             console.log(response);
@@ -94,7 +114,7 @@ const SignUp = () => {
                         <input value={enteredfullName} onChange={fullNameChangeHandler} onBlur={fullNameBlurHandler} type='text' id='name' />
                     </div>
                     <div className={emailClasses}>
-                        {emailHasError && <p className="error-text">Entered a valid e-mail.</p>}
+                        {emailHasError && <p className="error-text">Enter a valid e-mail.</p>}
                         <label htmlFor='name'>E-Mail</label>
                         <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='email' id='email' />
                     </div>
@@ -107,8 +127,12 @@ const SignUp = () => {
                         <label htmlFor='name'>Password</label>
                         <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type='password' id='name' />
                     </div>
+                    <div className={styles.inputClass}>
+                        <label htmlFor="input" className={styles.inputLabel}>Profile Photo</label>
+                        <input type="file" name="image" onChange={(e) => handleFileUpload(e)} />
+                    </div>
                     <div className='form-actions'>
-                        <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0 ? false: true} >Submit</button>
+                        <button type="submit" className={styles.submitButton} disabled={fullNameIsValid && passwordIsValid && emailIsValid && otp.length > 0 && image.length > 0 ? false: true} >Submit</button>
                     </div>
                 </form>
             </div>
