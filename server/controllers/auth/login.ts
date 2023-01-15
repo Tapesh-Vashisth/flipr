@@ -38,7 +38,7 @@ const login = async (req: Request, res: Response) => {
 
     // creating refresh token
     const refreshToken = jwt.sign({ uuid: uuid }, String(process.env.REFRESH_TOKEN_SECRET), {
-        expiresIn: "50s"
+        expiresIn: "60m"
     })
 
     // saving the refresh token in the user's database

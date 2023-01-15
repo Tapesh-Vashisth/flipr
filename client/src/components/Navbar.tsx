@@ -7,6 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../features/user/userSlice";
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PersonIcon from '@mui/icons-material/Person';
+import ProfileDropdown from "../../components/ProfileDropdown";
 
 const Navbar = () => {
     const user = useAppSelector((state) => state.user);
@@ -25,13 +26,7 @@ const Navbar = () => {
         }
     })
 
-    const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
-        dispatch(logout()).unwrap().then(() => {
-            navigate("/auth/login");
-        }).catch((err) => {
-            alert("logout failed");
-        });
-    }
+    
     
     return (
         <div className={classesNav} id="Navbar" >
@@ -54,7 +49,7 @@ const Navbar = () => {
                             <button>Login</button>
                         </NavLink>
                 } */}
-                <img src={(user.image != "" && user.image != null) ? user.image : "https://toppng.com/uploads/preview/file-svg-profile-icon-vector-11562942678pprjdh47a8.png"} alt="image" height={"45px"} width={"45px"} style={{ borderRadius: "100%" }} />
+                <ProfileDropdown /> 
             </div>
         </div>
     )
