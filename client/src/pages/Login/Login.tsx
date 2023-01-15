@@ -78,7 +78,9 @@ const Login = () => {
                     <hr className={styles.ruler} />
 
                     <div className={styles.underLinks} >
-                        <button>Forgot Password?</button>
+                        <NavLink to="/auth/forgotpassword">
+                            <button>Forgot Password?</button>
+                        </NavLink>
                         <span>||</span>
                         <NavLink to = "/auth/signup">
                             <button>Sign Up</button>    
