@@ -6,6 +6,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../features/user/userSlice";
 import PersonIcon from '@mui/icons-material/Person';
 import ProfileDropdown from "../components/ProfileDropdown";
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+
 
 const Navbar = () => {
     const user = useAppSelector((state: any) => state.user);
@@ -34,7 +36,8 @@ const Navbar = () => {
     
     return (
         <div className={classesNav} id="Navbar" >
-            <div>
+             <div className={styles.logoCon} >
+                <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
                 <a href="/" className={styles.logo} >
                     <h4>
                         Stockhub
