@@ -21,6 +21,7 @@
     height: 90vh;
     align-items: center;
     padding: 5%;
+    padding-top: 120px;
 }
 .imagecontainer img{
     max-width: 400px;
@@ -49,11 +50,28 @@
         max-width: 400px;
         width: 100%;
         margin: 0 auto;
+        padding-top: 180px;
+    }
+    .graphimg{
+        margin-top: 40px;
+    }
+    
+}
+
+@media (max-width:520px) {
+    .introContainer{
+        padding-top: 250px;
+    }
+    .introBox{
+        margin: 1rem 0;
     }
     
 }
 
 @media (max-width:400px) {
+    .introContainer{
+        padding-top: 190px;
+    }
     .introBox h1{
         font-size: 1.3rem
     }

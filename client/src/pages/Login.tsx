@@ -81,9 +81,9 @@ const Login = () => {
                             <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='name' />
                             {
                                 visible ? 
-                                <VisibilityOffIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(false)}} /> 
+                                <VisibilityOffIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
                                 :
-                                <VisibilityIcon style = {{position: "absolute", right: "8px"}} onClick = {() => {setVisible(true)}} />   
+                                <VisibilityIcon style = {{position: "absolute", right: "8px", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
                             }
                         </div>
                     </div>
