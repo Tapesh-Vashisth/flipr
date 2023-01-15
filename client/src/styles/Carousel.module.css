@@ -1,0 +1,24 @@
+.Con{
+    background-color: #7aceceff;
+    /* min-width: 800px; */
+    min-height: 400px;
+    width: 100%;
+}
+
+.Img{
+    position: absolute;
+    bottom: 0;
+    right:0;
+    width: 80%;
+    max-width: 400px;
+}
+
+.textAbt{
+    color: black;
+    position: relative;
+    top: -100px;
+    text-align: left;
+    font-weight: 600;
+}
+
+

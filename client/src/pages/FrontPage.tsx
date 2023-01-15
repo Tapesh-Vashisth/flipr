@@ -20,7 +20,6 @@ const FrontPage = () => {
                     </div>
                 </section>
             </div>
-
         </div>
 
     )

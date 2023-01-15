@@ -89,7 +89,8 @@ const ForgotPassword = () => {
         <div className={styles.signupContainer}>
             <div className={styles.test}>
                 <div className={styles.welcomeTag} >
-                    <h1>Create new password</h1>
+                    <h1>Forgot Password??</h1>
+                    <h2>Don't worry we got you!</h2>
 
                 </div>
                 <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
@@ -101,12 +102,10 @@ const ForgotPassword = () => {
                         <label htmlFor='name'>E-Mail</label>
                         <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='text' id='email' />
                     </div>
-
                     <div className={styles.otpForm} >
                         {emailIsValid && <button type="button" ref = {otpRef} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
                         {getOtpValid && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}}></input>}
                     </div>
-
                     <div className={passwordClasses}>
                         {passwordHasError1 && <p className={styles['error-text']} >*Required</p>}
                         <label htmlFor='name'>New Password</label>
@@ -124,9 +123,13 @@ const ForgotPassword = () => {
 
                     <hr className={styles.ruler} />
 
-                    <div className={styles.underLinks} >
+                    <div className={styles.underLinks} style={{fontSize:"14px"}} >
                         <NavLink to = "/auth/signup">
                             <button>Sign Up</button>    
+                        </NavLink>
+                        <span> || </span>
+                        <NavLink to="/auth/login">
+                            <button>Login</button>
                         </NavLink>
                     </div>
 

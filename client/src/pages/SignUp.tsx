@@ -100,8 +100,8 @@ const SignUp = () => {
         <div className={styles.signupContainer}>
             <div className={styles.test}>
                 <div className={styles.welcomeTag} >
-                    <h1>Welcome User</h1>
-                    <h3>Sign up for free!</h3>
+                    <h1>Don't have an account?</h1>
+                    <h2>Sign up for free!</h2>
                 </div>
                 <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
             </div>
