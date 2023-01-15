@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import convertToBase64 from '../helper/ConvertToBase64';
 import axiosInstance from "../api/axios";
+import { userActions } from '../features/user/userSlice';
 
 
 const ProfileImageUpdate = () => {
     const user = useAppSelector((state) => state.user);
     const [image, setImage] = useState<any>(user.image ? user.image : null);
     const [change, setChange] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
 
     const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -44,8 +46,9 @@ const ProfileImageUpdate = () => {
     const updateImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
         setChange(false);
         try{
-            const response = await axiosInstance.post("/");
-
+            await axiosInstance.post("/users/updateimage", {image, email: user.email});
+            dispatch(userActions.setImage(image));
+            setChange(true);
         } catch (err: any) {
             alert("something went wrong");
             setChange(true);

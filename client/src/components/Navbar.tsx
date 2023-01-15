@@ -36,11 +36,7 @@ const Navbar = () => {
     
     return (
         <div className={classesNav} id="Navbar" >
-<<<<<<< HEAD
-            <div className={styles.logoCon}>
-=======
              <div className={styles.logoCon} >
->>>>>>> 14d6a6c5000676a483093938d451ad5645e12124
                 <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
                 <a href="/" className={styles.logo} >
                     <h4>

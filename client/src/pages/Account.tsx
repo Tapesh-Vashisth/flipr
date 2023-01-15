@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ProfileImageUpdate from "../components/ProfileImageUpdate";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { deleteUser, updateUser } from "../features/user/userSlice";
+import DeleteModal from "../components/DeleteModal";
 
 
 const Account = () => {
@@ -29,17 +30,6 @@ const Account = () => {
 
     }
 
-    const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setDel(true);
-        dispatch(deleteUser({email: user.email})).unwrap().then((res) => {
-            setDel(false);
-            navigate("/auth/login");
-        }).catch((err: any) => {
-            alert("something went wrong");
-            setDel(false);
-        })
-    }
-
     const deciderDisable = (name === "" || currentPassword === "" || newPassword === "" || confirmPassword === "") || (newPassword !== confirmPassword) 
 
     return (
@@ -60,7 +50,7 @@ const Account = () => {
                     </div>
                     <div className={styles.buttonHolder}>
                         <button className={deciderDisable || update ? styles.updatedisabled : styles.update} onClick = {updateHandler} disabled = {deciderDisable ? true: false}>Update Settings</button>
-                        <button className={del ? styles.deletedisabled : styles.delete} onClick = {deleteHandler}>Delete Account</button>
+                        <DeleteModal />
                     </div>
                 </div>
             </div>
