@@ -1,8 +1,8 @@
-import useInput from "../Hooks/use-input";
-import styles from "./Login.module.css"
+import useInput from "../helper/Hooks/use-input";
+import styles from "../styles/Login.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
-import { login } from "../../features/user/userSlice";
+import { useAppDispatch } from "../store/hooks";
+import { login } from "../features/user/userSlice";
 
 const Login = () => {
     const dispatch = useAppDispatch();

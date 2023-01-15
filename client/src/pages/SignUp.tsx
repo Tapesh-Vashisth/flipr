@@ -1,9 +1,9 @@
-import useInput from "../Hooks/use-input";
+import useInput from "../helper/Hooks/use-input";
 import { useState } from "react";
-import styles from "./SignUp.module.css";
-import axiosInstance from "../../api/axios";
-import { useAppDispatch } from "../../store/hooks";
-import { signup } from "../../features/user/userSlice";
+import styles from "../styles/SignUp.module.css";
+import axiosInstance from "../api/axios";
+import { useAppDispatch } from "../store/hooks";
+import { signup } from "../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 

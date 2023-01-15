@@ -1,9 +1,11 @@
-import styles from "./Navbar.module.css"
+// import styles from "./Navbar.module.css"
+import styles from "../styles/Navbar.module.css"
 import React, { useState } from "react";
-import "./Navbarstyle.css"
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
+import "../styles/Navbarstyle.css"
+import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "../../features/user/userSlice";
+import { logout } from "../features/user/userSlice";
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PersonIcon from '@mui/icons-material/Person';
 
 const Navbar = () => {
@@ -33,7 +35,8 @@ const Navbar = () => {
     
     return (
         <div className={classesNav} id="Navbar" >
-            <div>
+            <div className={styles.logoCon} >
+                <TrendingUpIcon fontSize="large" sx={{color:"#fff"}} />
                 <a href="/" className={styles.logo} >
                     <h4 >
                         Stockhub

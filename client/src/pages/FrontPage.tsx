@@ -1,4 +1,4 @@
-import styles from "./FrontPage.module.css"
+import styles from "../styles/FrontPage.module.css"
 const FrontPage = () => {
 
     return (

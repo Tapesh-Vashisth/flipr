@@ -1,10 +1,10 @@
 import React, {useState, useRef} from 'react';
-import useInput from "../Hooks/use-input";
-import styles from "./ForgotPassword.module.css"
+import useInput from "../helper/Hooks/use-input";
+import styles from "../styles/ForgotPassword.module.css"
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
-import axiosInstance from "../../api/axios";
-import { login } from "../../features/user/userSlice";
+import { useAppDispatch } from "../store/hooks";
+import axiosInstance from "../api/axios";
+import { login } from "../features/user/userSlice";
 
 const ForgotPassword = () => {
     const dispatch = useAppDispatch();
