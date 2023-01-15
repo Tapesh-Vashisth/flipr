@@ -6,6 +6,7 @@ import { fetch } from './features/user/userSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import NavFootLayout from './components/NavFootLayout';
 import ForgotPassword from './pages/ForgotPassword';
+import Account from './pages/Account';
 const Login  = React.lazy(() => import('./pages/Login'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const ErrorPage = React.lazy(() => import('./pages/Error404'));
@@ -27,6 +28,9 @@ function App() {
         <Route path = '' element = {<NavFootLayout />}>
           <Route path = '' element = {<React.Suspense fallback = {<LazyLoading />}>
             <FrontPage />
+          </React.Suspense>} />
+          <Route path = '/account' element = {<React.Suspense fallback = {<LazyLoading />}>
+            <Account />
           </React.Suspense>} />
         </Route>
       </Route>

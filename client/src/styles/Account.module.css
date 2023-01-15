@@ -9,112 +9,125 @@
     background-size: cover;
 }
 
-    .accBackdrop input {
-        border: 1px solid black;
-        font-size: 1rem;
-        letter-spacing: 0.8px;
-        border-radius: 6px;
+.accBackdrop input {
+    border: 1px solid black;
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.accContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    background-color: #F9F9F9;
+    align-items: center;
+    box-shadow: 0px 5px 4px -1px rgb(0 0 0 / 20%), 0px 4px 4px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    margin: 1rem;
+}
+
+.accountdetails {
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem 0;
+    border-radius: 4px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+}
+
+.accountdetails input {
+    padding: 0.5rem;
+    margin: 1rem 1rem 1rem 0;
+    width: 100%;
+    display: block;
+}
+
+.accordianBox {
+    width: 100%;
+    max-width: 400px;
+
+}
+
+.buttonHolder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem 0;
+}
+
+.buttonHolder button {
+    padding: 0.5rem;
+    margin-top: 1rem;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    width: 80%;
+    border-radius: 25px;
+    color: #F9FCFB;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.cancel {
+    align-self: flex-end;
+    background-color: transparent;
+    border-radius: 50%;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    top: -8px;
+    left: 8px;
+}
+
+.delete:hover {
+    background-color: #ff4437;
+}
+
+.update:hover {
+    background-color: #28cb7c;
+
+}
+
+.update {
+    background-color: #21BF73;
+    border: 1px solid #1aa75c;
+}
+
+.updatedisabled {
+    background-color: #21BF73;
+    border: 1px solid #1aa75c;
+    opacity: 0.5;
+}
+
+.delete {
+    background-color: #FD5E53;
+    border: 1px solid #d3362b;
+}
+
+.deletedisabled {
+    background-color: #FD5E53;
+    border: 1px solid #d3362b;
+    opacity: 0.5;
+}
+
+.cancel:hover {
+    animation: zoom2 150ms linear forwards;
+}
+
+@keyframes zoom2 {
+    0% {
+        transform: scale(1);
     }
 
-    .accContainer {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 600px;
-        border-radius: 12px;
-        background-color: #F9F9F9;
-        align-items: center;
-        box-shadow: 0px 5px 4px -1px rgb(0 0 0 / 20%), 0px 4px 4px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
-        margin: 1rem;
+    75% {
+        transform: scale(1.1);
     }
 
-    .accountdetails {
-        padding: 2rem;
-        width: 100%;
-        max-width: 400px;
-        margin: 1rem 0;
-        border-radius: 4px;
-        box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    100% {
+        transform: scale(1.05);
     }
-
-    .accountdetails input {
-        padding: 0.5rem;
-        margin: 1rem 2rem 1rem 0;
-        max-width: 300px;
-        width: 90%;
-        display: block;
-    }
-
-    .accordianBox {
-        width: 100%;
-        max-width: 400px;
-    }
-
-    .buttonHolder {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        max-width: 400px;
-        margin: 1rem 0;
-    }
-
-    .buttonHolder button {
-        padding: 0.5rem;
-        margin-top: 1rem;
-        box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
-        width: 80%;
-        border-radius: 25px;
-        color: #F9FCFB;
-        font-size: 1rem;
-        letter-spacing: 1px;
-        cursor: pointer;
-    }
-
-    .cancel {
-        align-self: flex-end;
-        background-color: transparent;
-        border-radius: 50%;
-        border: none;
-        position: relative;
-        cursor: pointer;
-        top: -8px;
-        left: 8px;
-    }
-
-    .delete:hover {
-        background-color: #ff4437;
-    }
-
-    .update:hover {
-        background-color: #28cb7c;
-
-    }
-
-    .update {
-        background-color: #21BF73;
-        border: 1px solid #1aa75c;
-    }
-
-    .delete {
-        background-color: #FD5E53;
-        border: 1px solid #d3362b;
-    }
-
-    .cancel:hover {
-        animation: zoom2 150ms linear forwards;
-    }
-
-    @keyframes zoom2 {
-        0% {
-            transform: scale(1);
-        }
-
-        75% {
-            transform: scale(1.1);
-        }
-
-        100% {
-            transform: scale(1.05);
-        }
-    }
+}

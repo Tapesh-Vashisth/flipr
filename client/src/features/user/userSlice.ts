@@ -28,7 +28,6 @@ interface signupCredentialsType {
     email: string
     password: string
     otp: string
-    image: string
 }
 
 // signup 
@@ -75,6 +74,37 @@ export const fetch = createAsyncThunk("/user/fetch", async (_, {rejectWithValue}
         return rejectWithValue(err);
     }
 }) 
+
+interface userData {
+    name: string
+    email: string
+    password: string
+    newPassword: string
+}
+
+// updateUser 
+export const updateUser = createAsyncThunk("/user/update", async (userData: userData, {rejectWithValue}) => {
+    try {
+        const response = await axiosInstance.post("/users/updateDetails", userData);
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(err);
+    }
+})
+
+interface deleteType {
+    email: string
+}
+
+// deleteUser 
+export const deleteUser = createAsyncThunk("/user/delete", async (data: deleteType, {rejectWithValue}) => {
+    try {
+        const response = await axiosInstance.post("/user/deleteUser", data);
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(err);
+    }
+})
 
 
 const userSlice = createSlice({
@@ -128,6 +158,22 @@ const userSlice = createSlice({
                 state.loggedIn = false;
                 state.error = null;
             })
+            .addCase(updateUser.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.error = null;
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                state.error = null;
+            })
+            .addCase(deleteUser.fulfilled, (state, action) => {
+                state.accessToken = null;
+                state.email = "";
+                state.name = "";
+                state.loggedIn = false;
+                state.error = null;
+            })
             .addMatcher(isAnyOf(
                 login.rejected,
                 signup.rejected,
@@ -136,7 +182,11 @@ const userSlice = createSlice({
                 fetch.rejected,
                 fetch.fulfilled,
                 logout.rejected,
-                logout.fulfilled
+                logout.fulfilled,
+                updateUser.fulfilled,
+                updateUser.rejected,
+                deleteUser.rejected,
+                deleteUser.fulfilled
                 ),(state) => {
                 state.loading = false
             })
@@ -145,6 +195,8 @@ const userSlice = createSlice({
                 signup.pending,
                 fetch.pending,
                 logout.pending,
+                updateUser.pending,
+                deleteUser.rejected
                 ), (state) => {
                 state.loading = true;
             })

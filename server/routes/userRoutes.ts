@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Router } from 'express'
 import login from "../controllers/auth/login"
 import refreshToken from '../controllers/auth/refresh'
 import logout from '../controllers/auth/logout'
@@ -24,6 +24,7 @@ router.get('/refreshToken', refreshToken);
 router.use(verifyJWT)
 
 router.get('/check', check);
+router.post("/updateDetails", editAccountDetails);
 router.put('/editaccount', editAccountDetails)
 router.delete('/deleteaccount', deleteAccount)
 

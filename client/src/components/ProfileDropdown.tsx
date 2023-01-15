@@ -24,7 +24,7 @@ const ProfileDropdown = () => {
                     <h5>Hello {user.name.split(" ")[0]}</h5>
                 </div>
                 <div className="dropdown-item">
-                    <NavLink style = {{background: "transparent", textDecoration: "none", color: "white"}} to="#">Account</NavLink>
+                    <NavLink style = {{background: "transparent", textDecoration: "none", color: "white"}} to="/account">Account</NavLink>
                 </div>
                 <div className="dropdown-item" onClick={handleLogout}>Logout</div>
             </ul>

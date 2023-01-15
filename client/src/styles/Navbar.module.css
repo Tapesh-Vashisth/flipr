@@ -4,12 +4,13 @@
     cursor: pointer;
     font-size: 1.2rem;
     margin-right: 0.75rem;
-    color: rgb(220, 220, 220);
+    color: black;
+    /* color: rgb(220, 220, 220); */
 
 }
 
 .optionsContainer button:hover {
-    color: rgb(255, 255, 255);
+    color: black;
     animation: zoom 100ms linear forwards;
 }
 
@@ -23,7 +24,7 @@
 .logo {
     text-decoration: none;
     color: inherit;
-    color: white;
+    color: black;
 }
 .logo h4{
     margin-bottom: 0;
