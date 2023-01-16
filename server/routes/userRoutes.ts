@@ -16,7 +16,6 @@ const router = express.Router()
 
 router.post('/signup', signup)
 router.post('/login', login)
-router.get('/logout', logout);
 router.post('/passwordotp', sendResetPasswordOtp)
 router.post('/sendotp', sendVerifyEmailOtp)
 router.post('/resetpassword', resetPassword)
@@ -24,6 +23,7 @@ router.get('/refreshToken', refreshToken);
 
 router.use(verifyJWT)
 
+router.get('/logout', logout);
 router.post('/updateimage', updateImage)
 router.get('/check', check);
 router.put('/editaccount', editAccountDetails)

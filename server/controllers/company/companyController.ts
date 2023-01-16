@@ -87,11 +87,27 @@ const getCompanyDetails = async (req: Request, res: Response) => {
             arr.forEach((elem:any)=>{
                 if(new Date(elem.date)>=prev_date && new Date(elem.date)<=new Date(date))
                 {
+                    // console.log(elem)
                     info.push(elem);
-                    maxi = Math.max(maxi,elem.data[3]);
-                    mini = Math.min(mini,elem.data[3]);
+                    if(elem.data[3]!=null) 
+                    {
+                        maxi = Math.max(maxi,elem.data[3]);
+                        mini = Math.min(mini,elem.data[3]);
+                    }
                 }
+                // console.log(maxi,mini)
             })
+
+
+            if(maxi==Number.MIN_VALUE)
+            {
+                maxi = info[0].data[3];
+            }
+
+            if(mini==Number.MAX_VALUE)
+            {
+                mini = 0;
+            }
 
             console.log(maxi,mini);
             info.push({max:maxi,min:mini})
