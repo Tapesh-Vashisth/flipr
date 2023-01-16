@@ -33,7 +33,6 @@ const Account = () => {
     }
 
     const updateHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(name, currentPassword, newPassword, confirmPassword);
         let nowname: string = name;
         setUpdate(true);
         const res = axiosInstance.put("/users/editaccount", {
@@ -47,9 +46,10 @@ const Account = () => {
             setUpdate(false);
         })
         .catch((err: any) => {
-            const status = err.response.status
-            if (status == 409) {
-                dispatch(setAlert({show: true, message: "Incorrect Password!"}))
+            if (err.message === "Network Error"){ 
+                dispatch(appActions.setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(appActions.setAlert({show: true, message: err.response.data.message}));
             }
             setUpdate(false);
         })

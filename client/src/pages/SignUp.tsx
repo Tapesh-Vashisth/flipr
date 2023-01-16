@@ -1,5 +1,5 @@
 import useInput from "../helper/Hooks/use-input";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "../styles/SignUp.module.css"
 import axiosInstance from "../api/axios"
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -20,7 +20,7 @@ const SignUp = () => {
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
     const [visible, setVisible] = useState<boolean>(false);
-
+    const otpRef = useRef<HTMLButtonElement>(null);
     const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
     const app = useAppSelector((state) => state.app);
     // const [error, setError] = useState<boolean>(false)
@@ -45,15 +45,29 @@ const SignUp = () => {
     } = useInput((value: String) => value.trim() !== '');
     
     const otpInputHandler = async () => {
+        otpToggler(true);
         try {
             const response = await axiosInstance.post("/users/sendotp", {email: enteredEmail});
             setgetOtpValid(true);
-        } catch (err) {
-            dispatch(setAlert({show: true, message: "There already exists an account with this email address!"}));
+            otpToggler(false)
+        } catch (err: any) {
+            otpToggler(false)
+            if (err.message === "Network Error"){ 
+                dispatch(setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(setAlert({show: true, message: err.response.data.message}));
+            }
             setgetOtpValid(false);
             dispatch(setShow(true));
         }
     }
+
+    const otpToggler = (value: boolean) => {
+        if (otpRef.current) {
+            otpRef.current.disabled = value;
+        }
+    }
+
 
     const {
         value: enteredEmail,
@@ -72,12 +86,10 @@ const SignUp = () => {
             return;
         if (!emailIsValid)
             return;
-        console.log(enteredEmail, enteredfullName, enteredpassword, otp);
         // server request 
         dispatch(signup({email: enteredEmail, name: enteredfullName, password: enteredpassword, otp: otp}))
         .unwrap()
         .then((response) => {
-            console.log(response);
             setgetOtpValid(false);
             fullNameReset();
             emailReset();
@@ -88,21 +100,27 @@ const SignUp = () => {
             } 
         }).catch((err) => {
             const status = err.response.status
-            if (status == 409) {
-                dispatch(setAlert({show: true, message: "An account with this email already exists!!"}))
+            if (err.message === "Network Error"){ 
+                dispatch(setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(setAlert({show: true, message: err.response.data.message}));
             }
-            if (status == 404) {
-                dispatch(setAlert({show: true, message: "Please resend the OTP."}))
-            }
-            if (status == 400) {
-                dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}))
-            }
-            if (status == 500) {
-                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
-            }
-            else {
-                dispatch(setAlert({show: true, message: "Network Error"}));
-            }
+
+            // if (status == 409) {
+            //     dispatch(setAlert({show: true, message: "An account with this email already exists!!"}))
+            // }
+            // if (status == 404) {
+            //     dispatch(setAlert({show: true, message: "Please resend the OTP."}))
+            // }
+            // if (status == 400) {
+            //     dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}))
+            // }
+            // if (status == 500) {
+            //     dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
+            // }
+            // else {
+            //     dispatch(setAlert({show: true, message: "Network Error"}));
+            // }
         })
     }
 
@@ -143,7 +161,7 @@ const SignUp = () => {
                             <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='email' id='email' />
                         </div>
                         <div className={styles.otpForm} >
-                            {emailIsValid && <button type="button" disabled={!enableOTPButton} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
+                            {emailIsValid && <button type="button" ref = {otpRef} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
                             {(getOtpValid && enteredEmail.length > 0) && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
                         </div>
                         <div className={passwordClasses}>

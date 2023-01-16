@@ -59,26 +59,27 @@ const ForgotPassword = () => {
         return;
         
         // server request   
-        console.log(enteredEmail, otp, enteredpassword1);
         try {
             const res = await axiosInstance.post("/users/resetpassword", {email: enteredEmail, otp: otp, password: enteredpassword1});
-            console.log(res)
             if (res.status == 200) {
                 dispatch(appActions.setSuccess({show: true, message: "password successfully updated!"}));
                 navigate('/auth/login')
             }
         } catch (err: any) {
-            console.log(err);
-            const status = err.response.status
-            if (status == 500) {
-                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}));
+            if (err.message === "Network Error"){ 
+                dispatch(setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(setAlert({show: true, message: err.response.data.message}));
             }
-            if (status == 400) {
-                dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}));
-            }
-            else {
-                dispatch(setAlert({show: true, message: "Network Error"}));
-            }
+            // if (status == 500) {
+                //     dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}));
+            // }
+            // if (status == 400) {
+            //     dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}));
+            // }
+            // else {
+            //     dispatch(setAlert({show: true, message: "Network Error"}));
+            // }
         }
     }
 
@@ -89,7 +90,6 @@ const ForgotPassword = () => {
     }
 
     const otpInputHandler = async () => {
-        console.log("hello")
         otpToggler(true)
         try {
             const res = await axiosInstance.post("/users/passwordotp", {email: enteredEmail});
@@ -97,11 +97,10 @@ const ForgotPassword = () => {
             otpToggler(false)
         } catch (err: any) {
             otpToggler(false)
-            console.log(err)
-            const status = err.response.status
-            
-            if (status == 404) {
-                dispatch(setAlert({show: true, message: "No such user exists!"}));
+            if (err.message === "Network Error"){ 
+                dispatch(setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(setAlert({show: true, message: err.response.data.message}));
             }
         }
     }

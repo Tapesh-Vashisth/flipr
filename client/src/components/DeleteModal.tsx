@@ -62,10 +62,10 @@ export default function DeleteModal() {
       dispatch(appActions.setSuccess({show: true, message: "Account deleted successfully!"}));
       navigate("/auth/login");
     }).catch((err) => { 
-      if (err.response.status === 400) {
-        dispatch(setAlert({show: true, message: "Wrong password"}));
-      } else if (err.response.status === 500) {
-        dispatch(setAlert({show: true, message: "Server or Network error!"}));
+      if (err.message === "Network Error"){ 
+          dispatch(appActions.setAlert({show: true, message: "Network error/Server Down!"}));
+      } else {
+          dispatch(appActions.setAlert({show: true, message: err.response.data.message}));
       }
       setRequest(false);
     })

@@ -55,11 +55,10 @@ const ProfileImageUpdate = () => {
             dispatch(userActions.setImage(image));
             setChange(false);
         } catch (err: any) {
-            if (err.response.status === 500){
-                setAlert({show: true, message: "network error"});
-            } else if (err.response.status === 403) {
-                setAlert({show: true, message: "you are logged out"});
-                navigate("/auth/login");
+            if (err.message === "Network Error"){ 
+                dispatch(appActions.setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(appActions.setAlert({show: true, message: err.response.data.message}));
             }
             setChange(true);
         }
