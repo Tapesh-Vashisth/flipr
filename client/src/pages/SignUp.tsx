@@ -16,15 +16,15 @@ const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
-    const {setShow} = appActions;
+    const {setShow, setAlert} = appActions;
     const [getOtpValid, setgetOtpValid] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>("");
     const [visible, setVisible] = useState<boolean>(false);
 
     const [enableOTPButton, setEnableOTPButton] = useState<boolean>(true)
     const app = useAppSelector((state) => state.app);
-    const [error, setError] = useState<boolean>(false)
-    const [message, setMessage] = useState<string>("")
+    // const [error, setError] = useState<boolean>(false)
+    // const [message, setMessage] = useState<string>("")
     
     const {
         value: enteredfullName,
@@ -49,8 +49,7 @@ const SignUp = () => {
             const response = await axiosInstance.post("/users/sendotp", {email: enteredEmail});
             setgetOtpValid(true);
         } catch (err) {
-            setError(true)
-            setMessage("There already exists an account with this email address!")
+            dispatch(setAlert({show: true, message: "There already exists an account with this email address!"}));
             setgetOtpValid(false);
             dispatch(setShow(true));
         }
@@ -89,29 +88,19 @@ const SignUp = () => {
         }).catch((err) => {
             const status = err.response.status
             if (status == 409) {
-                setError(true)
-                setMessage("An account with this email already exists!!")
-                dispatch(setShow(true));
+                dispatch(setAlert({show: true, message: "An account with this email already exists!!"}))
             }
             if (status == 404) {
-                setError(true)
-                setMessage("Please resend the OTP.")
-                dispatch(setShow(true));;
+                dispatch(setAlert({show: true, message: "Please resend the OTP."}))
             }
             if (status == 400) {
-                setError(true)
-                setMessage("Incorrect OTP! Please try again!")
-                dispatch(setShow(true));
+                dispatch(setAlert({show: true, message: "Incorrect OTP! Please try again!"}))
             }
             if (status == 500) {
-                setError(true)
-                setMessage("Server is down temporarily, please wait for some time")
-                dispatch(setShow(true));
+                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
             }
             else {
-                setError(true)
-                setMessage("Network Error")
-                dispatch(setShow(true));
+                dispatch(setAlert({show: true, message: "Network Error"}));
             }
         })
     }
@@ -129,9 +118,9 @@ const SignUp = () => {
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-        (user.loading && !error) ? <LazyLoading /> :
+        (user.loading) ? <LazyLoading /> :
         <>
-            {app.show ? <AlertDismissable message={message}/> : null}
+            <AlertDismissable /> 
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >

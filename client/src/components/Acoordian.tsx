@@ -32,15 +32,6 @@ export default function SimpleAccordion({currentPassword, newPassword, confirmPa
         </AccordionSummary>
         <AccordionDetails style={{padding: "32px"}}>
           <div style = {{position: "relative"}}>
-            <input className={styles.inputAcc} type={visible ? "text" : 'password'} placeholder = "Current Password" value={currentPassword} onChange={(e) => {console.log(currentPassword);setCurrentPassword(e.target.value)}}/> 
-            {
-                visible ? 
-                <VisibilityOffIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 
-                :
-                <VisibilityIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
-            }
-          </div>
-          <div style = {{position: "relative"}}>
             <input className={styles.inputAcc} type={visible ? "text" : 'password'} placeholder = "New Password" value={newPassword} onChange={(e) => {setNewPassword(e.target.value)}}/>
             {
                 visible ? 

@@ -59,9 +59,10 @@ const setCompanyDetails = async (req: Request, res: Response) => {
 }
 
 const getCompanyDetails = async (req: Request, res: Response) => {
+    console.log("company data")
     const b = req.query;
     const name = b.name?.toString().toUpperCase();
-    // console.log(b);
+    console.log("b is : ", b);
     const limit = Number(b.limit);
     let date=''
     if(b.date)
