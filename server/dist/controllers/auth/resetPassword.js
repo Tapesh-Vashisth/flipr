@@ -28,7 +28,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     if (!otpDB) {
         return res
             .status(404)
-            .json({ message: "No otp found in database" });
+            .json({ message: "User Not Found!" });
     }
     if (otp !== otpDB.otp) {
         return res
@@ -53,7 +53,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         yield user.save();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Some Error Occured' });
     }
     return res
         .status(200)

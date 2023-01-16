@@ -24,6 +24,7 @@ const html = `
     <p>Kindly ignore this message if this was not you.</p>
 `;
 const sendVerifyEmailOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('send Verify Email Otp');
     const { email } = req.body;
     let user;
     try {

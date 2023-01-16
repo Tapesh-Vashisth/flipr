@@ -106,7 +106,7 @@ function LineGraph() {
 	}, [, name, range, date])
 
 	return (
-			<div style={{ width: "100%", marginTop: "1rem", marginBottom: "1rem" }}>
+			<div style={{ width: "100%", padding: "120px 0px 110px 0px",  background: "#FFC3A1" }}>
 				<div style={{ display: "flex", flexDirection: "row", marginLeft: "5rem", alignItems: "center", marginBottom: "1rem" }}>
 					<select onChange={(e: any) => setName(e.target.value)} value={name} style={{ border: "none", fontSize: "22px", fontWeight: "500" }}>
 						<option value="reliance" style={{ border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>RELIANCE</option>

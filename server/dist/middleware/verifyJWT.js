@@ -9,7 +9,6 @@ const verifyJWT = (req, res, next) => {
     console.log("verifyJwt");
     // accessing the token from the headers
     const authHeader = req.headers.authorization || req.headers.Authorization;
-    console.log(authHeader);
     if (!(authHeader === null || authHeader === void 0 ? void 0 : authHeader.startsWith('Bearer')))
         return res.status(401).send();
     const token = authHeader.split(' ')[1];

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('delete account');
     const { email, password } = req.body;
     let user;
     try {
@@ -22,12 +23,12 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
-        return res.status(500).send();
+        return res.status(404).json({ message: 'User Not Found' });
     }
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
         return res
-            .status(400)
+            .status(404)
             .json({ message: "Password is wrong!" });
     }
     let deletion;
@@ -35,8 +36,8 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         deletion = yield User_1.default.findOneAndDelete({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
-        return res.status(500).send();
+        // console.log(err)
+        return res.status(400).json({ messge: 'Some Error Occured' });
     }
     return res
         .status(200)

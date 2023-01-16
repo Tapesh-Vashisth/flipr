@@ -22,7 +22,7 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
         user = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(404).json({ message: 'User Not Found' });
     }
     if (name !== user.name) {
         user.name = name;
@@ -38,13 +38,14 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
         user.password = hashedPassword;
     }
     try {
-        user.save();
+        yield user.save();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Some Error Occured' });
     }
     return res
         .status(200)
         .json({ message: "Account details changed successfully!" });
 });
 exports.default = editAccountDetails;
+``;
