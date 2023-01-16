@@ -25,7 +25,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         existingUser = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     // if an account with the provided email address already exists
     if (existingUser) {
@@ -40,7 +40,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         otpmodel = yield Otp_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     // if no otp was found in the otp database 
     if (!otpmodel) {
@@ -68,7 +68,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     return res
         .status(201)

@@ -25,7 +25,7 @@ const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const refreshtoken = cookies.jwt;
     const foundUser = yield User_1.default.findOne({ refreshToken: refreshtoken }).exec();
     if (!foundUser)
-        return res.sendStatus(403);
+        return res.status(403).json({ message: 'Logged Out' });
     // evaluate jwt 
     jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
         if (err || foundUser.uuid !== decoded.uuid)

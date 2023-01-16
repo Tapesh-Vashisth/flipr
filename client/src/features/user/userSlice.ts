@@ -144,7 +144,6 @@ const userSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(fetch.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.loggedIn = true;
                 state.name = action.payload.name;
                 state.email = action.payload.email;
