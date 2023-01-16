@@ -24,6 +24,9 @@ Currently, server is hosted on free tier of [@render.com](https://render.com/) a
 
 **Database:** MongoDB
 
+## API Documentation
+
+live link - [https://documenter.getpostman.com/view/20112651/2s8ZDU5j9r](https://documenter.getpostman.com/view/20112651/2s8ZDU5j9r)
 
 ## Run Locally
 
