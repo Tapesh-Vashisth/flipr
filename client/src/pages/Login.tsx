@@ -4,21 +4,20 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { login } from "../features/user/userSlice";
 import LazyLoading from "../components/LazyLoading";
+import { appActions } from "../features/appSlice";
 import { useState } from "react";
-// import styles from "./Login.module.css"
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AlertDismissable from "../components/Alert";
 
 const Login = () => {
     const dispatch = useAppDispatch();
+    const app = useAppSelector((state) => state.app);
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.user)
     const [visible, setVisible] = useState<boolean>(false);
-
-    const [error, setError] = useState<boolean>(false)
-    const [show, setShow] = useState<boolean>(false)
-    const [message, setMessage] = useState<string>("")
+    const {setShow, setAlert} = appActions;
+    // const [show, setShow] = useState<boolean>(false)
 
     const {
         value: enteredpassword,
@@ -62,19 +61,13 @@ const Login = () => {
             console.log(err.response.status)
             const status = err.response.status
             if (status == 400) {
-                setMessage("The password you have entered is wrong!")
-                setError(true)
-                setShow(true)
+                dispatch(setAlert({show: true, message: "The password you have entered is wrong!"}))
             }
             if (status == 404) {
-                setMessage("No such user exists!")
-                setError(true)
-                setShow(true)
+                dispatch(setAlert({show: true, message: "No such user exists!"}))
             }
             if (status == 500) {
-                setError(true)
-                setMessage("Server is down temporarily, please wait for some time")
-                setShow(true)
+                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
             }
         })
     }
@@ -82,9 +75,9 @@ const Login = () => {
     const passwordClasses = passwordHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     const emailClasses = emailHasError ? `${styles.formControl} ${styles.errorText}` : styles.formControl;
     return (
-        (user.loading && !show) ? <LazyLoading /> :
+        (user.loading) ? <LazyLoading /> :
         <>
-            {show ? <AlertDismissable message={message} showState={show} /> : null}
+            <AlertDismissable />
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >
