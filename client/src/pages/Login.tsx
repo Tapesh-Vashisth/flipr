@@ -83,7 +83,7 @@ const Login = () => {
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >
-                        <h1>Login to Your Account!</h1>
+                        <h1>Login to Your StockHub Account!</h1>
                     </div>
                     <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
                 </div>

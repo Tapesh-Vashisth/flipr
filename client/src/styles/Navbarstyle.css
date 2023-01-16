@@ -1,7 +1,7 @@
 .navbarContainer {
     display: flex;
     justify-content: space-between;
-    height: 10vh;
+    height: 75px;
     z-index: 1;
     align-items: center;
     font-size: 1.4rem;
