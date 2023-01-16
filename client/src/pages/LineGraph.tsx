@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useTheme, useMediaQuery } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import FilterBar from '../components/FilterBar';
+import axiosInstance from '../api/axios';
 import styles from "../styles/GraphSelect.module.css"
 import CompanyData from '../components/CompanyData';
 import Overview from '../components/Overview';
@@ -36,7 +37,7 @@ function LineGraph() {
 	const sm = useMediaQuery(theme.breakpoints.down(800))
 
 	const getData = async () => {
-		const res = await axios.get(`http://localhost:5500/api/company?name=${name}&date=${date}&range=${range}`)
+		const res = await axiosInstance.get(`/company?name=${name}&date=${date}&range=${range}`)
 		return res.data
 	}
 
