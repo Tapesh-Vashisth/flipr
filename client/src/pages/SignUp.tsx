@@ -166,7 +166,7 @@ const SignUp = () => {
                         </div>
                         <div className={passwordClasses}>
                             {passwordHasError && <p className="error-text" >*Required</p>}
-                            <label htmlFor='pass1'>Password</label>
+                            <label htmlFor='pass1'>Create Password</label>
                             <div>
                                 <input value={enteredpassword} onChange={passwordChangeHandler} onBlur={passwordBlurHandler} type={visible ? "text" : 'password'} id='pass1' />
                                 {
