@@ -22,3 +22,10 @@
     0%{transform: scale(1);}
     100%{transform: scale(1.05);}
 }
+
+.lineGCon{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
