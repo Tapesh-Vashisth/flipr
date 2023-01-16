@@ -31,6 +31,7 @@ function LineGraph() {
 	const [boolean, setBoolean] = useState<boolean>(true)
 	const [todayOpen, setTodayOpen] = useState<number>(0)
 	const [previousClose, setPreviousClose] = useState<number>(0)
+	const [market, setMarket] = useState<string>("")
 
 	const [switcher, setSwitcher] = useState<boolean>(true)
 	const [loading, setLoading] = useState<boolean>(false)
@@ -140,7 +141,7 @@ function LineGraph() {
 						</select>
 					</div>
 					<div style={{ display: "flex", flexDirection: "row", marginLeft: "1rem", alignItems: "center", marginBottom: "1rem" }}>
-						<select value={name} style={{ cursor: "pointer", border: "none", fontSize: "22px", fontWeight: "500" }}>
+						<select value={market} onChange={(e: any) => setMarket(e.target.value)} style={{ cursor: "pointer", border: "none", fontSize: "22px", fontWeight: "500" }}>
 							<option value="nse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>NSE</option>
 							<option value="bse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>BSE</option>
 						</select>
@@ -155,7 +156,7 @@ function LineGraph() {
 						<hr className={styles.rulethin} />
 					</div>
 					{
-						!loading ?
+					!loading ?
 					(switcher 
 					?
 						<div className={styles.dataCon} >
