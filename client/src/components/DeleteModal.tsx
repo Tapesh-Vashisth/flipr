@@ -11,6 +11,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { deleteUser } from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { appActions } from '../features/appSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -43,6 +44,7 @@ const inputStyle = {
 
 export default function DeleteModal() {
   const navigate = useNavigate();
+  const {setAlert} = appActions;
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
@@ -50,13 +52,22 @@ export default function DeleteModal() {
   const handleClose = () => setOpen(false);
   const [visible, setVisible] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
+  const [request, setRequest] = useState<boolean>(false);
   
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setRequest(true);
     dispatch(deleteUser({email: user.email, password: password})).unwrap().then((res) => {
       handleClose();
+      setRequest(false);
+      dispatch(appActions.setSuccess({show: true, message: "Account deleted successfully!"}));
       navigate("/auth/login");
     }).catch((err) => { 
-      alert("something went wrong");
+      if (err.response.status === 400) {
+        dispatch(setAlert({show: true, message: "Wrong password"}));
+      } else if (err.response.status === 500) {
+        dispatch(setAlert({show: true, message: "Server or Network error!"}));
+      }
+      setRequest(false);
     })
   }
 
@@ -85,7 +96,7 @@ export default function DeleteModal() {
                 <VisibilityIcon style = {{position: "absolute", right: "4px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(true)}} />   
               }
             </div>
-            <button style = {delstyle} onClick = {deleteHandler} disabled = {password ? false: true}>confirm</button>
+            <button style = {delstyle} onClick = {deleteHandler} disabled = {password && !request ? false: true}>confirm</button>
           </Stack>
         </Fade>
       </Modal>

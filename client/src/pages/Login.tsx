@@ -53,6 +53,7 @@ const Login = () => {
             emailReset();
             passwordReset();
             if (response.accessToken.length > 0) {
+                dispatch(appActions.setSuccess({show: true, message: "Successfully logged In!"}));
                 navigate('/')
             }
         })

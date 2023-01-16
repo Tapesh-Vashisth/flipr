@@ -9,7 +9,7 @@ const updateImage = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(500).send();
     }
 
     user.image = image
@@ -17,7 +17,7 @@ const updateImage = async (req: Request, res: Response) => {
     try {
         user.save()
     } catch (err) {
-        console.log(err)
+        return res.status(500).send();
     }
 
     return res

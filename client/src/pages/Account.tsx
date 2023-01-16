@@ -42,6 +42,7 @@ const Account = () => {
             password: currentPassword,
             newPassword: newPassword
         }).then((data: any) => {
+            dispatch(appActions.setSuccess({show: true, message: "Details Updated!"}))
             dispatch(userActions.setName(nowname));
             setUpdate(false);
         })
@@ -71,7 +72,7 @@ const Account = () => {
                         <input type="text" value={name} onChange = {(e) => {setName(e.target.value)}} />
                         <input type="text" value={user.email} readOnly />
                         <div style = {{position: "relative"}}>
-                            <input className={styles.inputAcc} type={visible ? "text" : 'password'} placeholder = "Current Password" value={currentPassword} onChange={(e) => {setCurrentPassword(e.target.value)}}/> 
+                            <input className={styles.inputAcc} type={visible ? "text" : 'password'} placeholder = "Enter Password to Save Changes" value={currentPassword} onChange={(e) => {setCurrentPassword(e.target.value)}}/> 
                             {
                                 visible ? 
                                 <VisibilityOffIcon style = {{position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", cursor: "pointer"}} onClick = {() => {setVisible(false)}} /> 

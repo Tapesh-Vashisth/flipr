@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface initialState {
     show: boolean
     message: string
+    type: "error" | "success"
 }
 
 const initialState: initialState = {
     show: false,
-    message: ""
+    message: "",
+    type: "error"
 }
 
 const appMainSlice = createSlice({
@@ -23,6 +25,12 @@ const appMainSlice = createSlice({
         setAlert: (state, action: PayloadAction<{show: boolean, message: string}>) => {
             state.show = action.payload.show;
             state.message = action.payload.message;
+            state.type = "error";
+        },
+        setSuccess: (state, action: PayloadAction<{show: boolean, message: string}>) => {
+            state.show = action.payload.show;
+            state.message = action.payload.message;
+            state.type = "success";
         }
     },
     extraReducers: {
