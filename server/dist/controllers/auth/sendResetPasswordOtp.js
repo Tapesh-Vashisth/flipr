@@ -31,7 +31,7 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
         user = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     if (!user) {
         return res
@@ -43,7 +43,7 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
         existingOtp = yield Otp_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     if (existingOtp) {
         let deleteExistingOtp;
@@ -52,6 +52,7 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         catch (err) {
             console.log(err);
+            return res.status(400).json({ message: 'Database Error' });
         }
     }
     const otp = new Otp_1.default({
@@ -63,6 +64,7 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (err) {
         console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     // sending a mail with nodemailer
     let transporter = nodemailer_1.default.createTransport({
@@ -80,7 +82,8 @@ const sendResetPasswordOtp = (req, res) => __awaiter(void 0, void 0, void 0, fun
     };
     transporter.sendMail(mailOptions, (err, success) => {
         if (err) {
-            console.log("Mail not sent.", err);
+            // console.log("Mail not sent.", err)
+            return res.status(400).json({ message: 'Error Sending OTP' });
         }
     });
     return res

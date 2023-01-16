@@ -12,7 +12,6 @@ const login = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).select('uuid name email password image').exec()
     } catch (err) {
-        console.log(err);
         return res.status(500).json({message: "Database not responding!"});
     }
     
@@ -47,7 +46,6 @@ const login = async (req: Request, res: Response) => {
     try {
         await user.save()
     } catch (err) {
-        console.log(err);
         return res.status(500).json({message: "Database not responding!"});
     }
 

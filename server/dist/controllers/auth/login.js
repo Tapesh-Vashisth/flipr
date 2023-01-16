@@ -23,7 +23,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         user = yield User_1.default.findOne({ email: email }).select('uuid name email password image').exec();
     }
     catch (err) {
-        console.log(err);
         return res.status(500).json({ message: "Database not responding!" });
     }
     // if no user is found with the entered email address
@@ -54,7 +53,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
     }
     catch (err) {
-        console.log(err);
         return res.status(500).json({ message: "Database not responding!" });
     }
     // creating the refresh token cookie

@@ -11,7 +11,8 @@ const resetPassword = async (req: Request, res: Response) => {
     try {
         otpDB = await Otp.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        // console.log(err)
+        return res.status(400).json({message:'Database Error'})
     }
 
     if (!otpDB) {
@@ -30,7 +31,7 @@ const resetPassword = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({message:'Database Error'})
     }
 
     if (!user) {
@@ -45,7 +46,7 @@ const resetPassword = async (req: Request, res: Response) => {
     try {
         await user.save()
     } catch (err) {
-        return res.status(400).json({message:'Some Error Occured'})
+        return res.status(400).json({message:'Database Error'})
     }
 
     return res

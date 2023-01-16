@@ -23,7 +23,8 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         otpDB = yield Otp_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        // console.log(err)
+        return res.status(400).json({ message: 'Database Error' });
     }
     if (!otpDB) {
         return res
@@ -40,7 +41,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         user = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(400).json({ message: 'Database Error' });
     }
     if (!user) {
         return res
@@ -53,7 +54,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         yield user.save();
     }
     catch (err) {
-        return res.status(400).json({ message: 'Some Error Occured' });
+        return res.status(400).json({ message: 'Database Error' });
     }
     return res
         .status(200)
