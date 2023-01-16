@@ -14,20 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/User"));
 const updateImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('update image');
     const { image, email } = req.body;
     let user;
     try {
         user = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        return res.status(500).send();
+        return res.status(404).json({ message: 'User Not Found' });
     }
     user.image = image;
     try {
-        user.save();
+        yield user.save();
     }
     catch (err) {
-        return res.status(500).send();
+        return res.status(400).json({ message: 'Some Error Occured' });
     }
     return res
         .status(200)

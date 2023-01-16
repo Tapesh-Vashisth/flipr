@@ -29,3 +29,33 @@
     justify-content: space-around;
     align-items: center;
 }
+
+.overCon{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+    justify-content: space-around;
+    width: 90%;
+}
+
+.overCon button{
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    font-weight: 500;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    min-width: 120px;
+}
+
+.overCon button:hover{
+    box-shadow: 0px 4px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    animation: zoom 180ms linear forwards;
+}
+
+
+@keyframes zoom {
+    0%{transform: scale(1);}
+    100%{transform: scale(1.04);}
+}

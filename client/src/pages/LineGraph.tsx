@@ -14,7 +14,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import FilterBar from '../components/FilterBar';
 import styles from "../styles/GraphSelect.module.css"
 import CompanyData from '../components/CompanyData';
-
+import Overview from '../components/Overview';
 function LineGraph() {
 
 	const [data, setData] = useState<Array<Object>>([])
@@ -121,6 +121,7 @@ function LineGraph() {
 				</div>
 				<CompanyData rangeString={rangeString} High52Week={parseFloat(max.toString()).toFixed(2).toString()} Low52Week={parseFloat(min.toString()).toFixed(2).toString()} HighToday={parseFloat(dayMax.toString()).toFixed(2).toString()} LowToday={parseFloat(dayMin.toString()).toFixed(2).toString()} Price={parseFloat(price.toString()).toFixed(2).toString()} boolean={boolean} date={date} Change={change} />
 				<div className={styles.lineGCon} >
+					<Overview />
 					<input type={"date"} onChange={() => {}} />
 					<FilterBar onClickButton={buttonClicked} />
 					<div style={{ maxWidth: "1000px", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", marginBottom: "0.5rem" }}>
