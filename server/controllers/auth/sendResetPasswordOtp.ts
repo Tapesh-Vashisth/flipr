@@ -14,6 +14,7 @@ const html = `
 
 const sendResetPasswordOtp = async (req: Request, res: Response) => {
     console.log("passwordOtp");
+    
     const { email } = req.body
     let user: any
     try {

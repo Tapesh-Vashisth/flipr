@@ -2,6 +2,8 @@ import { Response } from "express";
 import User from "../../models/User";
 
 const logout = async (req: any, res: Response) => {
+    console.log('logout')
+
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204);
     

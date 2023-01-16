@@ -17,7 +17,7 @@ const resetPassword = async (req: Request, res: Response) => {
     if (!otpDB) {
         return res
             .status(404)
-            .json({ message: "No otp found in database" })
+            .json({ message: "User Not Found!" })
     }
 
     if (otp !== otpDB.otp) {
@@ -45,7 +45,7 @@ const resetPassword = async (req: Request, res: Response) => {
     try {
         await user.save()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({message:'Some Error Occured'})
     }
 
     return res
@@ -54,4 +54,4 @@ const resetPassword = async (req: Request, res: Response) => {
 
 }
 
-export default resetPassword
+export default resetPassword;
