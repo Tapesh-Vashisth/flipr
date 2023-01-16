@@ -9,7 +9,7 @@ import NavFootLayout from './components/NavFootLayout';
 import ForgotPassword from './pages/ForgotPassword';
 import Account from './pages/Account';
 import AlertDismissable from './components/Alert';
-import CompanyData from './pages/CompanyPage/CompanyData';
+import CompanyData from './components/CompanyData';
 const Login  = React.lazy(() => import('./pages/Login'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const ErrorPage = React.lazy(() => import('./pages/Error404'));

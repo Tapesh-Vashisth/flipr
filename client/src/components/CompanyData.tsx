@@ -1,4 +1,4 @@
-import styles from "./CompanyData.module.css"
+import styles from "../styles/CompanyData.module.css"
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Range from "./Range";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropUp';
@@ -13,6 +13,7 @@ type PropType = {
     date: string
     Change: string
     boolean: boolean
+    rangeString: string
 }
 
 const CompanyData = (props: PropType) => {
@@ -25,11 +26,12 @@ const CompanyData = (props: PropType) => {
                     <div>
                         <h1>{props.Price}</h1>
                         <h3 className={styles.header} style={{color:"green"}} > {props.boolean ? <ArrowDropUpIcon fontSize="large" sx={{display:"inline" }} /> : <ArrowDropUpIcon fontSize="large" sx={{display: "inline"}} /> } {props.Change} </h3>
-                        <label className={styles.date} >As on {props.date}</label>
+                        <label className={styles.date} >As on {props.date}</label> <br />
+                        <label className={styles.date}>Range = {props.rangeString}</label>
                     </div>
                     <div>
-                        <Range period="Days" high={props.HighToday} low={props.LowToday} />
-                        <Range period="52 Week" high={props.High52Week} low={props.Low52Week} />
+                        <Range period="Day" high={props.HighToday} low={props.LowToday} />
+                        <Range period="Range" high={props.High52Week} low={props.Low52Week} />
                     </div>
                 </div>
                 <hr className={styles.ruler} />

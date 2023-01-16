@@ -13,7 +13,7 @@ import { useTheme, useMediaQuery } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import FilterBar from '../components/FilterBar';
 import styles from "../styles/GraphSelect.module.css"
-import CompanyData from './CompanyPage/CompanyData';
+import CompanyData from '../components/CompanyData';
 
 function LineGraph() {
 
@@ -26,10 +26,9 @@ function LineGraph() {
 	const [change, setChange] = useState<string>("")
 	const [boolean, setBoolean] = useState<boolean>(true)
 
-	// const [filter, setFilter] = useState<String>("");
-
 	// states for the filters
-	const [range, setRange] = useState<string>("365")
+	const [range, setRange] = useState<string>("1470")
+	const [rangeString, setRangeString] = useState<string>("MAX")
 	const [date, setDate] = useState<string>("2020-02-13")
 	const [name, setName] = useState<string>("eichermot")
 
@@ -41,29 +40,42 @@ function LineGraph() {
 		return res.data
 	}
 
+	const handleDate = (e: any) => {
+		const dateValue = e.target.value
+		console.log("date is : ", dateValue)
+		setDate(dateValue)
+	}
+
 	const buttonClicked=(event:any)=>{
 		console.log(event.target.id!);
 		const time = event.target.id!
 		if (time === "MAX") {
-			setRange("1458")
+			setRange("1470")
+			setRangeString("MAX")
 		}
 		if (time === "2Y") {
 			setRange("730")
+			setRangeString("2Y")
 		}
 		if (time === "1Y") {
 			setRange("365")
+			setRangeString("1Y")
 		}
 		if (time === "6M") {
 			setRange("182")
+			setRangeString("6M")
 		}
 		if (time === "3M") {
 			setRange("91")
+			setRangeString("#M")
 		}
 		if (time === "1M") {
 			setRange("31")
+			setRangeString("1M")
 		}
 		if (time === "15D") {
 			setRange("15")
+			setRangeString("15D")
 		}
 	}
 
@@ -107,54 +119,49 @@ function LineGraph() {
 					</select>
 					<CircleIcon style={{ color: "red", marginLeft: "1rem" }} />
 				</div>
-				<div></div>
-				<CompanyData High52Week={parseFloat(max.toString()).toFixed(2).toString()} Low52Week={parseFloat(min.toString()).toFixed(2).toString()} HighToday={parseFloat(dayMax.toString()).toFixed(2).toString()} LowToday={parseFloat(dayMin.toString()).toFixed(2).toString()} Price={parseFloat(price.toString()).toFixed(2).toString()} boolean={boolean} date={date} Change={change} />
+				<CompanyData rangeString={rangeString} High52Week={parseFloat(max.toString()).toFixed(2).toString()} Low52Week={parseFloat(min.toString()).toFixed(2).toString()} HighToday={parseFloat(dayMax.toString()).toFixed(2).toString()} LowToday={parseFloat(dayMin.toString()).toFixed(2).toString()} Price={parseFloat(price.toString()).toFixed(2).toString()} boolean={boolean} date={date} Change={change} />
 				<div className={styles.lineGCon} >
-				<div style={{ maxWidth: "1000px", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-					<ResponsiveContainer width={"100%"} aspect={2}>
-						<AreaChart data={data}>
-							<defs>
-								<linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-									<stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-								</linearGradient>
-								<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-									<stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-								</linearGradient>
-							</defs>
-							<CartesianGrid stroke="#ccc" strokeDasharray="4 4 4 4" />
-							<XAxis dataKey="date" angle={0} interval={!sm ? Number(range) / 12 : Number(range) / 4}>
-								<Label value="Date" offset={-5} position="insideBottom" />
-							</XAxis>
-							<YAxis dataKey="price" label={{ value: 'Price', angle: -90, position: 'insideLeft', textAnchor: 'middle' }}>
-								{/* <Label value={"Price"} position="insideLeft" /> */}
-							</YAxis>
-							<Legend width={100} verticalAlign="top" align="right" />
-							<Tooltip />
-							<Area
-								stroke="#8884d8"
-								fillOpacity={1}
-								fill="url(#colorUv)"
-								dataKey="price"
-								type="monotoneX"
-								legendType="line"
-								strokeWidth={3}
-								// stroke="#8884d8"
-								// stroke="black"
-								dot={false}
-								// fill="black"
-								isAnimationActive={true}
-								animationBegin={0}
-								animationDuration={1000}
-								animationEasing={"ease-in"}
-							/>
-							{/* <Line dataKey="fees"
-							stroke="red" activeDot={{ r: 8 }} /> */}
-						</AreaChart>
-					</ResponsiveContainer>
-				</div>
-				<FilterBar onClickButton={buttonClicked} />
+					<input type={"date"} onChange={() => {}} />
+					<FilterBar onClickButton={buttonClicked} />
+					<div style={{ maxWidth: "1000px", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", marginBottom: "0.5rem" }}>
+						<ResponsiveContainer width={"100%"} aspect={2}>
+							<AreaChart data={data}>
+								<defs>
+									<linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+										<stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+									</linearGradient>
+									<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+										<stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+									</linearGradient>
+								</defs>
+								<CartesianGrid stroke="#ccc" strokeDasharray="4 4 4 4" />
+								<XAxis dataKey="date" angle={0} interval={!sm ? Number(range) / 50 : Number(range) / 4}>
+									<Label value="Date" offset={-5} position="insideBottom" />
+								</XAxis>
+								<YAxis dataKey="price" label={{ value: 'Price', angle: -90, position: 'insideLeft', textAnchor: 'middle' }}>
+									{/* <Label value={"Price"} position="insideLeft" /> */}
+								</YAxis>
+								<Legend width={100} verticalAlign="top" align="right" />
+								<Tooltip />
+								<Area
+									stroke="#8884d8"
+									fillOpacity={1}
+									fill="url(#colorUv)"
+									dataKey="price"
+									type="monotoneX"
+									legendType="line"
+									strokeWidth={3}
+									dot={false}
+									isAnimationActive={true}
+									animationBegin={0}
+									animationDuration={1000}
+									animationEasing={"ease-in"}
+								/>
+							</AreaChart>
+						</ResponsiveContainer>
+					</div>
 			</div>
 		</div>
 	);

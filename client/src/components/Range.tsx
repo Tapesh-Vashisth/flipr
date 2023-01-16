@@ -1,9 +1,9 @@
-import styles from "./Range.module.css"
+import styles from "../styles/Range.module.css"
 
-const Range = (props) => {
+const Range = (props: any) => {
     return (
         <div className={styles.rangeCon} >
-            <h2>{props.period} Range</h2>
+            <h2>{props.period} Statistics</h2>
             <div>
                 <div className={styles.values} >
                     <h3>{props.low}</h3>
