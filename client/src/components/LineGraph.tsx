@@ -6,6 +6,7 @@ import {
 	Line,
 	XAxis,
 	YAxis,
+	Label,
 	CartesianGrid
 } from 'recharts';
 
@@ -45,16 +46,20 @@ const pdata = [
 
 function LineGraph() {
 	return (
-		<>
+		<div style={{width:'600px',height:'1000px',margin:'100px'}}>
 			<h1 className="text-heading">
 				Line Chart Using Rechart
 			</h1>
-			<ResponsiveContainer width="100%" aspect={3}>
-				<LineChart data={pdata} margin={{ right: 300 }}>
-					<CartesianGrid />
-					<XAxis label={'date'} dataKey="name" />
-					<YAxis label={'closing price'}></YAxis>
-					<Legend />
+			<ResponsiveContainer width="100%" height={250} aspect={3}>
+				<LineChart style={{height:500,width:800}} margin={{top:5,bottom:20,left:10}} data={pdata}>
+					<CartesianGrid width={1000}/>
+					<XAxis dataKey="name" tickCount={3}>
+						<Label value="date" offset={5} style={{textAnchor:'middle'}} position="bottom" />
+					</XAxis>
+					<YAxis orientation='left' interval={0}>
+						<Label value="closing price" style={{textAnchor:'middle'}} angle={270} offset={5} position="left" />
+					</YAxis>
+					{/* <Legend /> */}
 					<Tooltip />
 					<Line dataKey="student"
 						stroke="black" />
@@ -62,7 +67,7 @@ function LineGraph() {
 						stroke="red" activeDot={{ r: 8 }} /> */}
 				</LineChart>
 			</ResponsiveContainer>
-		</>
+		</div>
 	);
 }
 
