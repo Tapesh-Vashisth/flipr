@@ -175,7 +175,7 @@ const ForgotPassword = () => {
                         <NavLink to = "/auth/signup">
                             <button>Sign Up</button>    
                         </NavLink>
-                        <span> || </span>
+                        <span>||</span>
                         <NavLink to="/auth/login">
                             <button>Login</button>
                         </NavLink>

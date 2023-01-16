@@ -39,7 +39,7 @@
 }
 
 .overCon button{
-    background-color: transparent;
+    background-color: white;
     border: none;
     font-size: 1.2rem;
     letter-spacing: 1px;
@@ -54,8 +54,20 @@
     animation: zoom 180ms linear forwards;
 }
 
+.navbarBack{
+    width: 100%;
+     background: #1d1d1d;
+     height:75px;
+}
+
 
 @keyframes zoom {
     0%{transform: scale(1);}
     100%{transform: scale(1.04);}
+}
+
+@media (max-width:520px) {
+    .navbarBack{
+         height:100px;
+    }
 }

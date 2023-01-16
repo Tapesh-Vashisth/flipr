@@ -46,7 +46,7 @@ function LineGraph() {
 		setDate(dateValue)
 	}
 
-	const buttonClicked=(event:any)=>{
+	const buttonClicked = (event: any) => {
 		console.log(event.target.id!);
 		const time = event.target.id!
 		if (time === "MAX") {
@@ -96,7 +96,7 @@ function LineGraph() {
 			setPrice(data[0].data[3])
 			setData(arr)
 			setMax(data[data.length - 1].max)
-			setMin(data[data.length -1].min)
+			setMin(data[data.length - 1].min)
 			const changeInPrice = data[0].data[0] - data[1].data[3]
 			if (changeInPrice >= 0) setBoolean(true)
 			else setBoolean(false)
@@ -106,7 +106,9 @@ function LineGraph() {
 	}, [, name, range, date])
 
 	return (
-			<div style={{ width: "100%", padding: "120px 0px 110px 0px",  background: "#FFC3A1" }}>
+		<>
+			<div className={styles.navbarBack} ></div>
+			<div style={{ width: "100%", padding: "30px 0px 110px 0px", background: "#e2f5ff" }}>
 				<div style={{ display: "flex", flexDirection: "row", marginLeft: "5rem", alignItems: "center", marginBottom: "1rem" }}>
 					<select onChange={(e: any) => setName(e.target.value)} value={name} style={{ border: "none", fontSize: "22px", fontWeight: "500" }}>
 						<option value="reliance" style={{ border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>RELIANCE</option>
@@ -122,7 +124,7 @@ function LineGraph() {
 				<CompanyData rangeString={rangeString} High52Week={parseFloat(max.toString()).toFixed(2).toString()} Low52Week={parseFloat(min.toString()).toFixed(2).toString()} HighToday={parseFloat(dayMax.toString()).toFixed(2).toString()} LowToday={parseFloat(dayMin.toString()).toFixed(2).toString()} Price={parseFloat(price.toString()).toFixed(2).toString()} boolean={boolean} date={date} Change={change} />
 				<div className={styles.lineGCon} >
 					<Overview />
-					<input type={"date"} onChange={() => {}} />
+					<input type={"date"} onChange={() => { }} />
 					<FilterBar onClickButton={buttonClicked} />
 					<div style={{ maxWidth: "1000px", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", marginBottom: "0.5rem" }}>
 						<ResponsiveContainer width={"100%"} aspect={2}>
@@ -163,8 +165,9 @@ function LineGraph() {
 							</AreaChart>
 						</ResponsiveContainer>
 					</div>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 

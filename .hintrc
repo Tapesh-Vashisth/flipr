@@ -4,6 +4,13 @@
   ],
   "hints": {
     "no-inline-styles": "off",
-    "axe/forms": "off"
+    "axe/forms": "off",
+    "button-type": "off",
+    "axe/name-role-value": [
+      "default",
+      {
+        "button-name": "off"
+      }
+    ]
   }
 }
