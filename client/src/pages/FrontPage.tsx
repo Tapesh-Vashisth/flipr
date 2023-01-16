@@ -5,7 +5,6 @@ const FrontPage = () => {
 
     return (
         <>
-
             <div className={styles.backimageContainer} id="backGroundContainer">
 
                 <div className={styles.introContainer} >
@@ -26,10 +25,7 @@ const FrontPage = () => {
                         <IndividualIntervalsExample />
                     </div>
                 </div>
-
             </div>
-
-
         </>
 
 

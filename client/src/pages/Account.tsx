@@ -48,7 +48,7 @@ const Account = () => {
         .catch((err: any) => {
             const status = err.response.status
             if (status == 409) {
-                dispatch(setAlert({show: true, message: "No such user exists!"}))
+                dispatch(setAlert({show: true, message: "Incorrect Password!"}))
             }
             setUpdate(false);
         })

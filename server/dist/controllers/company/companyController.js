@@ -18,12 +18,12 @@ const fs_1 = __importDefault(require("fs"));
 const csv_parse_1 = require("csv-parse");
 const setCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = [];
-    const b = req.query;
-    // console.log(b);
+    const query = req.query;
+    // console.log(query);
     let companyName = '';
-    if (b.name) {
-        if (fs_1.default.existsSync(`./Data/${b.name.toString().toUpperCase()}.csv`)) {
-            companyName = b.name.toString().toUpperCase();
+    if (query.name) {
+        if (fs_1.default.existsSync(`./Data/${query.name.toString().toUpperCase()}.csv`)) {
+            companyName = query.name.toString().toUpperCase();
             // console.log(companyName)
             fs_1.default.createReadStream(`./Data/${companyName}.csv`)
                 .pipe((0, csv_parse_1.parse)({ delimiter: ",", from_line: 2 }))
@@ -67,19 +67,22 @@ exports.setCompanyDetails = setCompanyDetails;
 const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     console.log("company data");
-    const b = req.query;
-    const name = (_a = b.name) === null || _a === void 0 ? void 0 : _a.toString().toUpperCase();
-    console.log("b is : ", b);
-    const limit = Number(b.limit);
+    const query = req.query;
+    console.log("query is : ", query);
+    const name = (_a = query.name) === null || _a === void 0 ? void 0 : _a.toString().toUpperCase();
+    // console.log(query);
+    const limit = Number(query.limit);
     let date = '';
-    if (b.date) {
+    if (query.date) {
         const range = 1;
-        if (b.range) {
+        if (query.range) {
             const company = yield Company_1.default.findOne({ companyName: name }, { data: { _id: 0 } });
-            let parts = (_b = b.date) === null || _b === void 0 ? void 0 : _b.toString().split('-');
+            if (!company)
+                return res.status(404).json({ message: 'company not found' });
+            let parts = (_b = query.date) === null || _b === void 0 ? void 0 : _b.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
             const prev = new Date(date);
-            const prev_date = new Date(prev - (Number(b.range)) * 86400000);
+            const prev_date = new Date(prev - (Number(query.range)) * 86400000);
             console.log(prev_date);
             let maxi = Number.MIN_VALUE;
             let mini = Number.MAX_VALUE;
@@ -98,7 +101,7 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         else {
             const company = yield Company_1.default.findOne({ companyName: name }, { data: { _id: 0 } });
-            let parts = (_c = b.date) === null || _c === void 0 ? void 0 : _c.toString().split('-');
+            let parts = (_c = query.date) === null || _c === void 0 ? void 0 : _c.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
             const prev = new Date(date);
             const prev_date = new Date(prev - (Number(range)) * 86400000);
@@ -120,6 +123,8 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
     }
     else {
+        if (!limit)
+            return res.status(400).json({ message: 'enter a valid query' });
         const company = yield Company_1.default.findOne({ companyName: name }).slice('data', limit);
         return res.status(200).json(company);
     }

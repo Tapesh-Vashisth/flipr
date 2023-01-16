@@ -49,7 +49,6 @@ const Navbar = () => {
                         </NavLink>
                     </div>
                     <div className={styles.optionsContainer}>
-                        <button>Stocks</button>
                         <button>Companies</button>
                         <ProfileDropdown />
                     </div>
