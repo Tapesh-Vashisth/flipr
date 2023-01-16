@@ -127,16 +127,24 @@ function LineGraph() {
 		<>
 			<div className={styles.navbarBack} ></div>
 			<div style={{ width: "100%", padding: "30px 0px 110px 0px", background: "#e2f5ff" }}>
-				<div style={{ display: "flex", flexDirection: "row", marginLeft: "5rem", alignItems: "center", marginBottom: "1rem" }}>
-					<select onChange={(e: any) => setName(e.target.value)} value={name} style={{ cursor: "pointer", border: "none", fontSize: "22px", fontWeight: "500" }}>
-						<option value="reliance" style={{ border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>RELIANCE</option>
-						<option value="eichermot" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>EICHERMOT</option>
-						<option value="cipla" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>CIPLA</option>
-						<option value="bse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>BSE</option>
-						<option value="ashokley" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>ASHOKLEY</option>
-						<option value="nse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>NSE</option>
-						<option value="tatasteel" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>TATASTEEL</option>
-					</select>
+				<div style={{ display: "flex", flexDirection: "row" }}>
+					<div style={{ display: "flex", flexDirection: "row", marginLeft: "5rem", alignItems: "center", marginBottom: "1rem" }}>
+						<select onChange={(e: any) => setName(e.target.value)} value={name} style={{ cursor: "pointer", border: "none", fontSize: "22px", fontWeight: "500" }}>
+							<option value="reliance" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>RELIANCE</option>
+							<option value="eichermot" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }}>EICHERMOT</option>
+							<option value="cipla" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }}>CIPLA</option>
+							<option value="bse" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }}>BSE</option>
+							<option value="ashokley" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }}>ASHOKLEY</option>
+							<option value="nse" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }}>NSE</option>
+							<option value="tatasteel" style={{ cursor: "pointer", border: "none", fontSize: "18px", fontWeight: "400" }}>TATASTEEL</option>
+						</select>
+					</div>
+					<div style={{ display: "flex", flexDirection: "row", marginLeft: "1rem", alignItems: "center", marginBottom: "1rem" }}>
+						<select value={name} style={{ cursor: "pointer", border: "none", fontSize: "22px", fontWeight: "500" }}>
+							<option value="nse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>NSE</option>
+							<option value="bse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>BSE</option>
+						</select>
+					</div>
 				</div>
 				<CompanyData rangeString={rangeString} High52Week={parseFloat(max.toString()).toFixed(2).toString()} Low52Week={parseFloat(min.toString()).toFixed(2).toString()} HighToday={parseFloat(dayMax.toString()).toFixed(2).toString()} LowToday={parseFloat(dayMin.toString()).toFixed(2).toString()} Price={parseFloat(price.toString()).toFixed(2).toString()} boolean={boolean} date={date} Change={change} />
 				<div className={styles.lineGCon} >
