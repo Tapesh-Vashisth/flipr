@@ -12,12 +12,18 @@ import axios from 'axios';
 import { useTheme, useMediaQuery } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import styles from "../styles/GraphSelect.module.css"
+import CompanyData from '../pages/CompanyPage/CompanyData';
 
 function LineGraph() {
 
 	const [data, setData] = useState<Array<Object>>([])
 	const [max, setMax] = useState<number>(0)
 	const [min, setMin] = useState<number>(0)
+	const [dayMax, setDayMax] = useState<number>(0)
+	const [dayMin, setDayMin] = useState<number>(0)
+	const [price, setPrice] = useState<number>(0)
+	const [change, setChange] = useState<string>("")
+	const [boolean, setBoolean] = useState<boolean>(true)
 
 	// states for the filters
 	const [range, setRange] = useState<string>("720")
@@ -38,15 +44,23 @@ function LineGraph() {
 			let arr: Array<Object> = []
 			for (let i=0; i<data.length-1; i++) {
 				const obj = {
-					date: data[i].date.split(" ")[1] + " " + data[i].date.split(" ")[3],
+					date: data[i].date.split(" ")[1] + " " + data[i].date.split(" ")[2] + " " + data[i].date.split(" ")[3],
 					price: Number(data[i].data[3])
 				}
 				arr.push(obj)
 			}
 			console.log(arr)
+			setDayMax(data[0].data[1])
+			setDayMin(data[0].data[2])
+			setPrice(data[0].data[3])
 			setData(arr)
 			setMax(data[data.length - 1].max)
 			setMin(data[data.length -1].min)
+			const changeInPrice = data[0].data[0] - data[1].data[3]
+			if (changeInPrice >= 0) setBoolean(true)
+			else setBoolean(false)
+			const percentChange = changeInPrice / data[1].data[3] * 100
+			setChange(changeInPrice.toFixed(2).toString() + "(" + percentChange.toFixed(2).toString() + "%)")
 		})
 	}, [,name,range,date])
 	
@@ -54,7 +68,7 @@ function LineGraph() {
 
 	return (
 		<div style={{ width: "100%" }}>
-			<div style={{ display: "flex", flexDirection: "row", marginLeft: "5rem", alignItems: "center", marginBottom: "1rem" }}>
+			<div style={{ display: "flex", flexDirection: "row", marginLeft: "5rem", alignItems: "center", marginBottom: "-1rem", marginTop: "1rem" }}>
 				<select onChange={(e: any) => setName(e.target.value)} value={name} style={{ border: "none", fontSize: "22px", fontWeight: "500" }}>
 					<option value="reliance" style={{ border: "none", fontSize: "18px", fontWeight: "400" }} defaultChecked>RELIANCE</option>
 					<option value="eichermot" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>EICHERMOT</option>
@@ -64,9 +78,8 @@ function LineGraph() {
 					<option value="nse" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>NSE</option>
 					<option value="tatasteel" style={{ border: "none", fontSize: "18px", fontWeight: "400" }}>TATASTEEL</option>
 				</select>
-				<CircleIcon style={{ color: "red", marginLeft: "1rem" }} />
 			</div>
-			<div></div>
+			<CompanyData High52Week={parseFloat(max.toString()).toFixed(2).toString()} Low52Week={parseFloat(min.toString()).toFixed(2).toString()} HighToday={parseFloat(dayMax.toString()).toFixed(2).toString()} LowToday={parseFloat(dayMin.toString()).toFixed(2).toString()} Price={parseFloat(price.toString()).toFixed(2).toString()} boolean={boolean} date={date} Change={change} />
 			<ResponsiveContainer width="95%" aspect={2}>
 				<AreaChart data={data}>
 				<defs>
@@ -84,7 +97,6 @@ function LineGraph() {
 						<Label value="Date" offset={-5} position="insideBottom" />
 					</XAxis>
 					<YAxis dataKey="price" label={{ value: 'Price', angle: -90, position: 'insideLeft', textAnchor: 'middle' }}>
-						{/* <Label value={"Price"} position="insideLeft" /> */}
 					</YAxis>
 					<Legend width={100} wrapperStyle={{ top: 40, right: 20, backgroundColor: '#f5f5f5', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
 					<Tooltip />
@@ -96,17 +108,12 @@ function LineGraph() {
 						type="monotoneX"
 						legendType="line"
 						strokeWidth={3}
-						// stroke="#8884d8"
-						// stroke="black"
 						dot={false}
-						// fill="black"
 						isAnimationActive={true}
 						animationBegin={0}
 						animationDuration={1000}
 						animationEasing={"ease-in"}
 					/>
-					{/* <Line dataKey="fees"
-						stroke="red" activeDot={{ r: 8 }} /> */}
 				</AreaChart>
 			</ResponsiveContainer>
 		</div>

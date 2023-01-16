@@ -55,7 +55,7 @@ function App() {
         <Route path = "/chart" element={<LineGraph />}>
         </Route>
 
-        <Route path='/data' element={<><CompanyData /></>}></Route>
+        {/* <Route path='/data' element={<><CompanyData /></>}></Route> */}
 
         <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
           <ErrorPage />
