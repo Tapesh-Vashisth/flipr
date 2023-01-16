@@ -66,7 +66,9 @@ const setCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.setCompanyDetails = setCompanyDetails;
 const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
+    console.log("company data");
     const query = req.query;
+    console.log("query is : ", query);
     const name = (_a = query.name) === null || _a === void 0 ? void 0 : _a.toString().toUpperCase();
     // console.log(query);
     const limit = Number(query.limit);

@@ -59,7 +59,9 @@ const setCompanyDetails = async (req: Request, res: Response) => {
 }
 
 const getCompanyDetails = async (req: Request, res: Response) => {
+    console.log("company data")
     const query = req.query;
+    console.log("query is : ", query);
     const name = query.name?.toString().toUpperCase();
     // console.log(query);
     const limit = Number(query.limit);

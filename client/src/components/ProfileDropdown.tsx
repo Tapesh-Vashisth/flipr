@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { logout } from '../features/user/userSlice';
 import PersonIcon from '@mui/icons-material/Person';
+import { appActions } from '../features/appSlice';
 
 const ProfileDropdown = () => {
     const user = useAppSelector((state) => state.user);
@@ -11,9 +12,10 @@ const ProfileDropdown = () => {
     
     const handleLogout = (event: React.MouseEvent<HTMLDivElement>) => {
         dispatch(logout()).unwrap().then(() => {
+            dispatch(appActions.setSuccess({show: true, message: "logged out Succesfully"}));
             navigate("/auth/login");
         }).catch((err) => {
-            alert("logout failed");
+            dispatch(appActions.setAlert({show: true, message: "logout failed!"}))
         });
     }
 

@@ -10,22 +10,24 @@ const deleteAccount = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        return res.status(500).send();
     }
-
+    
     const passwordCompare = await bcrypt.compare(password, user.password)
-
+    
     if (!passwordCompare) {
         return res
-            .status(400)
-            .json({ message: "Password is wrong!" })
+        .status(400)
+        .json({ message: "Password is wrong!" })
     }
-
+    
     let deletion: any
     try {
         deletion = await User.findOneAndDelete({ email: email }).exec()
     } catch (err) {
         console.log(err)
+        return res.status(500).send();
     }
 
     return res

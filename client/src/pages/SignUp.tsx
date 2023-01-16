@@ -43,11 +43,8 @@ const SignUp = () => {
         inputBlurHandler: passwordBlurHandler,
         reset: passwordReset
     } = useInput((value: String) => value.trim() !== '');
-
-    
     
     const otpInputHandler = async () => {
-        setEnableOTPButton(false)
         try {
             const response = await axiosInstance.post("/users/sendotp", {email: enteredEmail});
             setgetOtpValid(true);
@@ -86,6 +83,7 @@ const SignUp = () => {
             emailReset();
             passwordReset();
             if (response.message === "User signed up successfully!") {
+                dispatch(appActions.setSuccess({show: true, message: "Successfully Registered!"}));
                 navigate("/auth/login");
             } 
         }).catch((err) => {
