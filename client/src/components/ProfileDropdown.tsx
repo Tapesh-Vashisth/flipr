@@ -12,9 +12,9 @@ const ProfileDropdown = () => {
     
     const handleLogout = (event: React.MouseEvent<HTMLDivElement>) => {
         dispatch(logout()).unwrap().then(() => {
-            dispatch(appActions.setSuccess({show: true, message: "logged out Succesfully"}));
             navigate("/auth/login");
-        }).catch((err) => {
+            dispatch(appActions.setSuccess({show: true, message: "logged out Succesfully"}));
+        }).catch((err: any) => {
             if (err.message === "Network Error"){ 
                 dispatch(appActions.setAlert({show: true, message: "Network error/Server Down!"}));
             } else {

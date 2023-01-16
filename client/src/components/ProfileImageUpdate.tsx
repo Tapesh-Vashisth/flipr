@@ -18,9 +18,13 @@ const ProfileImageUpdate = () => {
     const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const file = e.target.files[0];
-            let base64 = await convertToBase64(file);
-            setImage(base64);
-            setChange(true);
+            if (file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg") {
+                let base64 = await convertToBase64(file);
+                setImage(base64);
+                setChange(true);
+            } else {
+                dispatch(appActions.setAlert({show: true, message: "Allowed types - jpeg, png, jpg"}));
+            }
         }
     }
 

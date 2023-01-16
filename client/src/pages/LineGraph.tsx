@@ -15,8 +15,12 @@ import styles from "../styles/GraphSelect.module.css"
 import CompanyData from '../components/CompanyData';
 import OverviewData from '../components/OverviewData';
 import CircularProgress from '@mui/material/CircularProgress';
-function LineGraph() {
+import { appActions } from '../features/appSlice';
+import { useAppDispatch } from '../store/hooks';
 
+
+function LineGraph() {
+	const dispatch = useAppDispatch();
 	const [data, setData] = useState<Array<Object>>([])
 	const [max, setMax] = useState<number>(0)
 	const [min, setMin] = useState<number>(0)
@@ -41,13 +45,20 @@ function LineGraph() {
 	const sm = useMediaQuery(theme.breakpoints.down(800))
 
 	const getData = async () => {
-		const res = await axiosInstance.get(`/company?name=${name}&date=${date}&range=${range}`)
-		return res.data
+		try {
+			const res = await axiosInstance.get(`/company?name=${name}&date=${date}&range=${range}`)
+			return res.data;
+		} catch (err: any) {
+			if (err.message === "Network Error"){ 
+                dispatch(appActions.setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(appActions.setAlert({show: true, message: err.response.data.message}));
+            }
+		}
 	}
 
 	const handleDate = (e: any) => {
 		const dateValue = e.target.value
-		console.log("date is : ", dateValue, typeof dateValue)
 		setDate(dateValue)
 	}
 
@@ -96,7 +107,6 @@ function LineGraph() {
 				}
 				arr.push(obj)
 			}
-			console.log(arr)
 			setDayMax(data[data.length - 2].data[1])
 			setDayMin(data[data.length - 2].data[2])
 			setPrice(data[data.length - 2].data[3])
