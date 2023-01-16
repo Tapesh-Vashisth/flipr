@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../../models/User";
 
 const updateImage = async (req: Request, res: Response) => {
+    console.log('update image')
 
     const { image, email } = req.body
 
@@ -9,15 +10,15 @@ const updateImage = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        return res.status(500).send();
+        return res.status(404).json({message:'User Not Found'});
     }
 
-    user.image = image
+    user.image = image;
 
     try {
-        user.save()
+        await user.save();
     } catch (err) {
-        return res.status(500).send();
+        return res.status(400).json({message:'Some Error Occured'});
     }
 
     return res
@@ -26,4 +27,4 @@ const updateImage = async (req: Request, res: Response) => {
 
 }
 
-export default updateImage
+export default updateImage;

@@ -13,6 +13,7 @@ const html = `
 `
 
 const sendVerifyEmailOtp = async (req: Request, res: Response) => {
+    console.log('send Verify Email Otp')
 
     const { email } = req.body
 

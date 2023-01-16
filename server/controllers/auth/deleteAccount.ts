@@ -3,7 +3,7 @@ import User from "../../models/User";
 import bcrypt from "bcryptjs"
 
 const deleteAccount = async (req: Request, res: Response) => {
-
+    console.log('delete account')
     const { email, password } = req.body
 
     let user: any
@@ -11,14 +11,14 @@ const deleteAccount = async (req: Request, res: Response) => {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
         console.log(err);
-        return res.status(500).send();
+        return res.status(404).json({message:'User Not Found'});
     }
     
     const passwordCompare = await bcrypt.compare(password, user.password)
     
     if (!passwordCompare) {
         return res
-        .status(400)
+        .status(404)
         .json({ message: "Password is wrong!" })
     }
     
@@ -26,8 +26,8 @@ const deleteAccount = async (req: Request, res: Response) => {
     try {
         deletion = await User.findOneAndDelete({ email: email }).exec()
     } catch (err) {
-        console.log(err)
-        return res.status(500).send();
+        // console.log(err)
+        return res.status(400).json({messge:'Some Error Occured'});
     }
 
     return res

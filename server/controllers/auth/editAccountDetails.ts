@@ -11,7 +11,7 @@ const editAccountDetails: any = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(404).json({message:'User Not Found'});
     }
 
     if (name !== user.name) {
@@ -32,9 +32,9 @@ const editAccountDetails: any = async (req: Request, res: Response) => {
     }
 
     try {
-        user.save()
+        await user.save();
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({message:'Some Error Occured'});
     }
 
     return res
@@ -42,4 +42,4 @@ const editAccountDetails: any = async (req: Request, res: Response) => {
         .json({ message: "Account details changed successfully!" })
 }
 
-export default editAccountDetails
+export default editAccountDetails;  ``
