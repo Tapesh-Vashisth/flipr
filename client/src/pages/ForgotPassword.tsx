@@ -64,6 +64,7 @@ const ForgotPassword = () => {
             const res = await axiosInstance.post("/users/resetpassword", {email: enteredEmail, otp: otp, password: enteredpassword1});
             console.log(res)
             if (res.status == 200) {
+                dispatch(appActions.setSuccess({show: true, message: "password successfully updated!"}));
                 navigate('/auth/login')
             }
         } catch (err: any) {

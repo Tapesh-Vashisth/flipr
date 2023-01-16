@@ -20,14 +20,14 @@ const updateImage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         user = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
+        return res.status(500).send();
     }
     user.image = image;
     try {
         user.save();
     }
     catch (err) {
-        console.log(err);
+        return res.status(500).send();
     }
     return res
         .status(200)

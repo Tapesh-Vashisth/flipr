@@ -22,6 +22,7 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
+        return res.status(500).send();
     }
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
     if (!passwordCompare) {
@@ -35,6 +36,7 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
+        return res.status(500).send();
     }
     return res
         .status(200)

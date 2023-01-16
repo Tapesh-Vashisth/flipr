@@ -83,6 +83,7 @@ const SignUp = () => {
             emailReset();
             passwordReset();
             if (response.message === "User signed up successfully!") {
+                dispatch(appActions.setSuccess({show: true, message: "Successfully Registered!"}));
                 navigate("/auth/login");
             } 
         }).catch((err) => {

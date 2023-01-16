@@ -3,11 +3,15 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import convertToBase64 from '../helper/ConvertToBase64';
 import axiosInstance from "../api/axios";
 import { userActions } from '../features/user/userSlice';
+import { appActions } from '../features/appSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 const ProfileImageUpdate = () => {
+    const navigate = useNavigate();
     const user = useAppSelector((state) => state.user);
     const [image, setImage] = useState<any>(user.image ? user.image : null);
+    const {setAlert} = appActions;
     const [change, setChange] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
@@ -22,7 +26,7 @@ const ProfileImageUpdate = () => {
 
     const style = {
         padding: "0.5rem",
-        color: "green",
+        color: "black",
         marginTop: "1rem",
         boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
         width: "70%",
@@ -32,9 +36,9 @@ const ProfileImageUpdate = () => {
     }
 
     const disStyle = {
-        opacity: 0.5,
+        opacity: 0.8,
         padding: "0.5rem",
-        color: "green",
+        color: "black",
         marginTop: "1rem",
         boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
         width: "70%",
@@ -47,10 +51,16 @@ const ProfileImageUpdate = () => {
         setChange(false);
         try{
             await axiosInstance.post("/users/updateimage", {image, email: user.email});
+            dispatch(appActions.setSuccess({show: true, message: "Profile Image updated!"}));
             dispatch(userActions.setImage(image));
-            setChange(true);
+            setChange(false);
         } catch (err: any) {
-            alert("something went wrong");
+            if (err.response.status === 500){
+                setAlert({show: true, message: "network error"});
+            } else if (err.response.status === 403) {
+                setAlert({show: true, message: "you are logged out"});
+                navigate("/auth/login");
+            }
             setChange(true);
         }
     }
@@ -65,7 +75,7 @@ const ProfileImageUpdate = () => {
                     <div style = {{width: "150px", height: "150px", borderRadius: "100%", border: "2px solid gray", display: "flex", alignItems: "center", justifyContent: "center"}}>Add Profile</div>
                 }
             </label>
-            <button id = "probtn" style = {change ? style: disStyle} onClick = {updateImage} disabled = {change ? false: true}>update image</button>
+            <button id = "probtn" style = {change ? style: disStyle} onClick = {updateImage} disabled = {change ? false: true}>Update Image</button>
         </>
     )
 }
