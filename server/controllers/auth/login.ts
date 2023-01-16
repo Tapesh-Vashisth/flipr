@@ -12,7 +12,8 @@ const login = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).select('uuid name email password image').exec()
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        return res.status(500).json({message: "Database not responding!"});
     }
     
     // if no user is found with the entered email address
@@ -46,7 +47,8 @@ const login = async (req: Request, res: Response) => {
     try {
         await user.save()
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        return res.status(500).json({message: "Database not responding!"});
     }
 
     // creating the refresh token cookie

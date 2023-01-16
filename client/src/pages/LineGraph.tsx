@@ -42,12 +42,10 @@ function LineGraph() {
 
 	const handleDate = (e: any) => {
 		const dateValue = e.target.value
-		console.log("date is : ", dateValue)
 		setDate(dateValue)
 	}
 
 	const buttonClicked=(event:any)=>{
-		console.log(event.target.id!);
 		const time = event.target.id!
 		if (time === "MAX") {
 			setRange("1470")
@@ -80,7 +78,6 @@ function LineGraph() {
 	}
 
 	useEffect(() => {
-		console.log(name, range, date)
 		getData().then((data) => {
 			let arr: Array<Object> = []
 			for (let i = 0; i < data.length - 1; i++) {
@@ -90,7 +87,6 @@ function LineGraph() {
 				}
 				arr.push(obj)
 			}
-			console.log(arr)
 			setDayMax(data[0].data[1])
 			setDayMin(data[0].data[2])
 			setPrice(data[0].data[3])

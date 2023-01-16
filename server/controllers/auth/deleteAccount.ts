@@ -10,7 +10,6 @@ const deleteAccount = async (req: Request, res: Response) => {
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err);
         return res.status(404).json({message:'User Not Found'});
     }
     
@@ -26,7 +25,6 @@ const deleteAccount = async (req: Request, res: Response) => {
     try {
         deletion = await User.findOneAndDelete({ email: email }).exec()
     } catch (err) {
-        // console.log(err)
         return res.status(400).json({messge:'Some Error Occured'});
     }
 
