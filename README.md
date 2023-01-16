@@ -1,8 +1,8 @@
 
-# OLC
+# StockHub
 
-An OLX clone using react, nodejs and mongodb with typescript
-Users can create their account and post their items for sale as well buy items from other Users.
+A website to display, analyze and visualize listed companies' stock prices. Made using react, nodejs and mongodb with typescript.
+Users have to create an account and login to access the stock data and visualize them.
 
 live link - **not yet hosted**
 
@@ -30,13 +30,13 @@ Currently, server is hosted on free tier of [@render.com](https://render.com/) a
 Clone the project
 
 ```bash
-  git clone https://github.com/Tapesh-Vashisth/OLC.git
+  git clone https://github.com/Tapesh-Vashisth/flipr.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd OLC
+  cd flipr
 ```
 
 Install dependencies
