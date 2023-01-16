@@ -32,3 +32,10 @@
 .rangeCon h5{
     font-size: 1rem;
 }
+
+@media (max-width:410px) {
+    .rangeCon {
+        width: 100%;
+        min-width: none;
+    }
+}

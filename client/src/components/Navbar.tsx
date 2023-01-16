@@ -49,7 +49,9 @@ const Navbar = () => {
                         </NavLink>
                     </div>
                     <div className={styles.optionsContainer}>
-                        <button>Companies</button>
+                        <NavLink style={{textDecoration:'none'}} to='/companies'>
+                            <button>Companies</button>
+                        </NavLink>
                         <ProfileDropdown />
                     </div>
                 </div>

@@ -31,7 +31,7 @@ const CompanyData = (props: PropType) => {
                     </div>
                     <div>
                         <Range period="Day" high={props.HighToday} low={props.LowToday} />
-                        <Range period="Range" high={props.High52Week} low={props.Low52Week} />
+                        <Range period="Range" high={props.High52Week} low={props.Low52Week}  />
                     </div>
                 </div>
                 <hr className={styles.ruler} />
