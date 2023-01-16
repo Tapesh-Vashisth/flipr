@@ -4,7 +4,7 @@
 A website to display, analyze and visualize listed companies' stock prices. Made using react, nodejs and mongodb with typescript.
 Users have to create an account and login to access the stock data and visualize them.
 
-live link - **not yet hosted**
+live link - [https://stock-hub.netlify.app/](https://stock-hub.netlify.app/)
 
 NOTE
 
@@ -24,6 +24,9 @@ Currently, server is hosted on free tier of [@render.com](https://render.com/) a
 
 **Database:** MongoDB
 
+## API Documentation
+
+live link - [https://documenter.getpostman.com/view/20112651/2s8ZDU5j9r](https://documenter.getpostman.com/view/20112651/2s8ZDU5j9r)
 
 ## Run Locally
 

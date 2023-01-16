@@ -121,6 +121,7 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 }
             });
             if (maxi == Number.MIN_VALUE) {
+                console.log(info);
                 maxi = info[0].data[3];
             }
             if (mini == Number.MAX_VALUE) {

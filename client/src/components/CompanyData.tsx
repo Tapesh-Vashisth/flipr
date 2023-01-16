@@ -1,7 +1,7 @@
 import styles from "../styles/CompanyData.module.css"
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Range from "./Range";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 type PropType = {
     High52Week: string
@@ -25,7 +25,7 @@ const CompanyData = (props: PropType) => {
                 <div className={styles.datacontainer} >
                     <div>
                         <h1>{props.Price}</h1>
-                        <h3 className={styles.header} style={{color:"green"}} > {props.boolean ? <ArrowDropUpIcon fontSize="large" sx={{display:"inline" }} /> : <ArrowDropUpIcon fontSize="large" sx={{display: "inline"}} /> } {props.Change} </h3>
+                        <h3 className={styles.header} style={{color:props.boolean ? "green" : "red"}} > {props.boolean ? <ArrowDropUpIcon fontSize="large" sx={{display:"inline" }} /> : <ArrowDropDownIcon fontSize="large" sx={{display: "inline"}} /> } {props.Change} </h3>
                         <label className={styles.date} >As on {props.date}</label> <br />
                         <label className={styles.date}>Range = {props.rangeString}</label>
                     </div>
