@@ -14,13 +14,13 @@ const html = `
 
 const sendResetPasswordOtp = async (req: Request, res: Response) => {
     console.log("passwordOtp");
-    
+
     const { email } = req.body
     let user: any
     try {
         user = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({ message: 'Database Error' })
     }
 
     if (!user) {
@@ -33,7 +33,7 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
     try {
         existingOtp = await Otp.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({ message: 'Database Error' })
     }
 
     if (existingOtp) {
@@ -42,6 +42,7 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
             deleteExistingOtp = await Otp.deleteMany({ email: email }).exec()
         } catch (err) {
             console.log(err)
+            return res.status(400).json({ message: 'Database Error' })
         }
     }
 
@@ -54,6 +55,7 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
         await otp.save()
     } catch (err) {
         console.log(err)
+        return res.status(400).json({message:'Database Error'})
     }
 
     // sending a mail with nodemailer
@@ -74,7 +76,8 @@ const sendResetPasswordOtp = async (req: Request, res: Response) => {
 
     transporter.sendMail(mailOptions, (err: any, success: any) => {
         if (err) {
-            console.log("Mail not sent.", err)
+            // console.log("Mail not sent.", err)
+            return res.status(400).json({message:'Error Sending OTP'})
         }
     })
 

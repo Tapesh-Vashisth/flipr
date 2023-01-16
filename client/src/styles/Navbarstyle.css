@@ -1,13 +1,14 @@
 .navbarContainer {
     display: flex;
     justify-content: space-between;
-    height: 10vh;
+    height: 75px;
     z-index: 1;
     align-items: center;
     font-size: 1.4rem;
     padding: 0 10%;
     width: 100%;
     top: 0;
+    
 }
 
 .transparencyCheck {
@@ -22,7 +23,7 @@
 
 @keyframes backgroundColor {
     0% {
-        background-color: transparent;
+        background-color: black;
     }
 
 
@@ -39,7 +40,7 @@
     }
 
     100% {
-        background-color: transparent;
+        background-color: black;
     }
 
 

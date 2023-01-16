@@ -22,7 +22,6 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         user = yield User_1.default.findOne({ email: email }).exec();
     }
     catch (err) {
-        console.log(err);
         return res.status(404).json({ message: 'User Not Found' });
     }
     const passwordCompare = yield bcryptjs_1.default.compare(password, user.password);
@@ -36,7 +35,6 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         deletion = yield User_1.default.findOneAndDelete({ email: email }).exec();
     }
     catch (err) {
-        // console.log(err)
         return res.status(400).json({ messge: 'Some Error Occured' });
     }
     return res

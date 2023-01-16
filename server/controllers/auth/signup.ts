@@ -14,7 +14,7 @@ const signup = async (req: Request, res: Response) => {
     try {
         existingUser = await User.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({message:'Database Error'})
     }
 
     // if an account with the provided email address already exists
@@ -31,7 +31,7 @@ const signup = async (req: Request, res: Response) => {
     try {
         otpmodel = await Otp.findOne({ email: email }).exec()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({message:'Database Error'})
     }
 
     // if no otp was found in the otp database 
@@ -62,7 +62,7 @@ const signup = async (req: Request, res: Response) => {
     try {
         await user.save()
     } catch (err) {
-        console.log(err)
+        return res.status(400).json({message:'Database Error'})
     }
 
     return res

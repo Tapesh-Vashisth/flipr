@@ -48,4 +48,3 @@ const editAccountDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
         .json({ message: "Account details changed successfully!" });
 });
 exports.default = editAccountDetails;
-``;

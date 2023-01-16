@@ -17,7 +17,6 @@ const Login = () => {
     const user = useAppSelector((state) => state.user)
     const [visible, setVisible] = useState<boolean>(false);
     const {setShow, setAlert} = appActions;
-    // const [show, setShow] = useState<boolean>(false)
 
     const {
         value: enteredpassword,
@@ -43,13 +42,11 @@ const Login = () => {
         return;
         if (!emailIsValid)
         return;
-        console.log(enteredEmail, enteredpassword);
 
         // server request   
         dispatch(login({email: enteredEmail, password: enteredpassword}))
         .unwrap()
         .then((response) => {
-            console.log(response);
             emailReset();
             passwordReset();
             if (response.accessToken.length > 0) {
@@ -57,19 +54,23 @@ const Login = () => {
                 navigate('/')
             }
         })
-        .catch((err) => {
-            console.log(err);
-            console.log(err.response.status)
-            const status = err.response.status
-            if (status == 400) {
-                dispatch(setAlert({show: true, message: "The password you have entered is wrong!"}))
+        .catch((err: any) => {
+            if (err.message === "Network Error"){ 
+                dispatch(setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(setAlert({show: true, message: err.response.data.message}));
             }
-            if (status == 404) {
-                dispatch(setAlert({show: true, message: "No such user exists!"}))
-            }
-            if (status == 500) {
-                dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
-            }
+            // if (status == 400) {
+            //     dispatch(setAlert({show: true, message: "The password you have entered is wrong!"}))
+            // }
+            // if (status == 404) {
+            //     dispatch(setAlert({show: true, message: "No such user exists!"}))
+            // }
+            // if (status == 500) {
+            //     dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
+            // } else {
+            //     dispatch(setAlert({show: true, message: "Server is down temporarily, please wait for some time"}))
+            // }
         })
     }
 
@@ -82,7 +83,7 @@ const Login = () => {
             <div className={styles.signupContainer}>
                 <div className={styles.test}>
                     <div className={styles.welcomeTag} >
-                        <h1>Login to Your Account!</h1>
+                        <h1>Login to Your StockHub Account!</h1>
                     </div>
                     <img alt="signup" src="https://flevix.com/wp-content/uploads/2020/01/Fade-In-Background.svg" />
                 </div>

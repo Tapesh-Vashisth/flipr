@@ -17,7 +17,7 @@ const check = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("check");
     const user = yield User_1.default.findOne({ uuid: req.uuid }).exec();
     if (!user)
-        return res.status(404).send();
+        return res.status(404).json({ message: 'User Not Found' });
     return res.status(200).json({ name: user.name, email: user.email, image: user.image });
 });
 exports.default = check;

@@ -13,7 +13,7 @@ const app: Express = express();
 // middleware
 app.use(express.json({limit: '50mb'}));
 app.use(cors({
-    origin:["http://localhost:3000"],
+    origin:["http://localhost:3000", "https://stock-hub.netlify.app"],
     methods:['POST','GET','HEAD','PUT','DELETE'],
     credentials: true
 }))

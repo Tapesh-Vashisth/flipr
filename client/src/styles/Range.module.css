@@ -17,7 +17,7 @@
     border-bottom: 2px solid black;
 }
 .rangeCon{
-    min-width: 300px;
+    min-width: 100%;
 }
 .rangeCon h2{
     font-weight: 400;
@@ -31,4 +31,10 @@
 
 .rangeCon h5{
     font-size: 1rem;
+}
+
+@media (min-width:400px) {
+    .rangeCon {
+        min-width: 300px;
+    }
 }

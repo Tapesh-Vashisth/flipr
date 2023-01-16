@@ -42,4 +42,4 @@ const editAccountDetails: any = async (req: Request, res: Response) => {
         .json({ message: "Account details changed successfully!" })
 }
 
-export default editAccountDetails;  ``
+export default editAccountDetails;

@@ -15,7 +15,11 @@ const ProfileDropdown = () => {
             dispatch(appActions.setSuccess({show: true, message: "logged out Succesfully"}));
             navigate("/auth/login");
         }).catch((err) => {
-            dispatch(appActions.setAlert({show: true, message: "logout failed!"}))
+            if (err.message === "Network Error"){ 
+                dispatch(appActions.setAlert({show: true, message: "Network error/Server Down!"}));
+            } else {
+                dispatch(appActions.setAlert({show: true, message: err.response.data.message}));
+            }
         });
     }
 
