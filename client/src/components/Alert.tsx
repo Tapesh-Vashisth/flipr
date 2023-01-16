@@ -11,7 +11,7 @@ export default function AlertDismissable() {
     return (
         app.show ? 
         <Stack sx={{ width: '100%' }} spacing={1} padding = {0}>
-            <Alert severity="error" sx = {{padding: "0px 8px"}} onClose={() => dispatch(appActions.setShow(false))}>
+            <Alert severity={app.type} sx = {{padding: "0px 8px"}} onClose={() => dispatch(appActions.setShow(false))}>
                 {app.message}
             </Alert>
         </Stack>

@@ -203,7 +203,7 @@ const userSlice = createSlice({
                 fetch.pending,
                 logout.pending,
                 updateUser.pending,
-                deleteUser.rejected
+                deleteUser.pending
                 ), (state) => {
                 state.loading = true;
             })
