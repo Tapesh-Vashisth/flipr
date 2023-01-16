@@ -17,46 +17,44 @@ const Company_1 = __importDefault(require("../../models/Company"));
 const fs_1 = __importDefault(require("fs"));
 const csv_parse_1 = require("csv-parse");
 const setCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('Set Company Details');
     const data = [];
     const query = req.query;
-    // console.log(query);
     let companyName = '';
     if (query.name) {
         if (fs_1.default.existsSync(`./Data/${query.name.toString().toUpperCase()}.csv`)) {
             companyName = query.name.toString().toUpperCase();
-            // console.log(companyName)
-            fs_1.default.createReadStream(`./Data/${companyName}.csv`)
-                .pipe((0, csv_parse_1.parse)({ delimiter: ",", from_line: 2 }))
-                .on("data", function (row) {
-                const obj = { date: '', data: [] };
-                obj.date = new Date(row[0]).toDateString();
-                const arr = [];
-                for (let i = 1; i < row.length; i++) {
-                    arr.push(row[i]);
-                }
-                obj.data = (arr);
-                // console.log(obj);
-                data.push(obj);
-            })
-                .on("end", function () {
-                return __awaiter(this, void 0, void 0, function* () {
-                    const check = yield Company_1.default.findOne({ companyName: companyName }).exec();
-                    if (!check) {
+            const check = yield Company_1.default.findOne({ companyName: companyName }).exec();
+            if (!check) {
+                fs_1.default.createReadStream(`./Data/${companyName}.csv`)
+                    .pipe((0, csv_parse_1.parse)({ delimiter: ",", from_line: 2 }))
+                    .on("data", function (row) {
+                    const obj = { date: '', data: [] };
+                    obj.date = new Date(row[0]).toDateString();
+                    const arr = [];
+                    for (let i = 1; i < row.length; i++) {
+                        arr.push(row[i]);
+                    }
+                    obj.data = (arr);
+                    data.push(obj);
+                })
+                    .on("end", function () {
+                    return __awaiter(this, void 0, void 0, function* () {
                         const newCompany = yield new Company_1.default({
                             companyName: companyName,
                             data: data
                         });
                         yield newCompany.save();
                         return res.status(200).json({ message: 'company details added successfully' });
-                    }
-                    else {
-                        return res.status(409).json({ message: 'company already exists' });
-                    }
+                    });
+                })
+                    .on("error", function (error) {
+                    return res.status(400).json({ message: error.message });
                 });
-            })
-                .on("error", function (error) {
-                return res.status(400).json({ message: error.message });
-            });
+            }
+            else {
+                return res.status(409).json({ message: 'company already exists' });
+            }
         }
         else {
             return res.status(404).json({ message: 'company not found' });
@@ -66,11 +64,9 @@ const setCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.setCompanyDetails = setCompanyDetails;
 const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
-    console.log("company data");
+    console.log('Get Company Details');
     const query = req.query;
-    console.log("query is : ", query);
     const name = (_a = query.name) === null || _a === void 0 ? void 0 : _a.toString().toUpperCase();
-    // console.log(query);
     const limit = Number(query.limit);
     let date = '';
     if (query.date) {
@@ -83,7 +79,6 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
             const prev = new Date(date);
             const prev_date = new Date(prev - (Number(query.range)) * 86400000);
-            console.log(prev_date);
             let maxi = Number.MIN_VALUE;
             let mini = Number.MAX_VALUE;
             const arr = company === null || company === void 0 ? void 0 : company.data;
@@ -91,21 +86,29 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
             arr.forEach((elem) => {
                 if (new Date(elem.date) >= prev_date && new Date(elem.date) <= new Date(date)) {
                     info.push(elem);
-                    maxi = Math.max(maxi, elem.data[3]);
-                    mini = Math.min(mini, elem.data[3]);
+                    if (elem.data[3] != null) {
+                        maxi = Math.max(maxi, elem.data[3]);
+                        mini = Math.min(mini, elem.data[3]);
+                    }
                 }
             });
-            console.log(maxi, mini);
+            if (maxi == Number.MIN_VALUE) {
+                maxi = info[0].data[3];
+            }
+            if (mini == Number.MAX_VALUE) {
+                mini = 0;
+            }
             info.push({ max: maxi, min: mini });
             return res.status(200).json(info);
         }
         else {
             const company = yield Company_1.default.findOne({ companyName: name }, { data: { _id: 0 } });
+            if (!company)
+                return res.status(404).json({ message: 'company not found' });
             let parts = (_c = query.date) === null || _c === void 0 ? void 0 : _c.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
             const prev = new Date(date);
             const prev_date = new Date(prev - (Number(range)) * 86400000);
-            console.log(prev_date);
             let maxi = Number.MIN_VALUE;
             let mini = Number.MAX_VALUE;
             const arr = company === null || company === void 0 ? void 0 : company.data;
@@ -117,7 +120,12 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
                     mini = Math.min(mini, elem.data[3]);
                 }
             });
-            console.log(maxi, mini);
+            if (maxi == Number.MIN_VALUE) {
+                maxi = info[0].data[3];
+            }
+            if (mini == Number.MAX_VALUE) {
+                mini = 0;
+            }
             info.push({ max: maxi, min: mini });
             return res.status(200).json(info);
         }
@@ -126,6 +134,8 @@ const getCompanyDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (!limit)
             return res.status(400).json({ message: 'enter a valid query' });
         const company = yield Company_1.default.findOne({ companyName: name }).slice('data', limit);
+        if (!company)
+            return res.status(404).json({ message: 'company not found' });
         return res.status(200).json(company);
     }
 });

@@ -3,13 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 import LazyLoading from './components/LazyLoading';
 import Protected from './components/Protected';
 import { fetch } from './features/user/userSlice';
-import LineGraph from './components/LineGraph';
+import LineGraph from './pages/LineGraph';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import NavFootLayout from './components/NavFootLayout';
 import ForgotPassword from './pages/ForgotPassword';
 import Account from './pages/Account';
 import AlertDismissable from './components/Alert';
-import CompanyData from './pages/CompanyPage/CompanyData';
+import CompanyData from './components/CompanyData';
 const Login  = React.lazy(() => import('./pages/Login'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const ErrorPage = React.lazy(() => import('./pages/Error404'));
@@ -55,7 +55,7 @@ function App() {
         <Route path = "/chart" element={<LineGraph />}>
         </Route>
 
-        <Route path='/data' element={<><CompanyData /></>}></Route>
+        {/* <Route path='/data' element={<><CompanyData /></>}></Route> */}
 
         <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
           <ErrorPage />

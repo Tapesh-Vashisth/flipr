@@ -8,19 +8,21 @@ interface returnType {
     data: any[]
 }
 
+
 const setCompanyDetails = async (req: Request, res: Response) => {
+    console.log('Set Company Details')
     const data: any[] = [];
-
+    
     const query = req.query;
-    // console.log(query);
-
+    
     let companyName: string = '';
-
+    
     if (query.name) {
         if (fs.existsSync(`./Data/${query.name.toString().toUpperCase()}.csv`)) {
             companyName = query.name.toString().toUpperCase();
-            // console.log(companyName)
-            fs.createReadStream(`./Data/${companyName}.csv`)
+            const check = await Company.findOne({ companyName: companyName }).exec()
+            if (!check) {
+                fs.createReadStream(`./Data/${companyName}.csv`)
                 .pipe(parse({ delimiter: ",", from_line: 2 }))
                 .on("data", function (row: any) {
                     const obj: returnType = { date: '', data: [] };
@@ -30,104 +32,113 @@ const setCompanyDetails = async (req: Request, res: Response) => {
                         arr.push(row[i]);
                     }
                     obj.data = (arr);
-                    // console.log(obj);
                     data.push(obj);
                 })
                 .on("end", async function () {
-                    const check = await Company.findOne({ companyName: companyName }).exec()
-                    if (!check) {
-                        const newCompany = await new Company({
-                            companyName: companyName,
-                            data: data
-                        });
-                        await newCompany.save();
-                        return res.status(200).json({ message: 'company details added successfully' });
-                    }
-                    else {
-                        return res.status(409).json({ message: 'company already exists' });
-                    }
+                    const newCompany = await new Company({
+                        companyName: companyName,
+                        data: data
+                    });
+                    await newCompany.save();
+                    return res.status(200).json({ message: 'company details added successfully' });
                 })
-                .on("error", function (error) {
-                    return res.status(400).json({ message: error.message });
-                });
+                    .on("error", function (error) {
+                        return res.status(400).json({ message: error.message });
+                    });
+            }
+            else {
+                return res.status(409).json({ message: 'company already exists' });
+            }
         }
         else {
             return res.status(404).json({ message: 'company not found' });
         }
     }
-
 }
 
 const getCompanyDetails = async (req: Request, res: Response) => {
-    console.log("company data")
+    console.log('Get Company Details')
     const query = req.query;
-    console.log("query is : ", query);
     const name = query.name?.toString().toUpperCase();
-    // console.log(query);
     const limit = Number(query.limit);
-    let date=''
-    if(query.date)
-    {
-        const range:number = 1;
-        if(query.range)
-        {
-            const company = await Company.findOne({companyName:name},{data:{_id:0}});
-            if(!company) return res.status(404).json({message:'company not found'});
+    let date = ''
+    if (query.date) {
+        const range: number = 1;
+        if (query.range) {
+            const company = await Company.findOne({ companyName: name }, { data: { _id: 0 } });
+            if (!company) return res.status(404).json({ message: 'company not found' });
 
-            let parts:any|null = query.date?.toString().split('-');
+            let parts: any | null = query.date?.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
-            const prev:any = new Date(date);
-            const prev_date = new Date(prev-(Number(query.range))*86400000);
-            console.log(prev_date);
-            let maxi:number = Number.MIN_VALUE;
-            let mini:number = Number.MAX_VALUE;
+            const prev: any = new Date(date);
+            const prev_date = new Date(prev - (Number(query.range)) * 86400000);
+    
+            let maxi: number = Number.MIN_VALUE;
+            let mini: number = Number.MAX_VALUE;
 
-            const arr:any = company?.data;
-            let info:any=[];
-            arr.forEach((elem:any)=>{
-                if(new Date(elem.date)>=prev_date && new Date(elem.date)<=new Date(date))
-                {
+            const arr: any = company?.data;
+            let info: any = [];
+            arr.forEach((elem: any) => {
+                if (new Date(elem.date) >= prev_date && new Date(elem.date) <= new Date(date)) {
+            
                     info.push(elem);
-                    maxi = Math.max(maxi,elem.data[3]);
-                    mini = Math.min(mini,elem.data[3]);
+                    if (elem.data[3] != null) {
+                        maxi = Math.max(maxi, elem.data[3]);
+                        mini = Math.min(mini, elem.data[3]);
+                    }
                 }
+        
             })
 
-            console.log(maxi,mini);
-            info.push({max:maxi,min:mini})
+
+            if (maxi == Number.MIN_VALUE) {
+                maxi = info[0].data[3];
+            }
+
+            if (mini == Number.MAX_VALUE) {
+                mini = 0;
+            }
+
+            info.push({ max: maxi, min: mini })
             return res.status(200).json(info);
         }
-        else
-        {
-            const company = await Company.findOne({companyName:name},{data:{_id:0}});
-            let parts:any|null = query.date?.toString().split('-');
+        else {
+            const company = await Company.findOne({ companyName: name }, { data: { _id: 0 } });
+            if (!company) return res.status(404).json({ message: 'company not found' });
+            let parts: any | null = query.date?.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
-            const prev:any = new Date(date);
-            const prev_date = new Date(prev-(Number(range))*86400000);
-            console.log(prev_date);
-            let maxi:number = Number.MIN_VALUE;
-            let mini:number = Number.MAX_VALUE;
+            const prev: any = new Date(date);
+            const prev_date = new Date(prev - (Number(range)) * 86400000);
+    
+            let maxi: number = Number.MIN_VALUE;
+            let mini: number = Number.MAX_VALUE;
 
-            const arr:any = company?.data;
-            let info:any=[];
-            arr.forEach((elem:any)=>{
-                if(new Date(elem.date)>=prev_date && new Date(elem.date)<=new Date(date))
-                {
+            const arr: any = company?.data;
+            let info: any = [];
+            arr.forEach((elem: any) => {
+                if (new Date(elem.date) >= prev_date && new Date(elem.date) <= new Date(date)) {
                     info.push(elem);
-                    maxi = Math.max(maxi,elem.data[3]);
-                    mini = Math.min(mini,elem.data[3]);
+                    maxi = Math.max(maxi, elem.data[3]);
+                    mini = Math.min(mini, elem.data[3]);
                 }
             })
 
-            console.log(maxi,mini);
-            info.push({max:maxi,min:mini})
+            if (maxi == Number.MIN_VALUE) {
+                maxi = info[0].data[3];
+            }
+
+            if (mini == Number.MAX_VALUE) {
+                mini = 0;
+            }
+    
+            info.push({ max: maxi, min: mini })
             return res.status(200).json(info);
         }
     }
-    else
-    {
-        if(!limit) return res.status(400).json({message:'enter a valid query'});
-        const company = await Company.findOne({companyName:name}).slice('data',limit);
+    else {
+        if (!limit) return res.status(400).json({ message: 'enter a valid query' });
+        const company = await Company.findOne({ companyName: name }).slice('data', limit);
+        if (!company) return res.status(404).json({ message: 'company not found' });
         return res.status(200).json(company);
     }
 }
