@@ -124,6 +124,7 @@ const getCompanyDetails = async (req: Request, res: Response) => {
             })
 
             if (maxi == Number.MIN_VALUE) {
+                console.log(info)
                 maxi = info[0].data[3];
             }
 
