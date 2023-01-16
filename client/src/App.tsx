@@ -9,6 +9,7 @@ import NavFootLayout from './components/NavFootLayout';
 import ForgotPassword from './pages/ForgotPassword';
 import Account from './pages/Account';
 import AlertDismissable from './components/Alert';
+import CompanyData from './pages/CompanyPage/CompanyData';
 const Login  = React.lazy(() => import('./pages/Login'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const ErrorPage = React.lazy(() => import('./pages/Error404'));
@@ -53,6 +54,8 @@ function App() {
   {/* data={[1,5,4,2,3,1,2,3,4,3,2,1,4,5,6,7]} labels={['mon','tue','wed','thurs','fri','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf','asdf']} */}
         <Route path = "/chart" element={<LineGraph />}>
         </Route>
+
+        <Route path='/data' element={<><CompanyData /></>}></Route>
 
         <Route path='*' element={<React.Suspense fallback = {<LazyLoading />}>
           <ErrorPage />

@@ -11,14 +11,14 @@ interface returnType {
 const setCompanyDetails = async (req: Request, res: Response) => {
     const data: any[] = [];
 
-    const b = req.query;
-    // console.log(b);
+    const query = req.query;
+    // console.log(query);
 
     let companyName: string = '';
 
-    if (b.name) {
-        if (fs.existsSync(`./Data/${b.name.toString().toUpperCase()}.csv`)) {
-            companyName = b.name.toString().toUpperCase();
+    if (query.name) {
+        if (fs.existsSync(`./Data/${query.name.toString().toUpperCase()}.csv`)) {
+            companyName = query.name.toString().toUpperCase();
             // console.log(companyName)
             fs.createReadStream(`./Data/${companyName}.csv`)
                 .pipe(parse({ delimiter: ",", from_line: 2 }))
@@ -59,21 +59,25 @@ const setCompanyDetails = async (req: Request, res: Response) => {
 }
 
 const getCompanyDetails = async (req: Request, res: Response) => {
-    const b = req.query;
-    const name = b.name?.toString().toUpperCase();
-    // console.log(b);
-    const limit = Number(b.limit);
+    console.log("company data")
+    const query = req.query;
+    console.log("query is : ", query);
+    const name = query.name?.toString().toUpperCase();
+    // console.log(query);
+    const limit = Number(query.limit);
     let date=''
-    if(b.date)
+    if(query.date)
     {
         const range:number = 1;
-        if(b.range)
+        if(query.range)
         {
             const company = await Company.findOne({companyName:name},{data:{_id:0}});
-            let parts:any|null = b.date?.toString().split('-');
+            if(!company) return res.status(404).json({message:'company not found'});
+
+            let parts:any|null = query.date?.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
             const prev:any = new Date(date);
-            const prev_date = new Date(prev-(Number(b.range))*86400000);
+            const prev_date = new Date(prev-(Number(query.range))*86400000);
             console.log(prev_date);
             let maxi:number = Number.MIN_VALUE;
             let mini:number = Number.MAX_VALUE;
@@ -96,7 +100,7 @@ const getCompanyDetails = async (req: Request, res: Response) => {
         else
         {
             const company = await Company.findOne({companyName:name},{data:{_id:0}});
-            let parts:any|null = b.date?.toString().split('-');
+            let parts:any|null = query.date?.toString().split('-');
             date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toDateString();
             const prev:any = new Date(date);
             const prev_date = new Date(prev-(Number(range))*86400000);
@@ -122,6 +126,7 @@ const getCompanyDetails = async (req: Request, res: Response) => {
     }
     else
     {
+        if(!limit) return res.status(400).json({message:'enter a valid query'});
         const company = await Company.findOne({companyName:name}).slice('data',limit);
         return res.status(200).json(company);
     }
