@@ -160,6 +160,9 @@ const SignUp = () => {
                             <label htmlFor='name'>E-Mail</label>
                             <input value={enteredEmail} onChange={emailChangeHandler} onBlur={emailBlurHandler} type='email' id='email' />
                         </div>
+                        <div>
+                            <p style={{color: "red"}}>Note: check your spam folder if otp not found</p>
+                        </div>
                         <div className={styles.otpForm} >
                             {emailIsValid && <button type="button" ref = {otpRef} onClick={otpInputHandler} className={styles.submitButton} >Get Otp</button>}
                             {(getOtpValid && enteredEmail.length > 0) && <input className={styles.enterOtp} value = {otp} onChange = {(e) => {setOTP(e.target.value)}} ></input>}
